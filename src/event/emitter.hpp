@@ -30,12 +30,12 @@ namespace event
             return (static_cast<Derived const *>(this));
         }
 
-        auto get_event(util::types::usize index) const -> Event
+        auto get_event(usize index) const -> Event
         {
             this->derived().get_event(index);
         }
 
-        auto set_event(Event const &event, util::types::usize index) -> void
+        auto set_event(Event const &event, usize index) -> void
         {
             this->derived().set_event(event, index);
         }

@@ -6,7 +6,7 @@
 // module includes
 #include "util/util.hpp"
 
-auto main() -> util::types::i32
+auto main() -> i32
 {
     return (EXIT_SUCCESS);
 }

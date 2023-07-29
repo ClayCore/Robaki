@@ -22,8 +22,6 @@ namespace util::uuid
 
     inline auto generate_uuid() -> std::string
     {
-        using namespace util::types;
-
         std::stringstream ss{};
         u32 i{};
         ss << std::hex;

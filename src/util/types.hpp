@@ -31,3 +31,5 @@ namespace util::types
     using f64  = double;
     using f128 = long double;
 }  // namespace util::types
+
+using namespace util::types;
