@@ -29,85 +29,61 @@ sources = [
 
 all_deps = []
 
-fmt_dep = dependency('fmt', required: false)
-if fmt_dep.found()
-    all_deps += fmt_dep
-else
-    fmt_include_dirs = ['vendor/fmt/include']
-    
-    fmt_d = declare_dependency(include_directories: fmt_include_dirs)
-    message('fmt dependency in local vendor directory')
+# {fmt} dependency
+fmt_include_dirs = ['vendor/fmt/include']
 
-    all_deps += fmt_d
-endif
+fmt_d = declare_dependency(include_directories: fmt_include_dirs)
+message('fmt dependency in local vendor directory')
 
-glfw3_dep = dependency('glfw3', required: false)
-if glfw3_dep.found()
-    all_deps += glfw3_dep
-else
-    glfw3_include_dirs = ['vendor/glfw3/include']
-    glfw3_libs = ['-lopengl32', '-lgdi32', '-lglfw3']
-    glfw3_link_args = ['-L../vendor/glfw3/lib', glfw3_libs]
+all_deps += fmt_d
 
-    glfw3_d = declare_dependency(link_args: glfw3_link_args, include_directories: glfw3_include_dirs)
-    message('glfw3 dependency in local vendor directory')
+# glfw3 dependency
+glfw3_include_dirs = ['vendor/glfw3/include']
+glfw3_libs = ['-lopengl32', '-lgdi32', '-lglfw3']
+glfw3_link_args = ['-L../vendor/glfw3/lib', glfw3_libs]
 
-    all_deps += glfw3_d
-endif
+glfw3_d = declare_dependency(link_args: glfw3_link_args, include_directories: glfw3_include_dirs)
+message('glfw3 dependency in local vendor directory')
 
-glad_dep = dependency('glad', required: false)
-if glad_dep.found()
-    all_deps += glad_dep
-else
-    glad_include_dirs = ['vendor/glad/include']
+all_deps += glfw3_d
 
-    glad_d = declare_dependency(include_directories: glad_include_dirs)
-    message('glad dependency in local vendor directory')
+# glad dependency
+glad_include_dirs = ['vendor/glad/include']
 
-    all_deps += glad_d
-endif
+glad_d = declare_dependency(include_directories: glad_include_dirs)
+message('glad dependency in local vendor directory')
 
-bgfx_dep = dependency('bgfx', required: false)
-if bgfx_dep.found()
-    all_deps += bgfx_dep
-else
-    bgfx_include_dirs = ['vendor/bgfx/include']
-    bgfx_libs = ['-lbgfx']
-    bgfx_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bgfx_libs]
+all_deps += glad_d
 
-    bgfx_d = declare_dependency(link_args: bgfx_link_args, include_directories: bgfx_include_dirs)
-    message('bgfx dependency in local vendor directory')
+# bgfx dependency
+bgfx_include_dirs = ['vendor/bgfx/include']
+bgfx_libs = ['-lbgfxRelease']
+bgfx_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bgfx_libs]
 
-    all_deps += bgfx_d
-endif
+bgfx_d = declare_dependency(link_args: bgfx_link_args, include_directories: bgfx_include_dirs)
+message('bgfx dependency in local vendor directory')
 
-bimg_dep = dependency('bimg', required: false)
-if bimg_dep.found()
-    all_deps += bimg_dep
-else
-    bimg_include_dirs = ['vendor/bimg/include']
-    bimg_libs = ['-lbimg']
-    bimg_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bimg_libs]
+all_deps += bgfx_d
 
-    bimg_d = declare_dependency(link_args: bimg_link_args, include_directories: bimg_include_dirs)
-    message('bimg dependency in local vendor directory')
+# bimg dependency
+bimg_include_dirs = ['vendor/bimg/include']
+bimg_libs = ['-lbimgRelease']
+bimg_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bimg_libs]
 
-    all_deps += bimg_d
-endif
+bimg_d = declare_dependency(link_args: bimg_link_args, include_directories: bimg_include_dirs)
+message('bimg dependency in local vendor directory')
 
-bx_dep = dependency('bimg', required: false)
-if bx_dep.found()
-    all_deps += bx_dep
-else
-    bx_include_dirs = ['vendor/bx/include']
-    bx_libs = ['-lbx']
-    bx_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bx_dep_libs]
+all_deps += bimg_d
 
-    bx_d = declare_dependency(link_args: bx_link_args, include_directories: bx_include_dirs)
-    message('bx dependency in local vendor directory')
+# bx dependency
+bx_include_dirs = ['vendor/bx/include']
+bx_libs = ['-lbxRelease']
+bx_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bx_libs]
 
-    all_deps += bx_d
-endif
+bx_d = declare_dependency(link_args: bx_link_args, include_directories: bx_include_dirs)
+message('bx dependency in local vendor directory')
+
+all_deps += bx_d
 
 # --------------------------------------------------------------------------- #
 # Linking into executable --------------------------------------------------- #
