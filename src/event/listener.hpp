@@ -18,6 +18,7 @@ namespace event
         using Callback = void (*)();
         std::unordered_map<Event, Callback> m_actions;
 
+    public:
         Listener()
         {
             m_actions = {};
