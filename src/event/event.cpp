@@ -1,3 +1,5 @@
+/** @file event.cpp */
+
 #include "event.hpp"
 
 namespace event
