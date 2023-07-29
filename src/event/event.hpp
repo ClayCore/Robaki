@@ -75,9 +75,10 @@ namespace event
             return (m_category);
         }
 
-        virtual auto get_name_from_type(EventType const &type) const -> char const *;
-        virtual auto get_category_from_type(EventType const &type) const -> EventCategory;
-        virtual auto set_name(std::string const &name) -> void;
+        virtual auto get_name_from_type(EventType const &) const -> char const *;
+        virtual auto get_category_from_type(EventType const &) const -> EventCategory;
+        virtual auto set_type(EventType const &) -> void;
+        virtual auto set_name(std::string const &) -> void;
 
         constexpr auto operator==(Event const &rhs) const -> bool
         {

@@ -77,6 +77,11 @@ namespace event
         return (result);
     }
 
+    auto Event::set_type(EventType const &type) -> void
+    {
+        m_type = type;
+    }
+
     auto Event::set_name(std::string const &name) -> void
     {
         m_name = name;
