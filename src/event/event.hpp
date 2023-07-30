@@ -79,6 +79,7 @@ namespace event
         virtual auto get_category_from_type(EventType const &) const -> EventCategory;
         virtual auto set_type(EventType const &) -> void;
         virtual auto set_name(std::string const &) -> void;
+        virtual auto category_to_string(EventCategory const &) const -> char const *;
 
         constexpr auto operator==(Event const &rhs) const -> bool
         {
