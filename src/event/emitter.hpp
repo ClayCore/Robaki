@@ -14,6 +14,8 @@ namespace event
     protected:
         std::vector<Event> m_events;
 
+        ~Emitter() = default;
+
     public:
         Emitter()
         {
