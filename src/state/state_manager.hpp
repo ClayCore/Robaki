@@ -33,9 +33,22 @@ namespace state
             }
         };
 
+        Dispatcher m_dispatcher;
+
     protected:
         StateManager()
         {
+        }
+
+    public:
+        auto get_dispatcher_type() -> Dispatcher
+        {
+            return (this->instance().m_dispatcher);
+        }
+
+        auto get_dispatcher() -> Dispatcher &
+        {
+            return (this->instance().m_dispatcher);
         }
     };
 }  // namespace state
