@@ -6,21 +6,22 @@
 #include "event.hpp"
 #include "util/util.hpp"
 
+// c++ includes
+#include <unordered_map>
+
 namespace event
 {
-    template <class Derived>
+    template <class Derived, class Object>
     class Dispatcher
     {
     protected:
-        std::vector<Event> m_events;
+        using self_type    = Dispatcher<Derived, Object>;
+        using derived_type = Derived;
+        using object_type  = Object;
+
+        std::unordered_map<Event, std::vector<Object *>, EventHasher, EventEqualizer> m_events;
 
         ~Dispatcher() = default;
-
-    public:
-        Dispatcher()
-        {
-            m_events = {};
-        }
 
         auto derived() -> Derived *
         {
@@ -32,25 +33,30 @@ namespace event
             return (static_cast<Derived const *>(this));
         }
 
-        auto get_event(usize index) const -> Event
+    public:
+        Dispatcher()
         {
-            this->derived().get_event(index);
+            m_events = {};
         }
 
-        auto set_event(Event const &event, usize index) -> void
+        auto add_object(Event const &key, Object *obj) -> void
         {
-            this->derived().set_event(event, index);
+            this->derived()->add_object(key, obj);
         }
 
-        auto add_event(Event const &event) -> void
+        auto remove_object(Event const &key, Object *obj) -> void
         {
-            this->derived().add_event(event);
+            this->derived()->remove_object(key, obj);
         }
 
-        template <class Emitter>
-        auto dispatch(Event const &event, Emitter &emitter) -> void
+        auto add_event(Event const &event, std::vector<Object *> &vec) -> void
         {
-            this->derived().dispatch(event, emitter);
+            this->derived()->add_event(event, vec);
+        }
+
+        auto dispatch(Event const &event) -> void
+        {
+            this->derived()->dispatch(event);
         }
     };
 }  // namespace event
