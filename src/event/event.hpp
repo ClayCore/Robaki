@@ -75,9 +75,11 @@ namespace event
             return (m_category);
         }
 
-        virtual auto get_name_from_type(EventType const &type) const -> char const *;
-        virtual auto get_category_from_type(EventType const &type) const -> EventCategory;
-        virtual auto set_name(std::string const &name) -> void;
+        virtual auto get_name_from_type(EventType const &) const -> char const *;
+        virtual auto get_category_from_type(EventType const &) const -> EventCategory;
+        virtual auto set_type(EventType const &) -> void;
+        virtual auto set_name(std::string const &) -> void;
+        virtual auto category_to_string(EventCategory const &) const -> char const *;
 
         constexpr auto operator==(Event const &rhs) const -> bool
         {
@@ -99,6 +101,16 @@ namespace event
         {
             return (os << event.to_string());
         }
+    };
+
+    struct EventHasher
+    {
+        auto operator()(Event const &) const -> usize;
+    };
+
+    struct EventEqualizer
+    {
+        auto operator()(Event const &, Event const &) const -> bool;
     };
 }  // namespace event
 

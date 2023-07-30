@@ -1,6 +1,7 @@
 /** @file event.cpp */
 
 #include "event.hpp"
+#include "event/event.hpp"
 
 namespace event
 {
@@ -77,6 +78,11 @@ namespace event
         return (result);
     }
 
+    auto Event::set_type(EventType const &type) -> void
+    {
+        m_type = type;
+    }
+
     auto Event::set_name(std::string const &name) -> void
     {
         m_name = name;
@@ -89,5 +95,40 @@ namespace event
         } else {
             return (this->get_name_from_type(m_type));
         }
+    }
+
+    auto Event::category_to_string(EventCategory const &category) const -> char const *
+    {
+        auto result = "";
+
+        // clang-format off
+        switch (category) {
+            case EventCategory::None:       { result = "EventCategory::None";      }; break;
+            case EventCategory::Window:     { result = "EventCategory::Window";    }; break;
+            case EventCategory::Resource:   { result = "EventCategory::Resource";  }; break;
+            case EventCategory::Engine:     { result = "EventCategory::Engine";    }; break;
+            case EventCategory::Input:      { result = "EventCategory::Input";     }; break;
+            default:                        { result = "EventCategory::Custom";    }; break;
+        }
+        // clang-format on
+
+        return (result);
+    }
+
+    auto EventHasher::operator()(Event const &event) const -> usize
+    {
+        auto name            = event.get_name();
+        auto category        = event.get_category();
+        auto category_string = event.category_to_string(category);
+
+        auto h1 = std::hash<std::string>{}(name);
+        auto h2 = std::hash<std::string>{}(category_string);
+
+        return (h1 ^ (h2 << 1));
+    }
+
+    auto EventEqualizer::operator()(Event const &lhs, Event const &rhs) const -> bool
+    {
+        return (lhs == rhs);
     }
 }  // namespace event

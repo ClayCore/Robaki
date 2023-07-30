@@ -4,6 +4,7 @@
 
 // module includes
 #include "event.hpp"
+#include "event/event.hpp"
 #include "util/util.hpp"
 
 // c++ includes
@@ -15,14 +16,13 @@ namespace event
     class Listener
     {
     protected:
-        using Callback = void (*)();
-        std::unordered_map<Event, Callback> m_actions;
+        using self_type    = Listener<Derived>;
+        using derived_type = Derived;
 
-    public:
-        Listener()
-        {
-            m_actions = {};
-        }
+        using Callback = void (*)();
+        std::unordered_map<Event, Callback, EventHasher, EventEqualizer> m_actions;
+
+        ~Listener() = default;
 
         auto derived() -> Derived *
         {
@@ -34,19 +34,25 @@ namespace event
             return (static_cast<Derived const *>(this));
         }
 
-        auto get_callback(Event const &event) -> Callback
+    public:
+        Listener()
         {
-            return (this->derived().get_callback(event));
+            m_actions = {};
         }
 
-        auto set_callback(Event const &event, Callback const &cb) -> void
+        auto set_callback(Event const &event, Callback &callback) -> void
         {
-            this->derived().set_callback(event, cb);
+            this->derived()->set_callback(event, callback);
         }
 
-        auto insert_event(Event const &event, Callback const &cb) -> void
+        auto get_callback(Event const &event) -> Callback &
         {
-            this->derived().insert_event(event, cb);
+            return (this->derived()->get_callback(event));
+        }
+
+        auto listen(Event const &event) -> void
+        {
+            this->derived()->listen(event);
         }
     };
 }  // namespace event

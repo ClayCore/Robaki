@@ -8,16 +8,21 @@
 
 namespace event
 {
-    template <class Derived>
+    template <class Derived, class Dispatcher>
     class Emitter
     {
     protected:
+        using self_type       = Emitter<Derived, Dispatcher>;
+        using derived_type    = Derived;
+        using dispatcher_type = Dispatcher;
+
         std::vector<Event> m_events;
 
-    public:
-        Emitter()
+        ~Emitter() = default;
+
+        auto derived() const -> Derived const *
         {
-            m_events = {};
+            return (static_cast<Derived const *>(this));
         }
 
         auto derived() -> Derived *
@@ -25,30 +30,30 @@ namespace event
             return (static_cast<Derived *>(this));
         }
 
-        auto derived() const -> Derived const *
+    public:
+        Emitter()
         {
-            return (static_cast<Derived const *>(this));
+            m_events = {};
         }
 
-        auto get_event(util::types::usize index) const -> Event
+        auto get_event(usize index) const -> Event
         {
-            this->derived().get_event(index);
+            this->derived()->get_event(index);
         }
 
-        auto set_event(Event const &event, util::types::usize index) -> void
+        auto set_event(Event const &event, usize index) -> void
         {
-            this->derived().set_event(event, index);
+            this->derived()->set_event(event, index);
         }
 
         auto add_event(Event const &event) -> void
         {
-            this->derived().add_event(event);
+            this->derived()->add_event(event);
         }
 
-        template <class Dispatcher>
         auto emit(Event const &event, Dispatcher &dispatcher) -> void
         {
-            this->derived().emit(event, dispatcher);
+            this->derived()->emit(event, dispatcher);
         }
     };
 }  // namespace event

@@ -30,4 +30,38 @@ namespace util::types
     using f32  = float;
     using f64  = double;
     using f128 = long double;
+
+    template <class Derived>
+    class Singleton
+    {
+    private:
+        struct instance_t : public Derived
+        {
+            instance_t() : Derived()
+            {
+            }
+        };
+
+        static inline Derived *m_instance = nullptr;
+
+    protected:
+        Singleton()
+        {
+        }
+
+    public:
+        auto operator=(Singleton const &) -> Singleton & = delete;
+        auto operator=(Singleton &&) -> Singleton      & = delete;
+
+        static auto instance() -> Derived &
+        {
+            if (!m_instance) {
+                m_instance = new instance_t;
+            }
+
+            return (*m_instance);
+        }
+    };
 }  // namespace util::types
+
+using namespace util::types;
