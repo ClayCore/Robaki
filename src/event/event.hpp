@@ -102,6 +102,16 @@ namespace event
             return (os << event.to_string());
         }
     };
+
+    struct EventHasher
+    {
+        auto operator()(Event const &) const -> usize;
+    };
+
+    struct EventEqualizer
+    {
+        auto operator()(Event const &, Event const &) const -> bool;
+    };
 }  // namespace event
 
 template <>

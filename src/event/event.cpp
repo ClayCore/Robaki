@@ -1,6 +1,7 @@
 /** @file event.cpp */
 
 #include "event.hpp"
+#include "event/event.hpp"
 
 namespace event
 {
@@ -112,5 +113,22 @@ namespace event
         // clang-format on
 
         return (result);
+    }
+
+    auto EventHasher::operator()(Event const &event) const -> usize
+    {
+        auto name            = event.get_name();
+        auto category        = event.get_category();
+        auto category_string = event.category_to_string(category);
+
+        auto h1 = std::hash<std::string>{}(name);
+        auto h2 = std::hash<std::string>{}(category_string);
+
+        return (h1 ^ (h2 << 1));
+    }
+
+    auto EventEqualizer::operator()(Event const &lhs, Event const &rhs) const -> bool
+    {
+        return (lhs == rhs);
     }
 }  // namespace event
