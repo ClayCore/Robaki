@@ -56,6 +56,12 @@ namespace platform
         std::unique_ptr<GLFWwindow *, details::WindowDeleter> m_handle;
         Emitter m_emitter;
 
+        static auto error_callback(i32, char const *) -> void;
+        static auto size_callback(GLFWwindow *, i32, i32) -> void;
+        static auto cursor_callback(GLFWwindow *, f64, f64) -> void;
+        static auto key_callback(GLFWwindow *, i32, i32, i32, i32) -> void;
+        static auto mouse_callback(GLFWwindow *, i32, i32, i32) -> void;
+
     public:
         Window();
     };
