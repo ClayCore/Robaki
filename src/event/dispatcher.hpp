@@ -4,18 +4,20 @@
 
 // module includes
 #include "event.hpp"
+#include "object.hpp"
 #include "util/util.hpp"
+
 
 // c++ includes
 #include <unordered_map>
 
 namespace event
 {
-    template <class Derived, class Object>
+    template <typename Derived>
     class Dispatcher
     {
     protected:
-        using self_type    = Dispatcher<Derived, Object>;
+        using self_type    = Dispatcher<Derived>;
         using derived_type = Derived;
         using object_type  = Object;
 
