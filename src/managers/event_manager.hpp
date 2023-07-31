@@ -14,7 +14,7 @@ namespace managers
     class EventManager : public Singleton<EventManager>
     {
     private:
-        class Dispatcher : public event::Dispatcher<EventManager, event::Object>
+        class Dispatcher : public event::Dispatcher<EventManager>
         {
         public:
             auto dispatch(event::Event const &event)
