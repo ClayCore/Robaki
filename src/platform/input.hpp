@@ -42,7 +42,8 @@ namespace platform
         }
     };
 
-    struct Input
+    template <typename Derived>
+    class Input
     {
     };
 }  // namespace platform
