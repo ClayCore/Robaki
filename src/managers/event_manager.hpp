@@ -19,15 +19,14 @@ namespace managers
         public:
             auto dispatch(event::Event const &event)
             {
-                for (auto it = m_events.begin(); it != m_events.end(); ++it) {
-                    if (it->first != event) {
+                for (auto &m_event : m_events) {
+                    if (m_event.first != event) {
                         continue;
                     }
 
-                    // auto i = std::distance(m_events.begin(), it);
-                    auto vec_obj = it->second;
+                    auto vec = m_event.second;
 
-                    for (auto &j : vec_obj) {
+                    for (auto &j : vec) {
                         j->get_listener().listen(event);
                     }
                 }
