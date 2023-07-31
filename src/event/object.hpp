@@ -29,7 +29,7 @@ namespace event
 
         auto get_listener() -> Object::Listener &
         {
-            return m_listener;
+            return (m_listener);
         }
     };
 }  // namespace event
