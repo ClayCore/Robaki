@@ -5,7 +5,8 @@
 // module includes
 #include "event/emitter.hpp"
 #include "input.hpp"
-#include "state/state_manager.hpp"
+#include "managers/event_manager.hpp"
+#include "managers/state_manager.hpp"
 #include "util/util.hpp"
 
 // bgfx and glfw includes
@@ -21,6 +22,8 @@ namespace platform
 {
     namespace details
     {
+        using StateDispatcher = decltype(managers::EventManager::instance().get_dispatcher());
+
         struct WindowDeleter
         {
             inline auto operator()(GLFWwindow *window) -> void
@@ -29,8 +32,6 @@ namespace platform
                 glfwTerminate();
             }
         };
-
-        using StateDispatcher = decltype(state::StateManager::instance().get_dispatcher_type());
     }  // namespace details
 
     class Window
@@ -54,5 +55,8 @@ namespace platform
 
         std::unique_ptr<GLFWwindow *, details::WindowDeleter> m_handle;
         Emitter m_emitter;
+
+    public:
+        Window();
     };
 }  // namespace platform
