@@ -7,6 +7,7 @@
 // c++ includes
 #include <concepts>
 #include <iostream>
+#include <vector>
 
 // module includes
 #include "types.hpp"
@@ -27,4 +28,19 @@ namespace util::traits
 
     template <typename T>
     constexpr inline bool is_printable_v = is_printable<T>::value;
+
+    template <typename T>
+    struct is_vector
+    {
+        static const bool value = false;
+    };
+
+    template <typename T>
+    struct is_vector<std::vector<T>>
+    {
+        static const bool value = true;
+    };
+
+    template <typename T>
+    constexpr inline bool is_vector_v = is_vector<T>::value;
 }  // namespace util::traits
