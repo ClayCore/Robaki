@@ -12,7 +12,7 @@
 
 namespace event
 {
-    template <class Derived>
+    template <typename Derived>
     class Listener
     {
     protected:

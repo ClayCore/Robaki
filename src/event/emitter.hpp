@@ -8,7 +8,7 @@
 
 namespace event
 {
-    template <class Derived, class Dispatcher>
+    template <typename Derived, typename Dispatcher>
     class Emitter
     {
     protected:
