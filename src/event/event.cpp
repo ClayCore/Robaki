@@ -96,7 +96,7 @@ namespace event
 
     auto Event::category_to_string(EventCategory const &category) const -> char const *
     {
-        auto result = "";
+        auto const *result = "";
 
         // clang-format off
         switch (category) {
@@ -114,14 +114,14 @@ namespace event
 
     auto EventHasher::operator()(Event const &event) const -> usize
     {
-        auto name            = event.get_name();
-        auto category        = event.get_category();
-        auto category_string = event.category_to_string(category);
+        auto const *name            = event.get_name();
+        auto category               = event.get_category();
+        auto const *category_string = event.category_to_string(category);
 
         auto h1 = std::hash<std::string>{}(name);
         auto h2 = std::hash<std::string>{}(category_string);
 
-        return (h1 ^ (h2 << 1));
+        return (h1 ^ (h2 << 1U));
     }
 
     auto EventEqualizer::operator()(Event const &lhs, Event const &rhs) const -> bool
