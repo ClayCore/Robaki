@@ -8,9 +8,18 @@
 
 namespace event
 {
+    /**
+     * Used by all objects that respond to events.
+     */
     class Subscriber
     {
     private:
+        /**
+         * Concrete Listener implementation for the Subscriber
+         * Provides a method to call every function tied to any received
+         * events.
+         *
+         */
         class Listener : public event::Listener<Subscriber>
         {
         public:
@@ -26,8 +35,26 @@ namespace event
         Subscriber::Listener m_listener;
 
     public:
-        Subscriber() = default;
+        // ================================================================================================ //
+        // Constructors and destructors =================================================================== //
+        // ================================================================================================ //
 
+        Subscriber()                              = default;
+        ~Subscriber()                             = default;
+        Subscriber(const Subscriber &)            = default;
+        Subscriber(Subscriber &&)                 = delete;
+        Subscriber &operator=(const Subscriber &) = default;
+        Subscriber &operator=(Subscriber &&)      = delete;
+
+        // ================================================================================================ //
+        // Accessor methods =============================================================================== //
+        // ================================================================================================ //
+
+        /**
+         * Returns listener bound to the subscriber
+         *
+         * @return bound listener
+         */
         auto get_listener() -> Subscriber::Listener &
         {
             return (m_listener);
