@@ -45,17 +45,18 @@ namespace event
     class Event
     {
     private:
-        /** Defines the type of this event **/
+        /** Defines the type of this event */
         EventType m_type{ EventType::None };
-        /** Defines the category this event belongs to **/
+        /** Defines the category this event belongs to */
         EventCategory m_category{ EventCategory::None };
-        /** Used for formatting, debugging and displaying **/
+        /** Used for formatting, debugging and displaying */
         std::string m_name{ this->get_name_from_type(EventType::None) };
 
     public:
         // ================================================================================================ //
         // Constructors and destructors =================================================================== //
         // ================================================================================================ //
+
         Event()                         = default;
         Event(const Event &)            = default;
         Event(Event &&)                 = delete;
