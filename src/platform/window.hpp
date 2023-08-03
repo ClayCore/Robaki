@@ -37,15 +37,14 @@ namespace platform
     class Window
     {
     private:
-        class Emitter : public event::Emitter<Window, details::StateDispatcher>
+        class Emitter : public event::Emitter<Window::Emitter>
         {
-        protected:
-            using dispatcher_type = details::StateDispatcher;
-
         public:
-            auto emit(event::Event const &event, dispatcher_type &dispatcher) -> void
+            auto emit(event::Event const &event) -> void
             {
-                dispatcher.dispatch(event);
+                for (auto const &dispatcher : m_dispatchers) {
+                    dispatcher->dispatch(event);
+                }
             }
         };
 
