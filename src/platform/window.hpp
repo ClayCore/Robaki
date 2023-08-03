@@ -87,6 +87,28 @@ namespace platform
         {
         }
 
+        auto tick() -> void
+        {
+            m_ticks += 1;
+
+            event::Event event(event::EventType::EngineTick);
+            m_emitter.emit(event);
+        }
+
+        auto update() -> void
+        {
+            event::Event event(event::EventType::EngineUpdate);
+            m_emitter.emit(event);
+        }
+
+        auto render() -> void
+        {
+            m_frames += 1;
+
+            event::Event event(event::EventType::EngineRender);
+            m_emitter.emit(event);
+        }
+
         auto init_glfw(WindowHints hints) -> void
         {
             if (glfwInit() == 0) {
@@ -136,14 +158,15 @@ namespace platform
                 u64 const NS_PER_TICK = (util::time::NS_PER_SEC / 60);
                 u64 tick_time         = m_frame_delta + m_tick_remainder;
                 while (tick_time > NS_PER_TICK) {
-                    m_ticks += 1;
+                    this->tick();
 
                     tick_time -= NS_PER_TICK;
                 }
 
                 m_tick_remainder = std::max(tick_time, 0ULL);
 
-                m_frames += 1;
+                this->update();
+                this->render();
 
                 glfwSwapBuffers(m_handle.get());
                 glfwPollEvents();
