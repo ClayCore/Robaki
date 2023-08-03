@@ -9,7 +9,6 @@
 #include "util/util.hpp"
 
 
-
 namespace managers
 {
     class StateManager : public Singleton<StateManager>
@@ -18,9 +17,7 @@ namespace managers
         state::State m_state;
 
     protected:
-        StateManager()
-        {
-        }
+        StateManager() = default;
 
     public:
     };
