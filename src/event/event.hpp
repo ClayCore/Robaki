@@ -6,6 +6,7 @@
 #include "util/util.hpp"
 
 // fmt includes
+#define FMT_HEADER_ONLY
 #include "fmt/format.h"
 
 namespace event
