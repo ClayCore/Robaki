@@ -5,39 +5,43 @@
 // module includes
 #include "event/dispatcher.hpp"
 #include "event/listener.hpp"
-#include "event/object.hpp"
 #include "util/util.hpp"
 
 
 namespace managers
 {
+    /**
+     * Used by the engine to forward events from and to the `StateManager`
+     */
     class EventManager : public Singleton<EventManager>
     {
     private:
-        class Dispatcher : public event::Dispatcher<EventManager, event::Object>
+        /**
+         * Concrete `Dispatcher` implementation for the `EventManager`
+         *
+         * Provides a method to forward any received events and sends them
+         * to all associated subscribers.
+         */
+        class Dispatcher : public event::Dispatcher<EventManager::Dispatcher>
         {
         public:
+            /**
+             * Forwards event to all subscribers and invoke their listeners
+             *
+             * @param event forwarded event
+             */
             auto dispatch(event::Event const &event)
             {
-                for (auto it = m_events.begin(); it != m_events.end(); ++it) {
-                    if (it->first != event) {
-                        continue;
-                    }
-
-                    // auto i = std::distance(m_events.begin(), it);
-                    auto vec_obj = it->second;
-
-                    for (auto &j : vec_obj) {
-                        j->get_listener().listen(event);
-                    }
+                for (auto const &subscriber : m_subscribers) {
+                    subscriber->get_listener().listen(event);
                 }
             }
         };
 
-        Dispatcher m_dispatcher;
+        EventManager::Dispatcher m_dispatcher;
 
     public:
-        auto get_dispatcher() -> Dispatcher
+        auto get_dispatcher() -> EventManager::Dispatcher
         {
             return (m_dispatcher);
         }

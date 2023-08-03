@@ -5,51 +5,40 @@
 // module includes
 #include "event.hpp"
 #include "event/event.hpp"
+#include "provider.hpp"
 #include "util/util.hpp"
+
 
 // c++ includes
 #include <unordered_map>
 
 namespace event
 {
-    template <class Derived>
-    class Listener
+    /**
+     * Used to *listen to* events from any dispatchers and call callbacks associated with them
+     *
+     * @tparam Derived concrete `Listener` implementation
+     */
+    template <typename Derived>
+    class Listener : public Provider<Derived>
     {
-    protected:
-        using self_type    = Listener<Derived>;
+    private:
+        /** Concrete instance type */
+        using self_type = Listener<Derived>;
+
+        /** Concrete provider type */
+        using provider_type = Provider<Derived>;
+
+        /** Type that derives the instance */
         using derived_type = Derived;
 
-        using Callback = void (*)();
-        std::unordered_map<Event, Callback, EventHasher, EventEqualizer> m_actions;
-
-        ~Listener() = default;
-
-        auto derived() -> Derived *
-        {
-            return (static_cast<Derived *>(this));
-        }
-
-        auto derived() const -> Derived const *
-        {
-            return (static_cast<Derived const *>(this));
-        }
 
     public:
-        Listener()
-        {
-            m_actions = {};
-        }
-
-        auto set_callback(Event const &event, Callback &callback) -> void
-        {
-            this->derived()->set_callback(event, callback);
-        }
-
-        auto get_callback(Event const &event) -> Callback &
-        {
-            return (this->derived()->get_callback(event));
-        }
-
+        /**
+         * Forwards the `listen` method to the concrete implementation
+         *
+         * @param event subscribed event
+         */
         auto listen(Event const &event) -> void
         {
             this->derived()->listen(event);

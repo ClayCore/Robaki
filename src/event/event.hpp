@@ -45,18 +45,37 @@ namespace event
     class Event
     {
     private:
-        EventType m_type;
-        EventCategory m_category;
-        std::string m_name;
+        /** Defines the type of this event */
+        EventType m_type{ EventType::None };
+        /** Defines the category this event belongs to */
+        EventCategory m_category{ EventCategory::None };
+        /** Used for formatting, debugging and displaying */
+        std::string m_name{ this->get_name_from_type(EventType::None) };
 
     public:
-        Event();
-        Event(EventType const &);
-        virtual ~Event()
-        {
-        }
+        // ================================================================================================ //
+        // Constructors and destructors =================================================================== //
+        // ================================================================================================ //
 
-        constexpr auto get_name() const -> char const *
+        Event()                         = default;
+        Event(const Event &)            = default;
+        Event(Event &&)                 = delete;
+        Event &operator=(const Event &) = default;
+        Event &operator=(Event &&)      = delete;
+        explicit Event(EventType const &);
+        virtual ~Event() = default;
+
+        // ================================================================================================ //
+        // Accessor methods =============================================================================== //
+        // ================================================================================================ //
+
+        /**
+         * Provides the internal name of the event
+         * Used by hashing functions
+         *
+         * @return event name
+         */
+        [[nodiscard]] constexpr auto get_name() const -> char const *
         {
             if (std::empty(m_name)) {
                 return (this->get_name_from_type(m_type));
@@ -65,21 +84,79 @@ namespace event
             }
         }
 
-        constexpr auto get_type() const -> EventType
+        /**
+         * Returns the event's type
+         *
+         * @return event type
+         */
+        [[nodiscard]] constexpr auto get_type() const -> EventType
         {
             return (m_type);
         }
 
-        constexpr auto get_category() const -> EventCategory
+        /**
+         * Returns the category where the event belongs to
+         *
+         * @return event category
+         */
+        [[nodiscard]] constexpr auto get_category() const -> EventCategory
         {
             return (m_category);
         }
 
-        virtual auto get_name_from_type(EventType const &) const -> char const *;
-        virtual auto get_category_from_type(EventType const &) const -> EventCategory;
-        virtual auto set_type(EventType const &) -> void;
-        virtual auto set_name(std::string const &) -> void;
-        virtual auto category_to_string(EventCategory const &) const -> char const *;
+        // ================================================================================================ //
+        // Transformation methods ========================================================================= //
+        // ================================================================================================ //
+
+        /**
+         * Transforms the event type into a string
+         *
+         * @return event type as string
+         */
+        [[nodiscard]] virtual auto get_name_from_type(EventType const &) const -> char const *;
+
+        /**
+         * Transforms the event type into a category
+         *
+         * @return event type as category
+         */
+        [[nodiscard]] virtual auto get_category_from_type(EventType const &) const -> EventCategory;
+
+        /**
+         * Transforms the category into a string
+         *
+         * @return event category as string
+         */
+        [[nodiscard]] virtual auto category_to_string(EventCategory const &) const -> char const *;
+
+        // ================================================================================================ //
+        // Mutator methods ================================================================================ //
+        // ================================================================================================ //
+
+        /**
+         * Sets the type of the event
+         *
+         * @param type type to set
+         */
+        virtual auto set_type(EventType const &type) -> void;
+
+        /**
+         * Sets the name of the event
+         *
+         * @param name name to set
+         */
+        virtual auto set_name(std::string const &name) -> void;
+
+        /**
+         * Sets the category of the event
+         *
+         * @param name category to set
+         */
+        virtual auto set_category(EventCategory const &category) -> void;
+
+        // ================================================================================================ //
+        // Operator overloads ============================================================================= //
+        // ================================================================================================ //
 
         constexpr auto operator==(Event const &rhs) const -> bool
         {
@@ -96,18 +173,41 @@ namespace event
             return (this->get_type() <=> rhs.get_type());
         }
 
-        auto to_string() const -> std::string;
+        // ================================================================================================ //
+        // Debugging methods ============================================================================== //
+        // ================================================================================================ //
+
+        /**
+         * Converts the event structure into a string
+         *
+         * @return event as string
+         */
+        [[nodiscard]] auto to_string() const -> std::string;
+
+        /**
+         * Allows writing the event string into a stream
+         *
+         * @param os stream to write to
+         * @param event event to write
+         * @return reference to used stream
+         */
         friend inline auto operator<<(std::ostream &os, Event const &event) -> std::ostream &
         {
             return (os << event.to_string());
         }
     };
 
+    /**
+     * Used by `std::unordered_map` when using `Event` as a key of the map
+     */
     struct EventHasher
     {
         auto operator()(Event const &) const -> usize;
     };
 
+    /**
+     * Used by `std::unordered_map` when using `Event` as a key of the map
+     */
     struct EventEqualizer
     {
         auto operator()(Event const &, Event const &) const -> bool;

@@ -4,7 +4,7 @@
 
 // module includes
 #include "event/dispatcher.hpp"
-#include "event/object.hpp"
+#include "event/subscriber.hpp"
 #include "util/util.hpp"
 
 

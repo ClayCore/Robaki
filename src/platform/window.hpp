@@ -37,15 +37,14 @@ namespace platform
     class Window
     {
     private:
-        class Emitter : public event::Emitter<Window, details::StateDispatcher>
+        class Emitter : public event::Emitter<Window::Emitter>
         {
-        protected:
-            using dispatcher_type = details::StateDispatcher;
-
         public:
-            auto emit(event::Event const &event, dispatcher_type &dispatcher) -> void
+            auto emit(event::Event const &event) -> void
             {
-                dispatcher.dispatch(event);
+                for (auto const &dispatcher : m_dispatchers) {
+                    dispatcher->dispatch(event);
+                }
             }
         };
 
@@ -55,6 +54,12 @@ namespace platform
 
         std::unique_ptr<GLFWwindow *, details::WindowDeleter> m_handle;
         Emitter m_emitter;
+
+        static auto error_callback(i32, char const *) -> void;
+        static auto size_callback(GLFWwindow *, i32, i32) -> void;
+        static auto cursor_callback(GLFWwindow *, f64, f64) -> void;
+        static auto key_callback(GLFWwindow *, i32, i32, i32, i32) -> void;
+        static auto mouse_callback(GLFWwindow *, i32, i32, i32) -> void;
 
     public:
         Window();

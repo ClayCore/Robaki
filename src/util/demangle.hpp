@@ -4,18 +4,20 @@
 
 #pragma once
 
-// c++ includes
-#include <string_view>
-
 // module includes
 #include "types.hpp"
+
+// c++ includes
+#include <string_view>
 
 namespace util::demangle
 {
     template <typename T>
     constexpr auto type_name() -> std::string_view
     {
-        std::string_view name, prefix, suffix;
+        std::string_view name;
+        std::string_view prefix;
+        std::string_view suffix;
 
         // clang-format off
         

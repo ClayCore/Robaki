@@ -4,56 +4,38 @@
 
 // module includes
 #include "event.hpp"
+#include "provider.hpp"
 #include "util/util.hpp"
 
 namespace event
 {
-    template <class Derived, class Dispatcher>
-    class Emitter
+    /**
+     * Used to *emit* events to many dispatchers.
+     *
+     * @tparam Derived concrete `Emitter` implementation
+     */
+    template <typename Derived>
+    class Emitter : public Provider<Derived>
     {
-    protected:
-        using self_type       = Emitter<Derived, Dispatcher>;
-        using derived_type    = Derived;
-        using dispatcher_type = Dispatcher;
+    private:
+        /** Concrete instance type */
+        using self_type = Emitter<Derived>;
 
-        std::vector<Event> m_events;
+        /** Concrete provider type */
+        using provider_type = Provider<Derived>;
 
-        ~Emitter() = default;
-
-        auto derived() const -> Derived const *
-        {
-            return (static_cast<Derived const *>(this));
-        }
-
-        auto derived() -> Derived *
-        {
-            return (static_cast<Derived *>(this));
-        }
+        /** Type that derives the instance */
+        using derived_type = Derived;
 
     public:
-        Emitter()
+        /**
+         * Forwards the `emit` method to the concrete implementation
+         *
+         * @param event event to fire
+         */
+        auto emit(Event const &event) -> void
         {
-            m_events = {};
-        }
-
-        auto get_event(usize index) const -> Event
-        {
-            this->derived()->get_event(index);
-        }
-
-        auto set_event(Event const &event, usize index) -> void
-        {
-            this->derived()->set_event(event, index);
-        }
-
-        auto add_event(Event const &event) -> void
-        {
-            this->derived()->add_event(event);
-        }
-
-        auto emit(Event const &event, Dispatcher &dispatcher) -> void
-        {
-            this->derived()->emit(event, dispatcher);
+            this->derived()->emit(event);
         }
     };
 }  // namespace event
