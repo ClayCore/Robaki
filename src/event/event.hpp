@@ -6,15 +6,10 @@
 #include "util/util.hpp"
 
 // fmt includes
-#define FMT_HEADER_ONLY
 #include "fmt/format.h"
 
 namespace event
 {
-    /**
-     * List of predefined events to for use with
-     * the event handling system
-     */
     enum class EventType
     {
         None = 0,
@@ -37,9 +32,6 @@ namespace event
         Custom
     };
 
-    /**
-     * List of predefined event categories
-     */
     enum class EventCategory
     {
         None = 0,
@@ -50,20 +42,13 @@ namespace event
         Custom
     };
 
-    /**
-     * Describes a singular event that can be fired, forwarded or subscribed to
-     *
-     * Can be derived and overriden for custom events.
-     */
     class Event
     {
     private:
         /** Defines the type of this event */
         EventType m_type{ EventType::None };
-
         /** Defines the category this event belongs to */
         EventCategory m_category{ EventCategory::None };
-
         /** Used for formatting, debugging and displaying */
         std::string m_name{ this->get_name_from_type(EventType::None) };
 

@@ -4,6 +4,7 @@
 
 // module includes
 #include "event.hpp"
+#include "event/event.hpp"
 #include "provider.hpp"
 #include "util/util.hpp"
 

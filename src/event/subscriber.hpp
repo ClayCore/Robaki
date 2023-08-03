@@ -6,9 +6,6 @@
 #include "listener.hpp"
 #include "util/util.hpp"
 
-// c++ includes
-#include <algorithm>
-
 namespace event
 {
     /**

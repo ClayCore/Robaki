@@ -52,7 +52,7 @@ namespace platform
         u32 m_height;
         std::string m_title;
 
-        std::unique_ptr<GLFWwindow, details::WindowDeleter> m_handle;
+        std::unique_ptr<GLFWwindow *, details::WindowDeleter> m_handle;
         Emitter m_emitter;
 
         static auto error_callback(i32, char const *) -> void;
