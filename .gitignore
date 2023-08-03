@@ -4,4 +4,5 @@
 /.cache
 /build
 /docs/private/*
+/docs/html
 /tools/doxygen-awesome-css
