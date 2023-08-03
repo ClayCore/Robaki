@@ -56,7 +56,11 @@ namespace event
         // ================================================================================================ //
         // Constructors and destructors =================================================================== //
         // ================================================================================================ //
-        Event() = default;
+        Event()                         = default;
+        Event(const Event &)            = default;
+        Event(Event &&)                 = delete;
+        Event &operator=(const Event &) = default;
+        Event &operator=(Event &&)      = delete;
         explicit Event(EventType const &);
         virtual ~Event() = default;
 
@@ -70,7 +74,7 @@ namespace event
          *
          * @return event name
          */
-        constexpr auto get_name() const -> char const *
+        [[nodiscard]] constexpr auto get_name() const -> char const *
         {
             if (std::empty(m_name)) {
                 return (this->get_name_from_type(m_type));
@@ -84,7 +88,7 @@ namespace event
          *
          * @return event type
          */
-        constexpr auto get_type() const -> EventType
+        [[nodiscard]] constexpr auto get_type() const -> EventType
         {
             return (m_type);
         }
@@ -94,7 +98,7 @@ namespace event
          *
          * @return event category
          */
-        constexpr auto get_category() const -> EventCategory
+        [[nodiscard]] constexpr auto get_category() const -> EventCategory
         {
             return (m_category);
         }
@@ -108,21 +112,21 @@ namespace event
          *
          * @return event type as string
          */
-        virtual auto get_name_from_type(EventType const &) const -> char const *;
+        [[nodiscard]] virtual auto get_name_from_type(EventType const &) const -> char const *;
 
         /**
          * Transforms the event type into a category
          *
          * @return event type as category
          */
-        virtual auto get_category_from_type(EventType const &) const -> EventCategory;
+        [[nodiscard]] virtual auto get_category_from_type(EventType const &) const -> EventCategory;
 
         /**
          * Transforms the category into a string
          *
          * @return event category as string
          */
-        virtual auto category_to_string(EventCategory const &) const -> char const *;
+        [[nodiscard]] virtual auto category_to_string(EventCategory const &) const -> char const *;
 
         // ================================================================================================ //
         // Mutator methods ================================================================================ //
@@ -177,7 +181,7 @@ namespace event
          *
          * @return event as string
          */
-        auto to_string() const -> std::string;
+        [[nodiscard]] auto to_string() const -> std::string;
 
         /**
          * Allows writing the event string into a stream
