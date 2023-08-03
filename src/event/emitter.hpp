@@ -4,21 +4,19 @@
 
 // module includes
 #include "event.hpp"
+#include "handler.hpp"
 #include "util/util.hpp"
 
 namespace event
 {
-    template <typename Derived, typename Dispatcher>
-    class Emitter
+    template <typename Derived>
+    class Emitter : public Handler
     {
     protected:
-        using self_type       = Emitter<Derived, Dispatcher>;
-        using derived_type    = Derived;
-        using dispatcher_type = Dispatcher;
+        using self_type    = Emitter<Derived>;
+        using derived_type = Derived;
 
-        std::vector<Event> m_events;
-
-        ~Emitter() = default;
+        std::vector<Handler *> m_dispatchers;
 
         auto derived() const -> Derived const *
         {
@@ -31,14 +29,9 @@ namespace event
         }
 
     public:
-        Emitter()
+        [[nodiscard]] auto get_event(usize index) const -> Event
         {
-            m_events = {};
-        }
-
-        auto get_event(usize index) const -> Event
-        {
-            this->derived()->get_event(index);
+            return (this->derived()->get_event(index));
         }
 
         auto set_event(Event const &event, usize index) -> void
@@ -51,9 +44,9 @@ namespace event
             this->derived()->add_event(event);
         }
 
-        auto emit(Event const &event, Dispatcher &dispatcher) -> void
+        auto emit(Event const &event) -> void final
         {
-            this->derived()->emit(event, dispatcher);
+            this->derived()->emit(event);
         }
     };
 }  // namespace event
