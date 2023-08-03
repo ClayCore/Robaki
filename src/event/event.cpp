@@ -1,7 +1,6 @@
 /** @file event.cpp */
 
 #include "event.hpp"
-#include "event/event.hpp"
 
 namespace event
 {
@@ -12,7 +11,7 @@ namespace event
 
     auto Event::get_name_from_type(EventType const &type) const -> char const *
     {
-        auto result = "";
+        auto const *result = "";
 
         // clang-format off
         switch (type) {
@@ -118,10 +117,10 @@ namespace event
         auto category               = event.get_category();
         auto const *category_string = event.category_to_string(category);
 
-        auto h1 = std::hash<std::string>{}(name);
-        auto h2 = std::hash<std::string>{}(category_string);
+        auto name_hash     = std::hash<std::string>{}(name);
+        auto category_hash = std::hash<std::string>{}(category_string);
 
-        return (h1 ^ (h2 << 1U));
+        return (name_hash ^ (category_hash << 1U));
     }
 
     auto EventEqualizer::operator()(Event const &lhs, Event const &rhs) const -> bool

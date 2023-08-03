@@ -1,5 +1,7 @@
 # Worming
 
+[![](https://tokei.rs/b1/github/ClayCore/Worming)](https://github.com/ClayCore/Worming).
+
 Real-time Worms clone.
 
 <!-- TODO: Description -->
