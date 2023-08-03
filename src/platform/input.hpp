@@ -4,7 +4,7 @@
 
 // module includes
 #include "event/listener.hpp"
-#include "event/object.hpp"
+#include "event/subscriber.hpp"
 #include "util/util.hpp"
 
 // c++ includes
