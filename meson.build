@@ -20,6 +20,8 @@ shared_include_directories = [
 
 sources = [
     'vendor/glad/src/glad.c',
+    'src/event/event.cpp',
+    'src/window.cpp',
     'src/main.cpp',
 ]
 
