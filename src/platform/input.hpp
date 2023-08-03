@@ -13,7 +13,7 @@
 
 namespace platform
 {
-    struct Button : public event::Object
+    struct Button : public event::Subscriber
     {
     private:
         usize m_id;
