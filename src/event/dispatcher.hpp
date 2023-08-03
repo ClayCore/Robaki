@@ -14,16 +14,33 @@
 
 namespace event
 {
+    /**
+     * Used to forward events from an emitter to many subscribers
+     *
+     * @tparam Derived specific `Dispatcher` implementation
+     */
     template <typename Derived>
     class Dispatcher : public Provider<Derived>
     {
     private:
-        using self_type     = Dispatcher<Derived>;
+        /** Concrete instance type */
+        using self_type = Dispatcher<Derived>;
+
+        /** Concrete provider type */
         using provider_type = Provider<Derived>;
-        using derived_type  = Derived;
-        using object_type   = Subscriber;
+
+        /** Type that derives the instance */
+        using derived_type = Derived;
+
+        /** Type of the subscriber */
+        using subscriber_type = Subscriber;
 
     public:
+        /**
+         * Forwards the `dispatch` method to the concrete implementation
+         *
+         * @param event event to forward
+         */
         auto dispatch(Event const &event) -> void
         {
             this->derived()->dispatch(event);

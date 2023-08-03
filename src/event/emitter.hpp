@@ -9,15 +9,30 @@
 
 namespace event
 {
+    /**
+     * Used to *emit* events to many dispatchers.
+     *
+     * @tparam Derived concrete `Emitter` implementation
+     */
     template <typename Derived>
     class Emitter : public Provider<Derived>
     {
     private:
-        using self_type     = Emitter<Derived>;
+        /** Concrete instance type */
+        using self_type = Emitter<Derived>;
+
+        /** Concrete provider type */
         using provider_type = Provider<Derived>;
-        using derived_type  = Derived;
+
+        /** Type that derives the instance */
+        using derived_type = Derived;
 
     public:
+        /**
+         * Forwards the `emit` method to the concrete implementation
+         *
+         * @param event event to fire
+         */
         auto emit(Event const &event) -> void
         {
             this->derived()->emit(event);

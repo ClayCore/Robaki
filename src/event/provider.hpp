@@ -18,7 +18,7 @@ namespace event
      * Describes a base provider class
      * Each and every handler (`Emitter`, `Dispatcher`, `Listener`) inherits this structure
      *
-     * @tparam Derived specific implementation of `Provider`
+     * @tparam Derived specific `Provider` implementation
      */
     template <typename Derived>
     class Provider
@@ -147,7 +147,7 @@ namespace event
         /**
          * Forwards the event to a listener
          *
-         * @param event event to forward
+         * @param event forwarded event
          */
         auto dispatch(Event const &event) -> void
         {

@@ -15,14 +15,19 @@ namespace event
     {
     private:
         /**
-         * Concrete Listener implementation for the Subscriber
+         * Concrete `Listener` implementation for the `Subscriber`
+         *
          * Provides a method to call every function tied to any received
          * events.
-         *
          */
         class Listener : public event::Listener<Subscriber>
         {
         public:
+            /**
+             * Calls all mapped functors associated with the provided event
+             *
+             * @param event subscribed event
+             */
             auto listen(Event const &event) -> void
             {
                 auto call      = [](Callback &callback) -> void { callback(); };
@@ -32,6 +37,7 @@ namespace event
             }
         };
 
+        /** Bound listener */
         Subscriber::Listener m_listener;
 
     public:
