@@ -31,7 +31,7 @@ namespace event
         std::vector<Ref<Provider>> m_dispatchers;
 
         /** Contains all subscribers bound to the provider */
-        std::vector<Ref<Subscriber>> m_objects;
+        std::vector<Ref<Subscriber>> m_subscribers;
 
         /** Maps each event to a list of callbacks that are meant to be fired on that event */
         std::unordered_map<Event, std::vector<Callback>, EventHasher, EventEqualizer> m_actions;
@@ -91,7 +91,7 @@ namespace event
          */
         [[nodiscard]] auto get_subscriber(usize index) -> Ref<Subscriber>
         {
-            return (m_objects[index]);
+            return (m_subscribers[index]);
         }
 
         /**
@@ -126,7 +126,7 @@ namespace event
          */
         auto add_subscriber(Ref<Subscriber> const &subscriber) -> void
         {
-            m_objects.push_back(subscriber);
+            m_subscribers.push_back(subscriber);
         }
 
         /**
