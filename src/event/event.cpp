@@ -5,17 +5,9 @@
 
 namespace event
 {
-    Event::Event()
-    {
-        m_type     = EventType::None;
-        m_category = EventCategory::None;
-    }
-
     Event::Event(EventType const &type)
+      : m_type(type), m_category(this->get_category_from_type(type)), m_name(this->get_name_from_type(type))
     {
-        m_type     = type;
-        m_category = this->get_category_from_type(type);
-        m_name     = this->get_name_from_type(type);
     }
 
     auto Event::get_name_from_type(EventType const &type) const -> char const *
@@ -54,24 +46,24 @@ namespace event
 
         // clang-format off
         switch (type) {
-            case EventType::None:                   { result = EventCategory::None;       }; break;
-            case EventType::WindowClose:            { result = EventCategory::Window;     }; break;
-            case EventType::WindowResize:           { result = EventCategory::Window;     }; break;
-            case EventType::WindowFocus:            { result = EventCategory::Window;     }; break;
-            case EventType::WindowLostFocus:        { result = EventCategory::Window;     }; break;
-            case EventType::WindowMoved:            { result = EventCategory::Window;     }; break;
-            case EventType::LoadResource:           { result = EventCategory::Resource;   }; break;
-            case EventType::FreeResource:           { result = EventCategory::Resource;   }; break;
-            case EventType::EngineTick:             { result = EventCategory::Engine;     }; break;
-            case EventType::EngineUpdate:           { result = EventCategory::Engine;     }; break;
-            case EventType::EngineRender:           { result = EventCategory::Engine;     }; break;
-            case EventType::KeyPressed:             { result = EventCategory::Input;      }; break;
-            case EventType::KeyReleased:            { result = EventCategory::Input;      }; break;
-            case EventType::MouseButtonPressed:     { result = EventCategory::Input;      }; break;
-            case EventType::MouseButtonReleased:    { result = EventCategory::Input;      }; break;
-            case EventType::MouseMoved:             { result = EventCategory::Input;      }; break;
-            case EventType::MouseScrolled:          { result = EventCategory::Input;      }; break;
-            default:                                { result = EventCategory::Custom;     }; break;
+            case EventType::None:                { result = EventCategory::None;       }; break;
+            case EventType::WindowClose:            
+            case EventType::WindowResize:
+            case EventType::WindowFocus:
+            case EventType::WindowLostFocus:
+            case EventType::WindowMoved:         { result = EventCategory::Window;     }; break;
+            case EventType::LoadResource:
+            case EventType::FreeResource:        { result = EventCategory::Resource;   }; break;
+            case EventType::EngineTick:
+            case EventType::EngineUpdate:
+            case EventType::EngineRender:        { result = EventCategory::Engine;     }; break;
+            case EventType::KeyPressed:
+            case EventType::KeyReleased:
+            case EventType::MouseButtonPressed:
+            case EventType::MouseButtonReleased:
+            case EventType::MouseMoved:             
+            case EventType::MouseScrolled:       { result = EventCategory::Input;      }; break;
+            default:                             { result = EventCategory::Custom;     }; break;
         }
         // clang-format on
 
@@ -86,6 +78,11 @@ namespace event
     auto Event::set_name(std::string const &name) -> void
     {
         m_name = name;
+    }
+
+    auto Event::set_category(EventCategory const &category) -> void
+    {
+        m_category = category;
     }
 
     auto Event::to_string() const -> std::string
