@@ -6,8 +6,10 @@
 
 // module includes
 #include "demangle.hpp"
+#include "iterator.hpp"
 #include "math.hpp"
 #include "time.hpp"
 #include "traits.hpp"
 #include "types.hpp"
 #include "uuid.hpp"
+
