@@ -1,4 +1,4 @@
-/** @file object.hpp */
+/** @file subscriber.hpp */
 
 #pragma once
 
