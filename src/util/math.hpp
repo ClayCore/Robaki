@@ -188,7 +188,7 @@ namespace util::math
          * @param args packed arguments delegated to `std::array`
          */
         template <typename... Args>
-        explicit Vec(Args... args) : m_data{ { args... } }
+        constexpr explicit Vec(Args... args) : m_data{ { args... } }
         {
             constexpr usize dims = sizeof...(args);
             static_assert(dims == Count);
@@ -235,7 +235,19 @@ namespace util::math
          * @return element at that index
          */
         template <usize Index>
-        constexpr auto get_value() const -> T &
+        constexpr auto get_value() -> T &
+        {
+            return (m_data[Index]);
+        }
+
+        /**
+         * Return a const ref to element at a given index in the vector
+         *
+         * @tparam Index index of the element
+         * @return const ref to element at that index
+         */
+        template <usize Index>
+        constexpr auto get_value() const -> T const &
         {
             return (m_data[Index]);
         }
@@ -248,7 +260,20 @@ namespace util::math
          * @param index index of the element
          * @return element at that index
          */
-        constexpr auto get_value(usize index) const -> T &
+        constexpr auto get_value(usize index) -> T &
+        {
+            return (this->get_value<index>());
+        }
+
+        /**
+         * Return a const ref to element at a given index in the vector
+         *
+         * Uses the template version internally
+         *
+         * @param index index of the element
+         * @return const ref to element at that index
+         */
+        constexpr auto get_value(usize index) const -> T const &
         {
             return (this->get_value<index>());
         }
@@ -316,8 +341,20 @@ namespace util::math
             return (this->get_value<0>());
         }
 
+        constexpr auto x() const -> T const &
+        {
+            static_assert(1 <= Count, "Invalid number of arguments for vector type");
+            return (this->get_value<0>());
+        }
+
         /** Returns what would be the `y` component of a vector */
         constexpr auto y() -> T &
+        {
+            static_assert(2 <= Count, "Invalid number of arguments for vector type");
+            return (this->get_value<1>());
+        }
+
+        constexpr auto y() const -> T const &
         {
             static_assert(2 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<1>());
@@ -330,8 +367,20 @@ namespace util::math
             return (this->get_value<2>());
         }
 
+        constexpr auto z() const -> T const &
+        {
+            static_assert(3 <= Count, "Invalid number of arguments for vector type");
+            return (this->get_value<2>());
+        }
+
         /** Returns what would be the `w` component of a vector */
         constexpr auto w() -> T &
+        {
+            static_assert(4 <= Count, "Invalid number of arguments for vector type");
+            return (this->get_value<3>());
+        }
+
+        constexpr auto w() const -> T const &
         {
             static_assert(4 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<3>());
@@ -343,8 +392,19 @@ namespace util::math
             return (this->x());
         }
 
+        constexpr auto r() const -> T const &
+        {
+            return (this->x());
+        }
+
         /** Returns what would be the `g` component of a vector */
         constexpr auto g() -> T &
+        {
+            return (this->y());
+        }
+
+
+        constexpr auto g() const -> T const &
         {
             return (this->y());
         }
@@ -355,8 +415,18 @@ namespace util::math
             return (this->z());
         }
 
+        constexpr auto b() const -> T const &
+        {
+            return (this->z());
+        }
+
         /** Returns what would be the `a` component of a vector */
         constexpr auto a() -> T &
+        {
+            return (this->w());
+        }
+
+        constexpr auto a() const -> T const &
         {
             return (this->w());
         }
