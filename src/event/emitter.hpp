@@ -32,7 +32,7 @@ namespace event
          */
         constexpr auto check_static() -> void
         {
-            static_assert(util::traits::Emittable<Derived>);
+            static_assert(Emittable<Derived>);
         }
 
     public:

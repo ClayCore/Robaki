@@ -30,13 +30,7 @@ namespace event
          */
         constexpr auto check_static() -> void
         {
-            // clang-format off
-            static_assert(
-                   util::traits::Emittable<Derived>
-                || util::traits::Dispatchable<Derived>
-                || util::traits::Listenable<Derived>
-            );
-            // clang-format on
+            static_assert(Emittable<Derived> || Dispatchable<Derived> || Listenable<Derived>);
         }
 
     protected:

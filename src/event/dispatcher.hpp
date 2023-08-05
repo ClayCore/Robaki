@@ -40,7 +40,7 @@ namespace event
          */
         constexpr auto check_static() -> void
         {
-            static_assert(util::traits::Dispatchable<Derived>);
+            static_assert(Dispatchable<Derived>);
         }
 
     public:
