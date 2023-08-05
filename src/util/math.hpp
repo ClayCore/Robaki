@@ -158,7 +158,7 @@ namespace util::math
          * @param vec vector to multiply with
          */
         template <Arithmetic U>
-        auto mul(Vec<T, Count> const &vec) -> void
+        auto mul(Vec<U, Count> const &vec) -> void
         requires MultiplicableBinary<T, U>
         {
             usize counter = { 0U };
