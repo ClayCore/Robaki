@@ -5,15 +5,24 @@
 #pragma once
 
 // module includes
+#include "demangle.hpp"
 #include "traits.hpp"
 #include "types.hpp"
+
+
+// fmt includes
+#ifndef FMT_HEADER_ONLY
+#define FMT_HEADER_ONLY
+#endif
+
+#include "fmt/format.h"
+#include "fmt/ranges.h"
 
 // c++ includes
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <numeric>
-
 
 namespace util::math
 {
@@ -726,6 +735,49 @@ namespace util::math
 
             return (lhs);
         }
+
+        // ========================================================================================== //
+        // Debugging utilities ====================================================================== //
+        // ========================================================================================== //
+
+        /**
+         * Converts the vector into a string
+         *
+         * @return vector as string
+         */
+        [[nodiscard]] auto to_string() const -> std::string
+        {
+            // clang-format off
+            auto format = fmt::format(
+                "[Vec/{}, {}]: \n",
+                demangle::type_name<T>(), 
+                Count
+            );
+            // clang-format on
+
+            for (usize i = 0; i < Count; ++i) {
+                // 'A' for 0
+                // 'B' for 1 etc.
+                char var_name = static_cast<char>((i + static_cast<usize>('A')));
+
+                // Format into the previous string.
+                fmt::format_to(std::back_inserter<std::string>(format), "{}: {}", var_name, m_data[i]);
+            }
+
+            return (format);
+        };
+
+        /**
+         * Allows writing the vector into an output stream
+         *
+         * @param os stream to write to
+         * @param vec vector to write
+         * @return reference to used stream
+         */
+        friend inline auto operator<<(std::ostream &ostream, Vec<T, Count> const &vec) -> std::ostream &
+        {
+            return (ostream << vec.to_string());
+        }
     };
 
     /**
@@ -752,5 +804,14 @@ namespace util::math
     template <Arithmetic T>
     using Vec4 = Vec<T, 4>;
 }  // namespace util::math
+
+template <Arithmetic T, usize Count>
+struct fmt::formatter<util::math::Vec<T, Count>> : formatter<std::string>
+{
+    auto format(util::math::Vec<T, Count> const &vec, format_context &ctx) const -> format_context::iterator
+    {
+        return formatter<std::string>::format(vec.to_string(), ctx);
+    }
+};
 
 using namespace util::math;
