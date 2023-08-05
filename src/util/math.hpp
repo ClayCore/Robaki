@@ -749,7 +749,7 @@ namespace util::math
         {
             // clang-format off
             auto format = fmt::format(
-                "[Vec/{}, {}]: \n",
+                "[Vec<{}, {}>]: \n",
                 demangle::type_name<T>(), 
                 Count
             );
@@ -761,7 +761,8 @@ namespace util::math
                 char var_name = static_cast<char>((i + static_cast<usize>('A')));
 
                 // Format into the previous string.
-                fmt::format_to(std::back_inserter<std::string>(format), "{}: {}", var_name, m_data[i]);
+                fmt::format_to(
+                    std::back_inserter<std::string>(format), "{:>4}{}: {}\n", ' ', var_name, m_data[i]);
             }
 
             return (format);
