@@ -98,32 +98,19 @@ namespace platform
         /**
          * Update all the buttons for the device, called on each update
          */
-        virtual auto update() -> void
-        {
-            for (auto &button : this->get_buttons()) {
-                button->update();
-            }
-        }
+        virtual auto update() -> void;
 
         /**
          * Tick all the buttons for the device, called on each tick
          */
-        virtual auto tick() -> void
-        {
-            for (auto &button : this->get_buttons()) {
-                button->tick();
-            }
-        }
+        virtual auto tick() -> void;
 
         /**
          * Acquire an iterator to all `Button` derivatives.
          *
          * @return iterator
          */
-        virtual auto get_buttons() -> util::Iterator<Button *>
-        {
-            return (util::Iterator<Button *>{});
-        }
+        virtual auto get_buttons() -> util::Iterator<Button *>;
     };
 
     struct Keyboard : Input
@@ -181,54 +168,10 @@ namespace platform
 
         Mouse() = default;
 
-        auto get_buttons() -> util::Iterator<Button *> override
-        {
-            return (util::iter(buttons).ptr());
-        }
+        auto get_buttons() -> util::Iterator<Button *> override;
+        auto update() -> void override;
+        auto tick() -> void override;
 
-        auto update() -> void override
-        {
-            Input::update();
-
-            pos_delta      = pos - last;
-            pos_delta_norm = pos_delta / Vec2<i32>{ 800, 600 };
-
-            last = pos;
-
-            scroll_delta = scroll - last_scroll;
-            last_scroll  = scroll;
-
-            scroll_delta = scroll - last_scroll;
-            last_scroll  = scroll;
-        }
-
-        auto tick() -> void override
-        {
-            Input::tick();
-
-            pos_delta_tick      = pos - last_tick;
-            pos_delta_norm_tick = pos_delta_tick / Vec2<i32>{ 800, 600 };
-
-            last_tick = pos;
-
-            scroll_delta_tick = scroll - last_scroll_tick;
-            last_scroll_tick  = scroll;
-        }
-
-
-        virtual auto operator[](std::string const &name) -> std::optional<Button *>
-        {
-            auto name_lowered = util::to_lower(name);
-
-            if (name_lowered == "left") {
-                return (std::make_optional(&this->buttons[Index::Left]));
-            } else if (name_lowered == "right") {
-                return (std::make_optional(&this->buttons[Index::Right]));
-            } else if (name_lowered == "middle") {
-                return (std::make_optional(&this->buttons[Index::Middle]));
-            }
-
-            return (std::nullopt);
-        }
+        virtual auto operator[](std::string const &name) -> std::optional<Button *>;
     };
 }  // namespace platform
