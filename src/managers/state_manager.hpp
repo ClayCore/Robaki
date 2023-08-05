@@ -16,9 +16,6 @@ namespace managers
     private:
         state::State m_state;
 
-    protected:
-        StateManager() = default;
-
     public:
     };
 }  // namespace managers
