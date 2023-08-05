@@ -165,7 +165,7 @@ namespace util::traits
     class Event;
 
     /**
-     * Constrain `Derived` so that it *must* implement `this->emit(event)`
+     * @concept Constrain `Derived` so that it *must* implement `this->emit(event)`
      *
      * Used by `Provider` and `Emitter` module
      *
@@ -175,7 +175,7 @@ namespace util::traits
     concept Emittable = requires(Derived &derived, Event const &event) { derived.emit(event); };
 
     /**
-     * Constrain `Derived` so that it *must* implement `this->dispatch(event)`
+     * @concept Constrain `Derived` so that it *must* implement `this->dispatch(event)`
      *
      * Used by `Provider` and `Dispatcher` module
      *
@@ -185,7 +185,7 @@ namespace util::traits
     concept Dispatchable = requires(Derived &derived, Event const &event) { derived.dispatch(event); };
 
     /**
-     * Constrain `Derived` so that it *must* implement `this->listen(event)`
+     * @concept Constrain `Derived` so that it *must* implement `this->listen(event)`
      *
      * Used by `Provider` and `Listener` module
      *
@@ -199,7 +199,7 @@ namespace util::traits
     // ================================================================================================== //
 
     /**
-     * Constrain a given type to support arithmetic addition
+     * @concept Constrain a given type to support arithmetic addition
      *
      * Used by `util::math` module
      *
@@ -216,7 +216,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain 2 types to support arithmetic addition
+     * @concept Constrain 2 types to support arithmetic addition
      *
      * Used by `util::math` module
      *
@@ -233,7 +233,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain a given type to support arithmetic subtraction
+     * @concept Constrain a given type to support arithmetic subtraction
      *
      * Used by `util::math` module
      *
@@ -250,7 +250,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain 2 types to support arithmetic subtraction
+     * @concept Constrain 2 types to support arithmetic subtraction
      *
      * Used by `util::math` module
      *
@@ -267,7 +267,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain a given type to support arithmetic multiplication
+     * @concept Constrain a given type to support arithmetic multiplication
      *
      * Used by `util::math` module
      *
@@ -282,7 +282,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain 2 types to support arithmetic multiplication
+     * @concept Constrain 2 types to support arithmetic multiplication
      *
      * Used by `util::math` module
      *
@@ -298,7 +298,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain a given type to support arithmetic division
+     * @concept Constrain a given type to support arithmetic division
      *
      * Used by `util::math` module
      *
@@ -313,7 +313,7 @@ namespace util::traits
     };
 
     /**
-     * Constrain 2 types to support arithmetic division
+     * @concept Constrain 2 types to support arithmetic division
      *
      * Used by `util::math` module
      *
