@@ -21,6 +21,11 @@ namespace platform
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, flags.forward_compat);
     }
 
+    auto Window::set_callbacks() -> void
+    {
+        // TODO
+    }
+
     auto Window::tick() -> void
     {
         m_ticks += 1;
