@@ -5,8 +5,6 @@
 // module includes
 #include "event/emitter.hpp"
 #include "input.hpp"
-#include "managers/event_manager.hpp"
-#include "managers/state_manager.hpp"
 #include "util/util.hpp"
 
 // bgfx and glfw includes
@@ -22,10 +20,10 @@ namespace platform
 {
     namespace details
     {
-        using StateDispatcher = decltype(managers::EventManager::instance().get_dispatcher());
+        /** Default window size */
+        constexpr const Vec2<i32> DEFAULT_SIZE{ 800, 600 };
 
-        constexpr const Vec2<i32> DEFAULT_SIZE = { 800, 600 };
-
+        /** Used by `Window` to create a unique pointer with window deletion support */
         struct WindowDeleter
         {
             inline auto operator()(GLFWwindow *window) -> void
@@ -36,31 +34,63 @@ namespace platform
         };
     }  // namespace details
 
+    /**
+     * Describes a window and all its properties
+     */
     class Window
     {
     private:
-        struct WindowHints
+        // ========================================================================================== //
+        // Associated data structures =============================================================== //
+        // ========================================================================================== //
+
+        /**
+         * Sets the properties and flags for `GLFW3`
+         */
+        struct WindowFlags
         {
-            i32 resizeable     = { GL_FALSE };
-            i32 version_major  = { 4 };
-            i32 version_minor  = { 1 };
-            i32 profile        = { GLFW_OPENGL_CORE_PROFILE };
+            /** Is a window resizeable? */
+            i32 resizeable = { GL_FALSE };
+
+            /** OpenGL major version support*/
+            i32 version_major = { 4 };
+
+            /** OpenGL minor version support */
+            i32 version_minor = { 1 };
+
+            /** OpenGL profile */
+            i32 profile = { GLFW_OPENGL_CORE_PROFILE };
+
+            /** OpenGL forward compatibility check */
             i32 forward_compat = { GL_TRUE };
         };
 
+        /** Allows the window to emit events to the `StateManager` */
         class Emitter : public event::Emitter<Window::Emitter>
         {
         public:
-            auto emit(event::Event const &event) -> void
-            {
-                for (auto const &dispatcher : m_dispatchers) {
-                    dispatcher->dispatch(event);
-                }
-            }
+            auto emit(event::Event const &event) -> void;
         };
 
-        Vec2<i32> m_size    = { 0, 0 };
+        // ========================================================================================== //
+        // Properties and data ====================================================================== //
+        // ========================================================================================== //
+
+        /** Size of the window */
+        Vec2<i32> m_size = {};
+
+        /** Window title */
         std::string m_title = { "Worming v0.0.1" };
+
+        /** Handle to the underlying `GLFWwindow` instance */
+        std::unique_ptr<GLFWwindow, details::WindowDeleter> m_handle;
+
+        /** Instance of the internal emitter */
+        Emitter m_emitter;
+
+        // ========================================================================================== //
+        // Timing variables ========================================================================= //
+        // ========================================================================================== //
 
         u64 m_fps         = { 0 };
         u64 m_frame_delta = { 0 };
@@ -72,131 +102,50 @@ namespace platform
         u64 m_ticks          = { 0 };
         u64 m_tps            = { 0 };
 
-        std::unique_ptr<GLFWwindow, details::WindowDeleter> m_handle;
-        Emitter m_emitter;
+        // ========================================================================================== //
+        // Utility methods ========================================================================== //
+        // ========================================================================================== //
 
-        static auto set_hints(WindowHints hints) -> void
-        {
-            glfwWindowHint(GLFW_RESIZABLE, hints.resizeable);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, hints.version_major);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, hints.version_minor);
-            glfwWindowHint(GLFW_OPENGL_PROFILE, hints.profile);
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, hints.forward_compat);
-        }
+        /**
+         * Sets `GLFW` window flags and properties
+         *
+         * @param flags flags to set
+         */
+        static auto set_flags(WindowFlags flags) -> void;
 
-        auto set_callbacks() -> void
-        {
-        }
+        /**
+         * Sets `GLFW` window callbacks for events
+         *
+         * @param flags flags to set
+         */
+        auto set_callbacks() -> void;
 
-        auto tick() -> void
-        {
-            m_ticks += 1;
+        /** Called each tick */
+        auto tick() -> void;
 
-            event::Event event(event::EventType::EngineTick);
-            m_emitter.emit(event);
-        }
+        /** Called each update */
+        auto update() -> void;
 
-        auto update() -> void
-        {
-            event::Event event(event::EventType::EngineUpdate);
-            m_emitter.emit(event);
-        }
+        /** Called on each frame */
+        auto render() -> void;
 
-        auto render() -> void
-        {
-            m_frames += 1;
+        /**
+         * Initialize `GLFW` and all window flags
+         *
+         * @param flags flags to be set
+         */
+        auto init_glfw(WindowFlags flags) -> void;
 
-            event::Event event(event::EventType::EngineRender);
-            m_emitter.emit(event);
-        }
+        /** Run the main window loop */
+        auto main_loop() -> void;
 
-        auto init_glfw(WindowHints hints) -> void
-        {
-            if (glfwInit() == 0) {
-                fmt::print(stderr, "[GLFW/ERROR] Failed to initialize\n");
-                glfwTerminate();
-                std::exit(1);
-            }
-
-            Window::set_hints(hints);
-
-            m_handle = std::unique_ptr<GLFWwindow, details::WindowDeleter>(
-                glfwCreateWindow(m_size.x, m_size.y, m_title.c_str(), nullptr, nullptr));
-
-            glfwMakeContextCurrent(m_handle.get());
-
-            this->set_callbacks();
-
-            if (gladLoadGLLoader((GLADloadproc)(glfwGetProcAddress)) == 0) {
-                fmt::print(stderr, "[GLAD/ERROR] Failed to initialize\n");
-                glfwTerminate();
-                std::exit(1);
-            }
-
-            glfwSwapInterval(1);
-        }
-
-        auto main_loop() -> void
-        {
-            while (glfwWindowShouldClose(m_handle.get()) == 0) {
-                auto now = util::time::get_time_ns();
-
-                m_frame_delta = now - m_last_frame;
-                m_last_frame  = now;
-
-                if ((now - m_last_second) > util::time::NS_PER_SEC) {
-                    m_fps = m_frames;
-                    m_tps = m_ticks;
-
-                    m_frames = 0;
-                    m_ticks  = 0;
-
-                    m_last_second = now;
-
-                    fmt::print("FPS: {} | TPS: {}\n", m_fps, m_tps);
-                }
-
-                u64 const NS_PER_TICK = (util::time::NS_PER_SEC / 60);
-                u64 tick_time         = m_frame_delta + m_tick_remainder;
-                while (tick_time > NS_PER_TICK) {
-                    this->tick();
-
-                    tick_time -= NS_PER_TICK;
-                }
-
-                m_tick_remainder = std::max(tick_time, 0ULL);
-
-                this->update();
-                this->render();
-
-                glfwSwapBuffers(m_handle.get());
-                glfwPollEvents();
-            }
-        }
 
     public:
-        Window() : m_size(details::DEFAULT_SIZE)
-        {
-            auto now = util::time::get_time_ns();
+        // ========================================================================================== //
+        // Constructors ============================================================================= //
+        // ========================================================================================== //
 
-            m_last_frame  = now;
-            m_last_second = now;
-
-            WindowHints hints;
-            this->init_glfw(hints);
-            this->main_loop();
-        }
-
-        explicit Window(Vec2<i32> const &size) : m_size(size)
-        {
-            auto now = util::time::get_time_ns();
-
-            m_last_frame  = now;
-            m_last_second = now;
-
-            WindowHints hints;
-            this->init_glfw(hints);
-            this->main_loop();
-        }
+        Window();
+        explicit Window(Vec2<i32> const &size);
     };
 }  // namespace platform
