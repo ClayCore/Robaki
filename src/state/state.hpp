@@ -1,16 +1,17 @@
-/** @file state_manager.hpp */
+/** @file state.hpp */
 
 #pragma once
 
 // module includes
-#include "event/dispatcher.hpp"
-#include "event/subscriber.hpp"
+#include "platform/platform.hpp"
 #include "util/util.hpp"
+
 
 
 namespace state
 {
-    struct State
+    struct State : public Singleton<State>
     {
+        platform::Platform platform;
     };
 }  // namespace state
