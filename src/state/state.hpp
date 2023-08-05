@@ -9,7 +9,7 @@
 
 namespace state
 {
-    struct State : public Singleton<State>
+    struct State
     {
         platform::Platform platform;
     };
