@@ -104,6 +104,7 @@ namespace util::types
         Singleton(Singleton &&)                          = delete;
         auto operator=(Singleton const &) -> Singleton & = delete;
         auto operator=(Singleton &&) -> Singleton      & = delete;
+        ~Singleton()                                     = delete;
 
         // ================================================================================================ //
         // Accessor methods =============================================================================== //
