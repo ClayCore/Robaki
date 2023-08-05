@@ -22,12 +22,20 @@ namespace util::math
     struct Vec
     {
     private:
+        /** Underlying data of the vector */
         std::array<T, Count> m_data;
 
         // ========================================================================================== //
         // Arithmetic methods ======================================================================= //
         // ========================================================================================== //
 
+        /**
+         * Adds a value to this vector in-place
+         *
+         * Used by arithmetic operator overloads
+         *
+         * @tparam U value type
+         */
         template <typename U>
         auto add(U const &value) -> void
         requires AddableBinary<T, U>
@@ -39,6 +47,11 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Adds a vector to this vector in-place
+         *
+         * Used by arithmetic operator overloads
+         */
         auto add(Vec<T, Count> const &vec) -> void
         requires AddableUnary<T>
         {
@@ -51,6 +64,13 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Subtracts a value from this vector in-place
+         *
+         * Used by arithmetic operator overloads
+         *
+         * @tparam U value type
+         */
         template <typename U>
         auto sub(U const &value) -> void
         requires SubtractableBinary<T, U>
@@ -62,6 +82,11 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Subtracts a vector from this vector in-place
+         *
+         * Used by arithmetic operator overloads
+         */
         auto sub(Vec<T, Count> const &vec) -> void
         requires SubtractableUnary<T>
         {
@@ -74,6 +99,13 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Multiplies this vector with a value in-place
+         *
+         * Used by arithmetic operator overloads
+         *
+         * @tparam U value type
+         */
         template <typename U>
         auto mul(U const &value) -> void
         requires MultiplicableBinary<T, U>
@@ -85,6 +117,11 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Multiplies this vector with another vector in-place
+         *
+         * Used by arithmetic operator overloads
+         */
         auto mul(Vec<T, Count> const &vec) -> void
         requires MultiplicableUnary<T>
         {
@@ -97,6 +134,13 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Divides this vector by a value in-place
+         *
+         * Used by arithmetic operator overloads
+         *
+         * @tparam U value type
+         */
         template <typename U>
         auto div(U const &value) -> void
         requires DivisibleBinary<T, U>
@@ -108,6 +152,11 @@ namespace util::math
             // clang-format on
         }
 
+        /**
+         * Divides this vector by another vector in-place
+         *
+         * Used by arithmetic operator overloads
+         */
         auto div(Vec<T, Count> const &vec) -> void
         requires DivisibleUnary<T>
         {
@@ -131,6 +180,13 @@ namespace util::math
 
         Vec() = default;
 
+        /**
+         * Delegates the vectors construction to the arrays constructor
+         * and forwards all arguments
+         *
+         * @tparam Args templated argument list
+         * @param args packed arguments delegated to `std::array`
+         */
         template <typename... Args>
         explicit Vec(Args... args) : m_data{ { args... } }
         {
@@ -142,6 +198,11 @@ namespace util::math
         // Mutators and transformer methods ========================================================= //
         // ========================================================================================== //
 
+        /**
+         * Pops an element from the vector
+         *
+         * @return mutated vector with one less element
+         */
         auto pop() -> Vec<T, Count - 1>
         {
             Vec<T, Count - 1> result = {};
@@ -151,6 +212,12 @@ namespace util::math
             return (result);
         }
 
+        /**
+         * Pushes an element into the vector
+         *
+         * @param value value to add
+         * @return mutated vector with one more element
+         */
         auto push(T const &value) -> Vec<T, Count + 1>
         {
             Vec<T, Count + 1> result = {};
@@ -161,17 +228,38 @@ namespace util::math
             return (result);
         }
 
+        /**
+         * Return an element at a given index in the vector
+         *
+         * @tparam Index index of the element
+         * @return element at that index
+         */
         template <usize Index>
         constexpr auto get_value() const -> T &
         {
             return (m_data[Index]);
         }
 
+        /**
+         * Return an element at a given index in the vector
+         *
+         * Uses the template version internally
+         *
+         * @param index index of the element
+         * @return element at that index
+         */
         constexpr auto get_value(usize index) const -> T &
         {
             return (this->get_value<index>());
         }
 
+        /**
+         * Set an element in the vector using
+         * the same method provided by `std::array`
+         *
+         * @tparam Args templated argument list
+         * @param args packed arguments delegated to `std::array`
+         */
         template <typename... Args>
         auto set(Args... args) -> void
         {
@@ -181,7 +269,12 @@ namespace util::math
             m_data = { { args... } };
         }
 
-        auto length() -> void
+        /**
+         * Return the computed length of the array
+         *
+         * @return computed length
+         */
+        auto length()
         requires AddableUnary<T> && MultiplicableUnary<T>
         {
             auto square = m_data;
@@ -201,6 +294,7 @@ namespace util::math
             }
         }
 
+        /** Normalize the vector in-place */
         auto norm() -> void
         requires AddableUnary<T> && MultiplicableUnary<T>
         {
@@ -215,28 +309,56 @@ namespace util::math
         // Element aliases ========================================================================== //
         // ========================================================================================== //
 
+        /** Returns what would be the `x` component of a vector */
         constexpr auto x() -> T &
         {
             static_assert(1 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<0>());
         }
 
+        /** Returns what would be the `y` component of a vector */
         constexpr auto y() -> T &
         {
             static_assert(2 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<1>());
         }
 
+        /** Returns what would be the `z` component of a vector */
         constexpr auto z() -> T &
         {
             static_assert(3 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<2>());
         }
 
+        /** Returns what would be the `w` component of a vector */
         constexpr auto w() -> T &
         {
             static_assert(4 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<3>());
+        }
+
+        /** Returns what would be the `r` component of a vector */
+        constexpr auto r() -> T &
+        {
+            return (this->x());
+        }
+
+        /** Returns what would be the `g` component of a vector */
+        constexpr auto g() -> T &
+        {
+            return (this->y());
+        }
+
+        /** Returns what would be the `b` component of a vector */
+        constexpr auto b() -> T &
+        {
+            return (this->z());
+        }
+
+        /** Returns what would be the `a` component of a vector */
+        constexpr auto a() -> T &
+        {
+            return (this->w());
         }
 
 
@@ -489,14 +611,29 @@ namespace util::math
         }
     };
 
+    /**
+     * Type alias for creating 2D vectors
+     *
+     * @tparam T value type
+     */
     template <typename T>
     requires std::is_arithmetic_v<T>
     using Vec2 = Vec<T, 2>;
 
+    /**
+     * Type alias for creating 3D vectors
+     *
+     * @tparam T value type
+     */
     template <typename T>
     requires std::is_arithmetic_v<T>
     using Vec3 = Vec<T, 3>;
 
+    /**
+     * Type alias for creating 4D vectors
+     *
+     * @tparam T value type
+     */
     template <typename T>
     requires std::is_arithmetic_v<T>
     using Vec4 = Vec<T, 4>;
