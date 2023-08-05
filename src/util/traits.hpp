@@ -46,6 +46,11 @@ namespace util::traits
     constexpr inline bool is_printable_v = is_printable<T>::value;
 
 
+    /**
+     * Validate if a given type is `std::vector`
+     *
+     * @tparam T type to validate
+     */
     template <typename T>
     struct is_vector
     {
@@ -59,12 +64,20 @@ namespace util::traits
     };
 
     /**
-     * Constexpr alias for whether a type's an std::vector
+     * Constexpr alias for whether a type's an `std::vector`
      *
      * @tparam T type to validate
      */
     template <typename T>
     constexpr inline bool is_vector_v = is_vector<T>::value;
+
+    /**
+     * Alias for `std::is_arithmetic_v` as a concept
+     *
+     * @tparam T type to validate
+     */
+    template <typename T>
+    concept Arithmetic = std::is_arithmetic_v<T>;
 
     // ================================================================================================== //
     // Reversing order of arguments in templates ======================================================== //
