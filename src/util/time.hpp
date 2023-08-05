@@ -4,11 +4,11 @@
 
 #pragma once
 
-// c++ includes
-#include <chrono>
-
 // module includes
 #include "types.hpp"
+
+// c++ includes
+#include <chrono>
 
 namespace util::time
 {
