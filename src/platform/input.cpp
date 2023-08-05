@@ -31,7 +31,7 @@ namespace platform
 
     auto Mouse::update() -> void
     {
-        auto size = managers::StateManager::instance().m_state.platform.m_window->get_size();
+        auto size = managers::StateManager::instance().get_window()->get_size();
 
         Input::update();
 
@@ -49,7 +49,7 @@ namespace platform
 
     auto Mouse::tick() -> void
     {
-        auto size = managers::StateManager::instance().m_state.platform.m_window->get_size();
+        auto size = managers::StateManager::instance().get_window()->get_size();
 
         Input::tick();
 
