@@ -7,7 +7,6 @@
 #include "util/util.hpp"
 
 
-
 namespace state
 {
     struct State : public Singleton<State>
