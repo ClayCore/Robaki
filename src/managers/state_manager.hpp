@@ -13,9 +13,12 @@ namespace managers
 {
     class StateManager : public Singleton<StateManager>
     {
-    private:
+    public:
         state::State m_state;
 
-    public:
+        [[nodiscard]] auto get_window() const -> Scope<platform::Window> const &
+        {
+            return (m_state.platform.m_window);
+        }
     };
 }  // namespace managers
