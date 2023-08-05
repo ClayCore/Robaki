@@ -164,12 +164,33 @@ namespace util::traits
     // Necessary for the constraints below
     class Event;
 
+    /**
+     * Constrain `Derived` so that it *must* implement `this->emit(event)`
+     *
+     * Used by `Provider` and `Emitter` module
+     *
+     * @tparam Derived constrainted type
+     */
     template <typename Derived>
     concept Emittable = requires(Derived &derived, Event const &event) { derived.emit(event); };
 
+    /**
+     * Constrain `Derived` so that it *must* implement `this->dispatch(event)`
+     *
+     * Used by `Provider` and `Dispatcher` module
+     *
+     * @tparam Derived constrainted type
+     */
     template <typename Derived>
     concept Dispatchable = requires(Derived &derived, Event const &event) { derived.dispatch(event); };
 
+    /**
+     * Constrain `Derived` so that it *must* implement `this->listen(event)`
+     *
+     * Used by `Provider` and `Listener` module
+     *
+     * @tparam Derived constrainted type
+     */
     template <typename Derived>
     concept Listenable = requires(Derived &derived, Event const &event) { derived.listen(event); };
 
@@ -177,102 +198,134 @@ namespace util::traits
     // Arithmetic traits ================================================================================ //
     // ================================================================================================== //
 
+    /**
+     * Constrain a given type to support arithmetic addition
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     */
     template <typename T>
     concept AddableUnary = requires(T value) {
-        {
-            (value + value)
-        };
-        {
-            (value += value)
-        };
-        {
-            (value++)
-        };
-        {
-            (++value)
-        };
+        // clang-format off
+        { (value + value)   };
+        { (value += value)  };
+        { (value++)         };
+        { (++value)         };
+        // clang-format on
     };
 
+    /**
+     * Constrain 2 types to support arithmetic addition
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     * @tparam U constrained type
+     */
     template <typename T, typename U>
     concept AddableBinary = requires(T lhs, U rhs) {
-        {
-            (lhs + rhs)
-        };
-        {
-            (lhs += rhs)
-        };
-        {
-            (rhs += lhs)
-        };
+        // clang-format off
+        { (lhs + rhs)       };
+        { (lhs += rhs)      };
+        { (rhs += lhs)      };
+        // clang-format on
     };
 
+    /**
+     * Constrain a given type to support arithmetic subtraction
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     */
     template <typename T>
     concept SubtractableUnary = requires(T value) {
-        {
-            (value - value)
-        };
-        {
-            (value -= value)
-        };
-        {
-            (value--)
-        };
-        {
-            (--value)
-        };
+        // clang-format off
+        { (value - value)   };
+        { (value -= value)  };
+        { (value--)         };
+        { (--value)         };
+        // clang-format on
     };
 
+    /**
+     * Constrain 2 types to support arithmetic subtraction
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     * @tparam U constrained type
+     */
     template <typename T, typename U>
     concept SubtractableBinary = requires(T lhs, U rhs) {
-        {
-            (lhs - rhs)
-        };
-        {
-            (lhs -= rhs)
-        };
-        {
-            (rhs -= lhs)
-        };
+        // clang-format off
+        { (lhs - rhs)       };
+        { (lhs -= rhs)      };
+        { (rhs -= lhs)      };
+        // clang-format on
     };
 
+    /**
+     * Constrain a given type to support arithmetic multiplication
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     */
     template <typename T>
     concept MultiplicableUnary = requires(T value) {
-        {
-            (value * value)
-        };
-        {
-            (value *= value)
-        };
+        // clang-format off
+        { (value * value)   };
+        { (value *= value)  };
+        // clang-format on
     };
 
+    /**
+     * Constrain 2 types to support arithmetic multiplication
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     * @tparam U constrained type
+     */
     template <typename T, typename U>
     concept MultiplicableBinary = requires(T lhs, U rhs) {
-        {
-            (lhs * rhs)
-        };
-        {
-            (lhs *= rhs)
-        };
+        // clang-format off
+        { (lhs * rhs)       };
+        { (lhs *= rhs)      };
+        // clang-format on
     };
 
+    /**
+     * Constrain a given type to support arithmetic division
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     */
     template <typename T>
     concept DivisibleUnary = requires(T value) {
-        {
-            (value / value)
-        };
-        {
-            (value /= value)
-        };
+        // clang-format off
+        { (value / value)   };
+        { (value /= value)  };
+        // clang-format on
     };
 
+    /**
+     * Constrain 2 types to support arithmetic division
+     *
+     * Used by `util::math` module
+     *
+     * @tparam T constrained type
+     * @tparam U constrained type
+     */
     template <typename T, typename U>
     concept DivisibleBinary = requires(T lhs, U rhs) {
-        {
-            (lhs / rhs)
-        };
-        {
-            (lhs /= rhs)
-        };
+        // clang-format off
+        { (lhs / rhs)       };
+        { (lhs /= rhs)      };
+        // clang-format on
     };
 }  // namespace util::traits
 
