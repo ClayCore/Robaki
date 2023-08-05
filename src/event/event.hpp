@@ -6,7 +6,10 @@
 #include "util/util.hpp"
 
 // fmt includes
+#ifndef FMT_HEADER_ONLY
 #define FMT_HEADER_ONLY
+#endif
+
 #include "fmt/format.h"
 
 namespace event
@@ -206,9 +209,9 @@ namespace event
          * @param event event to write
          * @return reference to used stream
          */
-        friend inline auto operator<<(std::ostream &os, Event const &event) -> std::ostream &
+        friend inline auto operator<<(std::ostream &ostream, Event const &event) -> std::ostream &
         {
-            return (os << event.to_string());
+            return (ostream << event.to_string());
         }
     };
 
