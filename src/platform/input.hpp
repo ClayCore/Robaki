@@ -5,7 +5,9 @@
 // module includes
 #include "event/listener.hpp"
 #include "event/subscriber.hpp"
+#include "platform/window.hpp"
 #include "util/util.hpp"
+#include "window.hpp"
 
 // c++ includes
 #include <optional>
@@ -189,7 +191,7 @@ namespace platform
             Input::update();
 
             pos_delta      = pos - last;
-            pos_delta_norm = pos_delta / Vec2<i32>{ 800, 600 };
+            pos_delta_norm = pos_delta / details::DEFAULT_SIZE;
 
             last = pos;
 
@@ -205,7 +207,7 @@ namespace platform
             Input::tick();
 
             pos_delta_tick      = pos - last_tick;
-            pos_delta_norm_tick = pos_delta_tick / Vec2<i32>{ 800, 600 };
+            pos_delta_norm_tick = pos_delta_tick / details::DEFAULT_SIZE;
 
             last_tick = pos;
 
