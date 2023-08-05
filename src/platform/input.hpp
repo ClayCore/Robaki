@@ -191,7 +191,7 @@ namespace platform
             Input::update();
 
             pos_delta      = pos - last;
-            pos_delta_norm = pos_delta / details::DEFAULT_SIZE;
+            pos_delta_norm = pos_delta / Vec2<i32>{ 800, 600 };
 
             last = pos;
 
@@ -207,7 +207,7 @@ namespace platform
             Input::tick();
 
             pos_delta_tick      = pos - last_tick;
-            pos_delta_norm_tick = pos_delta_tick / details::DEFAULT_SIZE;
+            pos_delta_norm_tick = pos_delta_tick / Vec2<i32>{ 800, 600 };
 
             last_tick = pos;
 
