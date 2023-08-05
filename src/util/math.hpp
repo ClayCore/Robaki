@@ -7,24 +7,36 @@
 // module includes
 #include "traits.hpp"
 #include "types.hpp"
-#include "util/traits.hpp"
 
 // c++ includes
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <numeric>
 
 
 namespace util::math
 {
-    template <typename T, usize Count>
-    requires std::is_arithmetic_v<T>
+    // ============================================================================================== //
+    // Math functions =============================================================================== //
+    // ============================================================================================== //
+
+
+    // ============================================================================================== //
+    // Vector class ================================================================================= //
+    // ============================================================================================== //
+
+
+    /**
+     * Generic N-Dim vector
+     *
+     * @tparam T value type (constrained to `Arithmetic`)
+     * @tparam Count number of dimensions
+     */
+    template <Arithmetic T, usize Count>
     struct Vec
     {
     private:
-        /** Underlying data of the vector */
-        std::array<T, Count> m_data;
-
         // ========================================================================================== //
         // Arithmetic methods ======================================================================= //
         // ========================================================================================== //
@@ -35,8 +47,9 @@ namespace util::math
          * Used by arithmetic operator overloads
          *
          * @tparam U value type
+         * @param value value to add
          */
-        template <typename U>
+        template <Arithmetic U>
         auto add(U const &value) -> void
         requires AddableBinary<T, U>
         {
@@ -51,9 +64,13 @@ namespace util::math
          * Adds a vector to this vector in-place
          *
          * Used by arithmetic operator overloads
+         *
+         * @tparam U other vector value type
+         * @param vec vector to add
          */
-        auto add(Vec<T, Count> const &vec) -> void
-        requires AddableUnary<T>
+        template <Arithmetic U>
+        auto add(Vec<U, Count> const &vec) -> void
+        requires AddableBinary<T, U>
         {
             usize counter = { 0U };
 
@@ -70,8 +87,9 @@ namespace util::math
          * Used by arithmetic operator overloads
          *
          * @tparam U value type
+         * @param value value to add
          */
-        template <typename U>
+        template <Arithmetic U>
         auto sub(U const &value) -> void
         requires SubtractableBinary<T, U>
         {
@@ -86,9 +104,13 @@ namespace util::math
          * Subtracts a vector from this vector in-place
          *
          * Used by arithmetic operator overloads
+         *
+         * @tparam U other vector value type
+         * @param vec vector to subtract out
          */
-        auto sub(Vec<T, Count> const &vec) -> void
-        requires SubtractableUnary<T>
+        template <Arithmetic U>
+        auto sub(Vec<U, Count> const &vec) -> void
+        requires SubtractableBinary<T, U>
         {
             usize counter = { 0U };
 
@@ -105,8 +127,9 @@ namespace util::math
          * Used by arithmetic operator overloads
          *
          * @tparam U value type
+         * @param value value to multiply by
          */
-        template <typename U>
+        template <Arithmetic U>
         auto mul(U const &value) -> void
         requires MultiplicableBinary<T, U>
         {
@@ -121,9 +144,13 @@ namespace util::math
          * Multiplies this vector with another vector in-place
          *
          * Used by arithmetic operator overloads
+         *
+         * @tparam U other vector value type
+         * @param vec vector to multiply with
          */
+        template <Arithmetic U>
         auto mul(Vec<T, Count> const &vec) -> void
-        requires MultiplicableUnary<T>
+        requires MultiplicableBinary<T, U>
         {
             usize counter = { 0U };
 
@@ -140,8 +167,9 @@ namespace util::math
          * Used by arithmetic operator overloads
          *
          * @tparam U value type
+         * @param value value to add
          */
-        template <typename U>
+        template <Arithmetic U>
         auto div(U const &value) -> void
         requires DivisibleBinary<T, U>
         {
@@ -156,9 +184,13 @@ namespace util::math
          * Divides this vector by another vector in-place
          *
          * Used by arithmetic operator overloads
+         *
+         * @tparam U other vector value type
+         * @param vec vector to divide by
          */
-        auto div(Vec<T, Count> const &vec) -> void
-        requires DivisibleUnary<T>
+        template <Arithmetic U>
+        auto div(Vec<U, Count> const &vec) -> void
+        requires DivisibleBinary<T, U>
         {
             usize counter = { 0U };
 
@@ -171,8 +203,11 @@ namespace util::math
 
     public:
         // ========================================================================================== //
-        // Type aliases ============================================================================= //
+        // Associated data ========================================================================== //
         // ========================================================================================== //
+
+        /** Underlying data of the vector */
+        std::array<T, Count> m_data;
 
         // ========================================================================================== //
         // Constructors ============================================================================= //
@@ -229,22 +264,10 @@ namespace util::math
         }
 
         /**
-         * Return an element at a given index in the vector
+         * Return a `const-ref` to an element at a given index in the vector
          *
          * @tparam Index index of the element
-         * @return element at that index
-         */
-        template <usize Index>
-        constexpr auto get_value() -> T &
-        {
-            return (m_data[Index]);
-        }
-
-        /**
-         * Return a const ref to element at a given index in the vector
-         *
-         * @tparam Index index of the element
-         * @return const ref to element at that index
+         * @return `const-ref` of element at `index`
          */
         template <usize Index>
         constexpr auto get_value() const -> T const &
@@ -255,25 +278,37 @@ namespace util::math
         /**
          * Return an element at a given index in the vector
          *
+         * @tparam Index index of the element
+         * @return element at `index`
+         */
+        template <usize Index>
+        auto get_value() -> T &
+        {
+            return (m_data[Index]);
+        }
+
+        /**
+         * Return a `const-ref` to an element at a given index in the vector
+         *
          * Uses the template version internally
          *
          * @param index index of the element
-         * @return element at that index
+         * @return `const-ref` of element at `index`
          */
-        constexpr auto get_value(usize index) -> T &
+        constexpr auto get_value(usize index) const -> T const &
         {
             return (this->get_value<index>());
         }
 
         /**
-         * Return a const ref to element at a given index in the vector
+         * Return an element at a given index in the vector
          *
          * Uses the template version internally
          *
          * @param index index of the element
-         * @return const ref to element at that index
+         * @return element at `index`
          */
-        constexpr auto get_value(usize index) const -> T const &
+        auto get_value(usize index) -> T &
         {
             return (this->get_value<index>());
         }
@@ -312,11 +347,7 @@ namespace util::math
 
             auto sum = std::accumulate(square.begin(), square.end(), static_cast<T>(0U));
 
-            if constexpr (std::is_floating_point_v<T>) {
-                return (std::sqrtf(sum));
-            } else {
-                return (std::sqrt(sum));
-            }
+            return (std::sqrt(sum));
         }
 
         /** Normalize the vector in-place */
@@ -335,7 +366,7 @@ namespace util::math
         // ========================================================================================== //
 
         /** Returns what would be the `x` component of a vector */
-        constexpr auto x() -> T &
+        auto x() -> T &
         {
             static_assert(1 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<0>());
@@ -348,7 +379,7 @@ namespace util::math
         }
 
         /** Returns what would be the `y` component of a vector */
-        constexpr auto y() -> T &
+        auto y() -> T &
         {
             static_assert(2 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<1>());
@@ -361,7 +392,7 @@ namespace util::math
         }
 
         /** Returns what would be the `z` component of a vector */
-        constexpr auto z() -> T &
+        auto z() -> T &
         {
             static_assert(3 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<2>());
@@ -374,7 +405,7 @@ namespace util::math
         }
 
         /** Returns what would be the `w` component of a vector */
-        constexpr auto w() -> T &
+        auto w() -> T &
         {
             static_assert(4 <= Count, "Invalid number of arguments for vector type");
             return (this->get_value<3>());
@@ -387,7 +418,7 @@ namespace util::math
         }
 
         /** Returns what would be the `r` component of a vector */
-        constexpr auto r() -> T &
+        auto r() -> T &
         {
             return (this->x());
         }
@@ -398,7 +429,7 @@ namespace util::math
         }
 
         /** Returns what would be the `g` component of a vector */
-        constexpr auto g() -> T &
+        auto g() -> T &
         {
             return (this->y());
         }
@@ -410,7 +441,7 @@ namespace util::math
         }
 
         /** Returns what would be the `b` component of a vector */
-        constexpr auto b() -> T &
+        auto b() -> T &
         {
             return (this->z());
         }
@@ -421,7 +452,7 @@ namespace util::math
         }
 
         /** Returns what would be the `a` component of a vector */
-        constexpr auto a() -> T &
+        auto a() -> T &
         {
             return (this->w());
         }
@@ -442,10 +473,12 @@ namespace util::math
         /**
          * Adds the `other` vector in-place
          *
+         * @tparam U other vector value type
          * @param other vector to add
          * @return mutated instance
          */
-        auto operator+=(Vec<T, Count> const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator+=(Vec<U, Count> const &other)
         {
             this->add(other);
 
@@ -459,8 +492,8 @@ namespace util::math
          * @param other value to add
          * @return mutated instance
          */
-        template <typename U>
-        auto operator+=(U const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator+=(U const &other)
         {
             this->add(other);
 
@@ -470,11 +503,13 @@ namespace util::math
         /**
          * Add `lhs` and `rhs` vectors and return the result
          *
+         * @tparam U other vector value type
          * @param lhs first operand
          * @param rhs second operand
          * @return result of addition
          */
-        friend inline auto operator+(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator+(Vec<T, Count> lhs, Vec<U, Count> const &rhs)
         {
             lhs += rhs;
 
@@ -489,8 +524,8 @@ namespace util::math
          * @param rhs second operand
          * @return result of addition
          */
-        template <typename U>
-        friend inline auto operator+(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator+(Vec<T, Count> lhs, U const &rhs)
         {
             lhs += rhs;
 
@@ -503,10 +538,12 @@ namespace util::math
         /**
          * Subtracts the `other` vector in-place
          *
+         * @tparam U other vector value type
          * @param other vector to subtract
          * @return mutated instance
          */
-        auto operator-=(Vec<T, Count> const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator-=(Vec<U, Count> const &other)
         {
             this->sub(other);
 
@@ -520,8 +557,8 @@ namespace util::math
          * @param other value to subtract
          * @return mutated instance
          */
-        template <typename U>
-        auto operator-=(U const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator-=(U const &other)
         {
             this->sub(other);
 
@@ -531,11 +568,13 @@ namespace util::math
         /**
          * Subtract `lhs` and `rhs` vectors and return the result
          *
+         * @tparam U other vector value type
          * @param lhs first operand
          * @param rhs second operand
          * @return result of subtraction
          */
-        friend inline auto operator-(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator-(Vec<T, Count> lhs, Vec<U, Count> const &rhs)
         {
             lhs -= rhs;
 
@@ -550,8 +589,8 @@ namespace util::math
          * @param rhs second operand
          * @return result of subtraction
          */
-        template <typename U>
-        friend inline auto operator-(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator-(Vec<T, Count> lhs, U const &rhs)
         {
             lhs -= rhs;
 
@@ -564,10 +603,12 @@ namespace util::math
         /**
          * Multiplies with the `other` vector in-place
          *
+         * @tparam U other vector value type
          * @param other vector to multiply with
          * @return mutated instance
          */
-        auto operator*=(Vec<T, Count> const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator*=(Vec<U, Count> const &other)
         {
             this->mul(other);
 
@@ -581,8 +622,8 @@ namespace util::math
          * @param other value to multiply with
          * @return mutated instance
          */
-        template <typename U>
-        auto operator*=(U const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator*=(U const &other)
         {
             this->mul(other);
 
@@ -592,11 +633,13 @@ namespace util::math
         /**
          * Mutiply `lhs` and `rhs` vectors and return the result
          *
+         * @tparam U other vector value type
          * @param lhs first operand
          * @param rhs second operand
          * @return result of multiplication
          */
-        friend inline auto operator*(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator*(Vec<T, Count> lhs, Vec<U, Count> const &rhs)
         {
             lhs *= rhs;
 
@@ -611,8 +654,8 @@ namespace util::math
          * @param rhs second operand
          * @return result of multiplication
          */
-        template <typename U>
-        friend inline auto operator*(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator*(Vec<T, Count> lhs, U const &rhs)
         {
             lhs *= rhs;
 
@@ -625,10 +668,12 @@ namespace util::math
         /**
          * Divides by the `other` vector in-place
          *
+         * @tparam U other vector value type
          * @param other vector to divide by
          * @return mutated instance
          */
-        auto operator/=(Vec<T, Count> const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator/=(Vec<U, Count> const &other)
         {
             this->div(other);
 
@@ -642,8 +687,8 @@ namespace util::math
          * @param other value to divide by
          * @return mutated instance
          */
-        template <typename U>
-        auto operator/=(U const &other) -> Vec<T, Count> &
+        template <Arithmetic U>
+        auto operator/=(U const &other)
         {
             this->div(other);
 
@@ -653,11 +698,13 @@ namespace util::math
         /**
          * Divide `lhs` and `rhs` vectors and return the result
          *
+         * @tparam U other vector value type
          * @param lhs first operand
          * @param rhs second operand
          * @return result of division
          */
-        friend inline auto operator/(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator/(Vec<T, Count> lhs, Vec<U, Count> const &rhs)
         {
             lhs /= rhs;
 
@@ -672,8 +719,8 @@ namespace util::math
          * @param rhs second operand
          * @return result of division
          */
-        template <typename U>
-        friend inline auto operator/(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        template <Arithmetic U>
+        friend inline auto operator/(Vec<T, Count> lhs, U const &rhs)
         {
             lhs /= rhs;
 
@@ -686,8 +733,7 @@ namespace util::math
      *
      * @tparam T value type
      */
-    template <typename T>
-    requires std::is_arithmetic_v<T>
+    template <Arithmetic T>
     using Vec2 = Vec<T, 2>;
 
     /**
@@ -695,8 +741,7 @@ namespace util::math
      *
      * @tparam T value type
      */
-    template <typename T>
-    requires std::is_arithmetic_v<T>
+    template <Arithmetic T>
     using Vec3 = Vec<T, 3>;
 
     /**
@@ -704,8 +749,7 @@ namespace util::math
      *
      * @tparam T value type
      */
-    template <typename T>
-    requires std::is_arithmetic_v<T>
+    template <Arithmetic T>
     using Vec4 = Vec<T, 4>;
 }  // namespace util::math
 
