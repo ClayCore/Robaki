@@ -147,5 +147,7 @@ namespace platform
 
         Window();
         explicit Window(Vec2<i32> const &size);
+
+        [[nodiscard]] auto get_size() const -> Vec2<i32>;
     };
 }  // namespace platform

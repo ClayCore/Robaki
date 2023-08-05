@@ -135,4 +135,9 @@ namespace platform
         this->init_glfw(hints);
         this->main_loop();
     }
+
+    auto Window::get_size() const -> Vec2<i32>
+    {
+        return (m_size);
+    }
 }  // namespace platform
