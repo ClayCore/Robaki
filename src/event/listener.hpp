@@ -31,6 +31,13 @@ namespace event
         /** Type that derives the instance */
         using derived_type = Derived;
 
+        /**
+         * Constraints the `Derived` type
+         */
+        constexpr auto check_static() -> void
+        {
+            static_assert(util::traits::Dispatchable<Derived>);
+        }
 
     public:
         /**

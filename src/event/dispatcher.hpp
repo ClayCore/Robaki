@@ -35,6 +35,14 @@ namespace event
         /** Type of the subscriber */
         using subscriber_type = Subscriber;
 
+        /**
+         * Constraints the `Derived` type
+         */
+        constexpr auto check_static() -> void
+        {
+            static_assert(util::traits::Dispatchable<Derived>);
+        }
+
     public:
         /**
          * Forwards the `dispatch` method to the concrete implementation
