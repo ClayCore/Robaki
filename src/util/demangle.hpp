@@ -19,22 +19,20 @@ namespace util::demangle
         std::string_view prefix;
         std::string_view suffix;
 
-        // clang-format off
-        
+// clang-format off
         #if defined(__CLANG__)
         name   = __PRETTY_FUNCTION__;
-        prefix = "std::string_view utils::type_name() [T = ";
+        prefix = "std::string_view util::demangle::type_name() [T = ";
         suffix = "; std::string_view = std::basic_string_view<char>]";
         #elif defined(__GNUC__)
         name   = __PRETTY_FUNCTION__;
-        prefix = "constexpr std::string_view utils::type_name() [with T = ";
+        prefix = "constexpr std::string_view util::demangle::type_name() [with T = ";
         suffix = "; std::string_view = std::basic_string_view<char>]";
         #elif defined(_MSC_VER)
         name   = __FUNCSIG__;
-        prefix = "std::string_view __cdecl utils::type_name<";
+        prefix = "std::string_view __cdecl util::demangle::type_name<";
         suffix = ">(void)";
         #endif
-
         // clang-format on
 
         name.remove_prefix(prefix.size());
