@@ -4,6 +4,7 @@
 
 // module includes
 #include "event.hpp"
+#include "util/traits.hpp"
 #include "util/util.hpp"
 
 // c++ includes
@@ -23,6 +24,21 @@ namespace event
     template <typename Derived>
     class Provider
     {
+    private:
+        /**
+         * Constraints the `Derived` type
+         */
+        constexpr auto check_static() -> void
+        {
+            // clang-format off
+            static_assert(
+                   util::traits::Emittable<Derived>
+                || util::traits::Dispatchable<Derived>
+                || util::traits::Listenable<Derived>
+            );
+            // clang-format on
+        }
+
     protected:
         /** Utility type alias for callbacks */
         using Callback = void (*)();
@@ -145,33 +161,30 @@ namespace event
         // ================================================================================================ //
 
         /**
-         * Forwards the event to a listener
-         *
-         * @param event forwarded event
+         * Constraints the derived type and provides
+         * the function declaration itself for any reference
+         * to `m_dispatchers`
          */
-        auto dispatch(Event const &event) -> void
+        auto dispatch(Event const & /*unused*/) -> void
         {
-            this->derived().dispatch(event);
         }
 
         /**
-         * Fires the event to subscribed dispatchers
-         *
-         * @param event event to fire
+         * Constraints the derived type and provides
+         * the function declaration itself for any reference
+         * to `m_dispatchers`
          */
-        auto emit(Event const &event) -> void
+        auto emit(Event const & /*unused*/) -> void
         {
-            this->derived().emit(event);
         }
 
         /**
-         * Triggers a callback for the event
-         *
-         * @param event subscribed event
+         * Constraints the derived type and provides
+         * the function declaration itself for any reference
+         * to `m_dispatchers`
          */
-        auto listen(Event const &event) -> void
+        auto listen(Event const & /*unused*/) -> void
         {
-            this->derived().listen(event);
         }
     };
 }  // namespace event
