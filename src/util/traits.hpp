@@ -59,3 +59,5 @@ namespace util::traits
     concept Listenable = requires(Derived &derived, Event const &event) { derived.listen(event); };
 
 }  // namespace util::traits
+
+using namespace util::traits;
