@@ -24,6 +24,8 @@ namespace platform
     {
         using StateDispatcher = decltype(managers::EventManager::instance().get_dispatcher());
 
+        constexpr const Vec2<i32> DEFAULT_SIZE = { 800, 600 };
+
         struct WindowDeleter
         {
             inline auto operator()(GLFWwindow *window) -> void
@@ -57,17 +59,16 @@ namespace platform
             }
         };
 
-        i32 m_width{ 800 };
-        i32 m_height{ 600 };
-        std::string m_title{ "Worming v0.0.1" };
+        Vec2<i32> m_size    = { 0, 0 };
+        std::string m_title = { "Worming v0.0.1" };
 
-        u64 m_last_second;
+        u64 m_fps         = { 0 };
+        u64 m_frame_delta = { 0 };
+        u64 m_frames      = { 0 };
+        u64 m_last_frame  = { 0 };
 
-        u64 m_fps            = { 0 };
-        u64 m_frame_delta    = { 0 };
-        u64 m_frames         = { 0 };
-        u64 m_last_frame     = { 0 };
         u64 m_tick_remainder = { 0 };
+        u64 m_last_second    = { 0 };
         u64 m_ticks          = { 0 };
         u64 m_tps            = { 0 };
 
@@ -120,7 +121,7 @@ namespace platform
             Window::set_hints(hints);
 
             m_handle = std::unique_ptr<GLFWwindow, details::WindowDeleter>(
-                glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr));
+                glfwCreateWindow(m_size.x, m_size.y, m_title.c_str(), nullptr, nullptr));
 
             glfwMakeContextCurrent(m_handle.get());
 
@@ -174,7 +175,19 @@ namespace platform
         }
 
     public:
-        Window()
+        Window() : m_size(details::DEFAULT_SIZE)
+        {
+            auto now = util::time::get_time_ns();
+
+            m_last_frame  = now;
+            m_last_second = now;
+
+            WindowHints hints;
+            this->init_glfw(hints);
+            this->main_loop();
+        }
+
+        explicit Window(Vec2<i32> const &size) : m_size(size)
         {
             auto now = util::time::get_time_ns();
 
