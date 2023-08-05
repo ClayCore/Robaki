@@ -178,7 +178,7 @@ namespace util::traits
     // ================================================================================================== //
 
     template <typename T>
-    concept Addable = requires(T value) {
+    concept AddableUnary = requires(T value) {
         {
             (value + value)
         };
@@ -193,8 +193,21 @@ namespace util::traits
         };
     };
 
+    template <typename T, typename U>
+    concept AddableBinary = requires(T lhs, U rhs) {
+        {
+            (lhs + rhs)
+        };
+        {
+            (lhs += rhs)
+        };
+        {
+            (rhs += lhs)
+        };
+    };
+
     template <typename T>
-    concept Subtractable = requires(T value) {
+    concept SubtractableUnary = requires(T value) {
         {
             (value - value)
         };
@@ -209,8 +222,21 @@ namespace util::traits
         };
     };
 
+    template <typename T, typename U>
+    concept SubtractableBinary = requires(T lhs, U rhs) {
+        {
+            (lhs - rhs)
+        };
+        {
+            (lhs -= rhs)
+        };
+        {
+            (rhs -= lhs)
+        };
+    };
+
     template <typename T>
-    concept Multiplicable = requires(T value) {
+    concept MultiplicableUnary = requires(T value) {
         {
             (value * value)
         };
@@ -219,13 +245,33 @@ namespace util::traits
         };
     };
 
+    template <typename T, typename U>
+    concept MultiplicableBinary = requires(T lhs, U rhs) {
+        {
+            (lhs * rhs)
+        };
+        {
+            (lhs *= rhs)
+        };
+    };
+
     template <typename T>
-    concept Divisible = requires(T value) {
+    concept DivisibleUnary = requires(T value) {
         {
             (value / value)
         };
         {
             (value /= value)
+        };
+    };
+
+    template <typename T, typename U>
+    concept DivisibleBinary = requires(T lhs, U rhs) {
+        {
+            (lhs / rhs)
+        };
+        {
+            (lhs /= rhs)
         };
     };
 }  // namespace util::traits

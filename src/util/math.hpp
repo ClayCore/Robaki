@@ -7,10 +7,13 @@
 // module includes
 #include "traits.hpp"
 #include "types.hpp"
+#include "util/traits.hpp"
 
 // c++ includes
 #include <algorithm>
+#include <array>
 #include <numeric>
+
 
 namespace util::math
 {
@@ -25,8 +28,9 @@ namespace util::math
         // Arithmetic methods ======================================================================= //
         // ========================================================================================== //
 
-        auto add(T const &value) -> void
-        requires Addable<T>
+        template <typename U>
+        auto add(U const &value) -> void
+        requires AddableBinary<T, U>
         {
             // clang-format off
             std::for_each(m_data.begin(), m_data.end(), [&value](T &elem) {
@@ -36,7 +40,7 @@ namespace util::math
         }
 
         auto add(Vec<T, Count> const &vec) -> void
-        requires Addable<T>
+        requires AddableUnary<T>
         {
             usize counter = { 0U };
 
@@ -47,8 +51,9 @@ namespace util::math
             // clang-format on
         }
 
-        auto sub(T const &value) -> void
-        requires Subtractable<T>
+        template <typename U>
+        auto sub(U const &value) -> void
+        requires SubtractableBinary<T, U>
         {
             // clang-format off
             std::for_each(m_data.begin(), m_data.end(), [&value](T &elem) {
@@ -58,7 +63,7 @@ namespace util::math
         }
 
         auto sub(Vec<T, Count> const &vec) -> void
-        requires Subtractable<T>
+        requires SubtractableUnary<T>
         {
             usize counter = { 0U };
 
@@ -69,8 +74,9 @@ namespace util::math
             // clang-format on
         }
 
-        auto mul(T const &value) -> void
-        requires Multiplicable<T>
+        template <typename U>
+        auto mul(U const &value) -> void
+        requires MultiplicableBinary<T, U>
         {
             // clang-format off
             std::for_each(m_data.begin(), m_data.end(), [&value](T &elem) {
@@ -80,7 +86,7 @@ namespace util::math
         }
 
         auto mul(Vec<T, Count> const &vec) -> void
-        requires Multiplicable<T>
+        requires MultiplicableUnary<T>
         {
             usize counter = { 0U };
 
@@ -91,8 +97,9 @@ namespace util::math
             // clang-format on
         }
 
-        auto div(T const &value) -> void
-        requires Divisible<T>
+        template <typename U>
+        auto div(U const &value) -> void
+        requires DivisibleBinary<T, U>
         {
             // clang-format off
             std::for_each(m_data.begin(), m_data.end(), [&value](T &elem) {
@@ -102,7 +109,7 @@ namespace util::math
         }
 
         auto div(Vec<T, Count> const &vec) -> void
-        requires Divisible<T>
+        requires DivisibleUnary<T>
         {
             usize counter = { 0U };
 
@@ -175,7 +182,7 @@ namespace util::math
         }
 
         auto length() -> void
-        requires Addable<T> && Multiplicable<T>
+        requires AddableUnary<T> && MultiplicableUnary<T>
         {
             auto square = m_data;
 
@@ -195,7 +202,7 @@ namespace util::math
         }
 
         auto norm() -> void
-        requires Addable<T> && Multiplicable<T>
+        requires AddableUnary<T> && MultiplicableUnary<T>
         {
             auto len = 1.0 / this->length();
 
@@ -237,64 +244,244 @@ namespace util::math
         // Operator overloads ======================================================================= //
         // ========================================================================================== //
 
+        // 1. Addition ============================================================================== //
+        // ========================================================================================== //
+
+        /**
+         * Adds the `other` vector in-place
+         *
+         * @param other vector to add
+         * @return mutated instance
+         */
         auto operator+=(Vec<T, Count> const &other) -> Vec<T, Count> &
-        requires Multiplicable<T>
         {
             this->add(other);
 
             return (*this);
         }
 
+        /**
+         * Adds `other` value in-place
+         *
+         * @tparam U value type
+         * @param other value to add
+         * @return mutated instance
+         */
+        template <typename U>
+        auto operator+=(U const &other) -> Vec<T, Count> &
+        {
+            this->add(other);
+
+            return (*this);
+        }
+
+        /**
+         * Add `lhs` and `rhs` vectors and return the result
+         *
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of addition
+         */
         friend inline auto operator+(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
-        requires Addable<T>
         {
             lhs += rhs;
 
             return (lhs);
         }
 
+        /**
+         * Add `lhs` vector and `rhs` value and return the result
+         *
+         * @tparam U value type
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of addition
+         */
+        template <typename U>
+        friend inline auto operator+(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        {
+            lhs += rhs;
+
+            return (lhs);
+        }
+
+        // 2. Subtraction =========================================================================== //
+        // ========================================================================================== //
+
+        /**
+         * Subtracts the `other` vector in-place
+         *
+         * @param other vector to subtract
+         * @return mutated instance
+         */
         auto operator-=(Vec<T, Count> const &other) -> Vec<T, Count> &
-        requires Subtractable<T>
         {
             this->sub(other);
 
             return (*this);
         }
 
+        /**
+         * Subtracts `other` value in-place
+         *
+         * @tparam U value type
+         * @param other value to subtract
+         * @return mutated instance
+         */
+        template <typename U>
+        auto operator-=(U const &other) -> Vec<T, Count> &
+        {
+            this->sub(other);
+
+            return (*this);
+        }
+
+        /**
+         * Subtract `lhs` and `rhs` vectors and return the result
+         *
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of subtraction
+         */
         friend inline auto operator-(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
-        requires Subtractable<T>
         {
             lhs -= rhs;
 
             return (lhs);
         }
 
+        /**
+         * Subtract `lhs` vector and `rhs` value and return the result
+         *
+         * @tparam U value type
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of subtraction
+         */
+        template <typename U>
+        friend inline auto operator-(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        {
+            lhs -= rhs;
+
+            return (lhs);
+        }
+
+        // 3. Multiplication ======================================================================== //
+        // ========================================================================================== //
+
+        /**
+         * Multiplies with the `other` vector in-place
+         *
+         * @param other vector to multiply with
+         * @return mutated instance
+         */
         auto operator*=(Vec<T, Count> const &other) -> Vec<T, Count> &
-        requires Multiplicable<T>
         {
             this->mul(other);
 
             return (*this);
         }
 
+        /**
+         * Multiplies with the `other` value in-place
+         *
+         * @tparam U value type
+         * @param other value to multiply with
+         * @return mutated instance
+         */
+        template <typename U>
+        auto operator*=(U const &other) -> Vec<T, Count> &
+        {
+            this->mul(other);
+
+            return (*this);
+        }
+
+        /**
+         * Mutiply `lhs` and `rhs` vectors and return the result
+         *
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of multiplication
+         */
         friend inline auto operator*(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
-        requires Multiplicable<T>
         {
             lhs *= rhs;
 
             return (lhs);
         }
 
+        /**
+         * Multiply `lhs` vector and `rhs` value and return the result
+         *
+         * @tparam U value type
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of multiplication
+         */
+        template <typename U>
+        friend inline auto operator*(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
+        {
+            lhs *= rhs;
+
+            return (lhs);
+        }
+
+        // 3. Division ============================================================================== //
+        // ========================================================================================== //
+
+        /**
+         * Divides by the `other` vector in-place
+         *
+         * @param other vector to divide by
+         * @return mutated instance
+         */
         auto operator/=(Vec<T, Count> const &other) -> Vec<T, Count> &
-        requires Divisible<T>
         {
             this->div(other);
 
             return (*this);
         }
 
+        /**
+         * Divides by `other` value in-place
+         *
+         * @tparam U value type
+         * @param other value to divide by
+         * @return mutated instance
+         */
+        template <typename U>
+        auto operator/=(U const &other) -> Vec<T, Count> &
+        {
+            this->div(other);
+
+            return (*this);
+        }
+
+        /**
+         * Divide `lhs` and `rhs` vectors and return the result
+         *
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of division
+         */
         friend inline auto operator/(Vec<T, Count> lhs, Vec<T, Count> const &rhs) -> Vec<T, Count>
-        requires Divisible<T>
+        {
+            lhs /= rhs;
+
+            return (lhs);
+        }
+
+        /**
+         * Divide `lhs` vector and `rhs` value and return the result
+         *
+         * @tparam U value type
+         * @param lhs first operand
+         * @param rhs second operand
+         * @return result of division
+         */
+        template <typename U>
+        friend inline auto operator/(Vec<T, Count> lhs, U const &rhs) -> Vec<T, Count>
         {
             lhs /= rhs;
 
