@@ -82,6 +82,7 @@ namespace platform
         // ================================================================================================ //
         // Constructors and destructors =================================================================== //
         // ================================================================================================ //
+        Input()                         = default;
         Input(const Input &)            = default;
         Input(Input &&)                 = delete;
         Input &operator=(const Input &) = default;
@@ -139,30 +140,34 @@ namespace platform
         f32 last_scroll_tick = { 0 };
 
     public:
-        enum class Mode
+        enum Mode : u8
         {
             Disabled,
             Hidden,
             Normal
         };
 
-        enum class Index
+        enum Index : u8
         {
             Left   = 0,
             Right  = 1,
             Middle = 2,
         };
 
-        Mode mode;
-        std::vector<Button> buttons;
+        Mode mode                   = { Disabled };
+        std::vector<Button> buttons = {
+            { Index::Left, "left" },
+            { Index::Right, "right" },
+            { Index::Middle, "middle" },
+        };
 
-        Vec2<f32> pos;
-        Vec2<f32> pos_delta;
-        Vec2<f32> pos_norm;
-        Vec2<f32> pos_delta_norm;
+        Vec2<f32> pos            = {};
+        Vec2<f32> pos_delta      = {};
+        Vec2<f32> pos_norm       = {};
+        Vec2<f32> pos_delta_norm = {};
 
-        Vec2<f32> pos_delta_tick;
-        Vec2<f32> pos_delta_norm_tick;
+        Vec2<f32> pos_delta_tick      = {};
+        Vec2<f32> pos_delta_norm_tick = {};
 
         f32 scroll            = { 0 };
         f32 scroll_delta      = { 0 };
@@ -172,7 +177,7 @@ namespace platform
 
         virtual auto set_mode(Mode mode) -> void = 0;
 
-        Mouse();
+        Mouse() = default;
 
         auto get_buttons() -> util::Iterator<Button *> override
         {
@@ -209,9 +214,19 @@ namespace platform
         }
 
 
-        // virtual auto operator[](std::string const &name) -> std::optional<Button *>
-        // {
-        //     return std::nullopt_t;
-        // }
+        virtual auto operator[](std::string const &name) -> std::optional<Button *>
+        {
+            auto name_lowered = util::to_lower(name);
+
+            if (name_lowered == "left") {
+                return (std::make_optional(&this->buttons[Index::Left]));
+            } else if (name_lowered == "right") {
+                return (std::make_optional(&this->buttons[Index::Right]));
+            } else if (name_lowered == "middle") {
+                return (std::make_optional(&this->buttons[Index::Middle]));
+            }
+
+            return (std::nullopt);
+        }
     };
 }  // namespace platform
