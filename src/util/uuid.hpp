@@ -22,31 +22,31 @@ namespace util::uuid
 
     inline auto generate_uuid() -> std::string
     {
-        std::stringstream ss{};
-        u32 i{};
-        ss << std::hex;
+        std::stringstream strstream{};
+        u32 iter{};
+        strstream << std::hex;
 
-        for (i = 0; i < 8; i++) {
-            ss << dis(gen);
+        for (iter = 0; iter < 8; iter++) {
+            strstream << dis(gen);
         }
-        ss << "-";
-        for (i = 0; i < 4; i++) {
-            ss << dis(gen);
+        strstream << "-";
+        for (iter = 0; iter < 4; iter++) {
+            strstream << dis(gen);
         }
-        ss << "-4";
-        for (i = 0; i < 3; i++) {
-            ss << dis(gen);
+        strstream << "-4";
+        for (iter = 0; iter < 3; iter++) {
+            strstream << dis(gen);
         }
-        ss << "-";
-        ss << dis2(gen);
-        for (i = 0; i < 3; i++) {
-            ss << dis(gen);
+        strstream << "-";
+        strstream << dis2(gen);
+        for (iter = 0; iter < 3; iter++) {
+            strstream << dis(gen);
         }
-        ss << "-";
-        for (i = 0; i < 12; i++) {
-            ss << dis(gen);
+        strstream << "-";
+        for (iter = 0; iter < 12; iter++) {
+            strstream << dis(gen);
         };
 
-        return (ss.str());
+        return (strstream.str());
     }
 }  // namespace util::uuid
