@@ -10,7 +10,5 @@
 
 auto main() -> i32
 {
-    platform::Window window;
-
     return (EXIT_SUCCESS);
 }
