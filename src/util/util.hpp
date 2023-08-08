@@ -8,6 +8,7 @@
 #include "demangle.hpp"
 #include "iterator.hpp"
 #include "math.hpp"
+#include "result.hpp"
 #include "string.hpp"
 #include "time.hpp"
 #include "traits.hpp"
