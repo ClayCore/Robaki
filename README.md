@@ -1,6 +1,6 @@
 # Robaki
 
-[![](https://tokei.rs/b1/github/ClayCore/Robaki)](https://github.com/ClayCore/Robaki).
+[![](https://tokei.rs/b1/github/ClayCore/Robaki)](https://github.com/ClayCore/Robaki)
 
 Real-time Worms clone.
 
