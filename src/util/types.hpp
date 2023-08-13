@@ -74,7 +74,7 @@ namespace util::types
     }
 
     /**
-     * Used by any managing classes. Only
+     * Used by various managers.
      */
     template <typename Derived>
     class Singleton

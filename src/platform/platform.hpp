@@ -31,7 +31,7 @@ namespace platform
                 raw = util::demangle::type_name<InputType>();
             }
 
-            return (*dynamic_cast<InputType *>(m_inputs[util::to_lower(raw)].get()));
+            return (*dynamic_cast<InputType *>(m_inputs[util::string::to_lower(raw)].get()));
         }
     };
 }  // namespace platform

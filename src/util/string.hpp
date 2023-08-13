@@ -13,10 +13,26 @@
 // c++ includes
 #include <algorithm>
 #include <string>
+#include <string_view>
 
 
-namespace util
+namespace util::string
 {
+    namespace details
+    {
+        constexpr const u32 DEFAULT_KEY_HASH_STR = (5381U);
+    }
+
+    constexpr auto hash_str(std::string_view const &str) -> u32
+    {
+        auto hash = details::DEFAULT_KEY_HASH_STR;
+        for (u8 chr : str) {
+            hash = ((hash << ((2U << 1U) ^ 1U)) + hash) ^ chr;
+        }
+
+        return (hash);
+    }
+
     inline auto to_lower(std::string const &str) -> std::string
     {
         auto result{ str };
@@ -29,4 +45,4 @@ namespace util
 
         return (result);
     }
-}  // namespace util
+}  // namespace util::string
