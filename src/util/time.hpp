@@ -14,6 +14,9 @@
 
 namespace util::time
 {
+    /** Utility alias for referring to a time point */
+    using timepoint = std::chrono::system_clock::time_point;
+
     /** How many nanoseconds in a second. */
     constexpr u64 const NS_PER_SEC = 1000000000;
 
