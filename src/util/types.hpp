@@ -142,6 +142,22 @@ namespace util::types
 
         std::vector<T> m_vector;
 
+        auto copy_moveable(CircularQueue &&other) noexcept
+        {
+            m_vector = std::move(other.m_vector);
+
+            m_max_items = other.m_max_items;
+            m_head      = other.m_head;
+            m_tail      = other.m_tail;
+            m_overrun   = other.m_overrun;
+
+            // puts other in disabled but still valid state
+            other.m_max_items = { 0 };
+            other.m_head      = { 0 };
+            other.m_tail      = { 0 };
+            other.m_overrun   = { 0 };
+        }
+
     public:
         using value_type = T;
 
@@ -151,12 +167,14 @@ namespace util::types
 
         CircularQueue(CircularQueue &&other) noexcept
         {
-            // todo copy-moveable
+            this->copy_moveable(std::move(other));
         }
 
         auto operator=(CircularQueue &&other) noexcept -> CircularQueue &
         {
-            // todo copy-moveable
+            this->copy_moveable(std::move(other));
+
+            return (*this);
         }
 
         explicit CircularQueue(usize max_items) noexcept : m_max_items(max_items + 1), m_vector(m_max_items)
