@@ -89,7 +89,7 @@ namespace platform::glfw
          *
          * @param flags flags to be set
          */
-        auto init_glfw(WindowFlags flags) -> void;
+        auto init_glfw(WindowFlags flags, Vec2<i32> const &size) -> void;
 
         /** Run the main window loop */
         auto main_loop() -> void;
@@ -119,5 +119,48 @@ namespace platform::glfw
          * @return size of window
          */
         [[nodiscard]] auto get_size() const -> Vec2<i32> override;
+
+        // ========================================================================================== //
+        // Utility methods ========================================================================== //
+        // ========================================================================================== //
+
+        auto set_platform_data(bgfx::PlatformData &platform_data) -> void override;
+
+        auto prepare_frame() -> void override;
+
+        auto end_frame() -> void override;
+
+        auto is_close_requested() -> bool override;
+
+        auto close() -> void override;
+    };
+
+    struct Keyboard final : platform::Keyboard
+    {
+    private:
+        auto callback(GLFWwindow *window, i32 key, i32 scancode, i32 action, i32 mods) -> void;
+
+    public:
+        static const constexpr usize MAX_KEYS = 1024;
+        std::unordered_map<std::string, Button> m_keys;
+
+        explicit Keyboard(platform::glfw::Window &window);
+        auto get_buttons() -> util::Iterator<platform::Button *> override;
+        auto operator[](std::string const &name) -> std::optional<Button *> override;
+    };
+
+    struct Mouse final : platform::Mouse
+    {
+    private:
+        auto callback_pos(GLFWwindow *window, f64 xpos, f64 ypos) -> void;
+        auto callback_button(GLFWwindow *window, i32 button, i32 action, i32 mods) -> void;
+        auto callback_enter(GLFWwindow *window, i32 entered) -> void;
+        auto callback_scroll(GLFWwindow *window, f64 xpos, f64 ypos) -> void;
+
+    public:
+        Window *window;
+        explicit Mouse(platform::glfw::Window &window);
+
+        auto set_mode(platform::Mouse::Mode mode) -> void override;
     };
 }  // namespace platform::glfw
