@@ -8,11 +8,13 @@
 #include "types.hpp"
 
 // c++ includes
+#include <chrono>
 #include <concepts>
 #include <iostream>
 #include <tuple>
 #include <type_traits>
 #include <vector>
+
 
 namespace util::traits
 {
@@ -21,29 +23,16 @@ namespace util::traits
     // ================================================================================================== //
 
     /**
-     * Validates if any given type is printable
+     * @concept Constraint `T` to be printable
      *
      * @tparam T type to validate
      */
-    template <typename T>
-    struct is_printable
-    {
-        template <typename U, typename = decltype(std::cout << std::declval<U>())>
-        static constexpr auto validate(void *) -> std::true_type;
-
-        template <typename U>
-        static constexpr auto validate(...) -> std::false_type;
-
-        static constexpr bool value = std::is_same_v<decltype(validate<T>(nullptr)), std::true_type>;
+    template <class T>
+    concept IsPrintable = requires(T type) {
+        {
+            std::cout << type
+        };
     };
-
-    /**
-     * Constexpr alias for printability validation
-     *
-     * @tparam T type to validate
-     */
-    template <typename T>
-    constexpr inline bool is_printable_v = is_printable<T>::value;
 
 
     /**
@@ -51,16 +40,14 @@ namespace util::traits
      *
      * @tparam T type to validate
      */
-    template <typename T>
-    struct is_vector
+    template <class T>
+    struct is_vector : public std::false_type
     {
-        static constexpr const bool value = false;
     };
 
-    template <typename T>
-    struct is_vector<std::vector<T>>
+    template <class T>
+    struct is_vector<std::vector<T>> : public std::true_type
     {
-        static constexpr const bool value = true;
     };
 
     /**
@@ -68,11 +55,48 @@ namespace util::traits
      *
      * @tparam T type to validate
      */
-    template <typename T>
-    constexpr inline bool is_vector_v = is_vector<T>::value;
+    template <class T>
+    constexpr const bool is_vector_v = is_vector<T>::value;
 
     /**
-     * Alias for `std::is_arithmetic_v` as a concept
+     * @concept Constraints type `T` to be a vector
+     */
+    template <class T>
+    concept IsVector = is_vector_v<T>;
+
+    /**
+     * Determine if type `T` is `std::chrono::duration`
+     *
+     * @tparam T type fo validate
+     */
+    template <class T>
+    struct is_duration : public std::false_type
+    {
+    };
+
+    template <class R, class P>
+    struct is_duration<std::chrono::duration<R, P>> : public std::true_type
+    {
+    };
+
+    /**
+     * Constexpr alias for whether `T` is `std::chrono::duration`
+     *
+     * @tparam T type to validate
+     */
+    template <class T>
+    constexpr const bool is_duration_v = is_duration<T>::value;
+
+    /**
+     * @concept Alias for `is_duration_v` as a concept
+     *
+     * @tparam T type to validate
+     */
+    template <class T>
+    concept IsDuration = is_duration_v<T>;
+
+    /**
+     * @concept Alias for `std::is_arithmetic_v` as a concept
      *
      * @tparam T type to validate
      */
