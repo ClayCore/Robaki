@@ -67,6 +67,7 @@ namespace assets::io::file
         File &operator=(File &&)      = delete;
 
         explicit File(std::string const &path) noexcept(false);
+        explicit File(std::string_view path) noexcept(false);
 
         ~File();
 
@@ -82,6 +83,6 @@ namespace assets::io::file
 
         [[nodiscard]] auto type_from_ext() const -> FileType;
 
-        auto with_path(std::string const &path) -> File &;
+        auto with_path(std::string_view path) -> File &;
     };
 }  // namespace assets::io::file

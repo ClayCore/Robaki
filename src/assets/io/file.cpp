@@ -10,6 +10,11 @@ namespace assets::io::file
         this->with_path(path);
     }
 
+    File::File(std::string_view path) noexcept(false)
+    {
+        this->with_path(path);
+    }
+
     File::~File()
     {
         m_handle.first.close();
@@ -55,7 +60,7 @@ namespace assets::io::file
         return (FileType::PlainText);
     }
 
-    auto File::with_path(std::string const &path) -> File &
+    auto File::with_path(std::string_view path) -> File &
     {
         std::filesystem::path fs_path = { path };
         if (!std::filesystem::exists(fs_path)) {
