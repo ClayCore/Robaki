@@ -11,6 +11,7 @@
 
 // c++ includes
 #include <memory>
+#include <vector>
 
 namespace util::types
 {
@@ -125,6 +126,110 @@ namespace util::types
             }
 
             return (*m_instance);
+        }
+    };
+
+    /** Describes a circular queue view of `std::vector` */
+    template <class T>
+    class CircularQueue
+    {
+    private:
+        usize m_max_items = { 0U };
+        usize m_overrun   = { 0U };
+
+        std::vector<T>::size_type m_head = {};
+        std::vector<T>::size_type m_tail = {};
+
+        std::vector<T> m_vector;
+
+    public:
+        using value_type = T;
+
+        CircularQueue()                                          = default;
+        CircularQueue(CircularQueue const &)                     = default;
+        auto operator=(CircularQueue const &) -> CircularQueue & = default;
+
+        CircularQueue(CircularQueue &&other) noexcept
+        {
+            // todo copy-moveable
+        }
+
+        auto operator=(CircularQueue &&other) noexcept -> CircularQueue &
+        {
+            // todo copy-moveable
+        }
+
+        explicit CircularQueue(usize max_items) noexcept : m_max_items(max_items + 1), m_vector(m_max_items)
+        {
+        }
+
+        template <usize Index>
+        [[nodiscard]] constexpr auto at() const -> T const &
+        {
+            static_assert(Index < this->size());
+
+            return (m_vector[(m_head + Index) % m_max_items]);
+        }
+
+        [[nodiscard]] constexpr auto empty() const noexcept -> bool
+        {
+            return (m_tail == m_head);
+        }
+
+        [[nodiscard]] constexpr auto full() const noexcept -> bool
+        {
+            if constexpr (m_max_items > 0) {
+                return (((m_tail + 1) % m_max_items) == m_head);
+            } else {
+                return (false);
+            }
+        }
+
+        [[nodiscard]] auto front() const noexcept -> T const &
+        {
+            return (m_vector[m_head]);
+        }
+
+        [[nodiscard]] auto front() noexcept -> T &
+        {
+            return (m_vector[m_head]);
+        }
+
+        [[nodiscard]] constexpr auto size() const noexcept -> usize
+        {
+            if constexpr (m_tail >= m_head) {
+                return (m_tail - m_head);
+            } else {
+                return (m_max_items - (m_head - m_tail));
+            }
+        }
+
+        [[nodiscard]] constexpr auto overrun() const noexcept -> usize
+        {
+            return (m_overrun);
+        }
+
+        auto pop_front() -> void
+        {
+            m_head = (m_head + 1) % m_max_items;
+        }
+
+        auto push_back(T &&item) -> void
+        {
+            if (m_max_items > 0) {
+                m_vector[m_tail] = std::move(item);
+                m_tail           = (m_tail + 1) % m_max_items;
+
+                if (m_tail == m_head) {
+                    m_head = (m_head + 1) % m_max_items;
+                    m_overrun += 1;
+                }
+            }
+        }
+
+        auto reset_overrun() -> void
+        {
+            m_overrun = 0;
         }
     };
 }  // namespace util::types
