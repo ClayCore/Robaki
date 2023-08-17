@@ -20,9 +20,16 @@ namespace util::string
 {
     namespace details
     {
+        /** Initial hash key for string hashing. */
         constexpr const u32 DEFAULT_KEY_HASH_STR = (5381U);
-    }
+    }  // namespace details
 
+    /***************************************************************************************************
+     * Hashes the string, used in switch cases.
+     *
+     * @param str string to hash
+     * @return hash of `str`
+     **************************************************************************************************/
     constexpr auto hash_str(std::string_view const &str) -> u32
     {
         auto hash = details::DEFAULT_KEY_HASH_STR;
@@ -33,6 +40,12 @@ namespace util::string
         return (hash);
     }
 
+    /***************************************************************************************************
+     * Transform all characters in a string to lowercase
+     *
+     * @param str string to transform
+     * @return all lowercase `str`
+     **************************************************************************************************/
     inline auto to_lower(std::string const &str) -> std::string
     {
         auto result{ str };

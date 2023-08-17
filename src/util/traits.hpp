@@ -22,24 +22,11 @@ namespace util::traits
     // Type related traits ============================================================================== //
     // ================================================================================================== //
 
-    /**
-     * @concept Constraint `T` to be printable
-     *
-     * @tparam T type to validate
-     */
-    template <class T>
-    concept IsPrintable = requires(T type) {
-        {
-            std::cout << type
-        };
-    };
-
-
-    /**
+    /*******************************************************************************************************
      * Validate if a given type is `std::vector`
      *
      * @tparam T type to validate
-     */
+     ******************************************************************************************************/
     template <class T>
     struct is_vector : public std::false_type
     {
@@ -50,25 +37,11 @@ namespace util::traits
     {
     };
 
-    /**
-     * Constexpr alias for whether a type's an `std::vector`
-     *
-     * @tparam T type to validate
-     */
-    template <class T>
-    constexpr const bool is_vector_v = is_vector<T>::value;
-
-    /**
-     * @concept Constraints type `T` to be a vector
-     */
-    template <class T>
-    concept IsVector = is_vector_v<T>;
-
-    /**
+    /*******************************************************************************************************
      * Determine if type `T` is `std::chrono::duration`
      *
      * @tparam T type fo validate
-     */
+     ******************************************************************************************************/
     template <class T>
     struct is_duration : public std::false_type
     {
@@ -79,29 +52,57 @@ namespace util::traits
     {
     };
 
-    /**
+    /*******************************************************************************************************
      * Constexpr alias for whether `T` is `std::chrono::duration`
      *
      * @tparam T type to validate
-     */
+     ******************************************************************************************************/
     template <class T>
     constexpr const bool is_duration_v = is_duration<T>::value;
 
-    /**
+    /*******************************************************************************************************
+     * Constexpr alias for whether a type's an `std::vector`
+     *
+     * @tparam T type to validate
+     ******************************************************************************************************/
+    template <class T>
+    constexpr const bool is_vector_v = is_vector<T>::value;
+
+    /*******************************************************************************************************
      * @concept Alias for `is_duration_v` as a concept
      *
      * @tparam T type to validate
-     */
+     ******************************************************************************************************/
     template <class T>
     concept IsDuration = is_duration_v<T>;
 
-    /**
+    /*******************************************************************************************************
      * @concept Alias for `std::is_arithmetic_v` as a concept
      *
-     * @tparam T type to validate
-     */
+     * @tparam T type to constrain
+     ******************************************************************************************************/
     template <typename T>
     concept Arithmetic = std::is_arithmetic_v<T>;
+
+    /*******************************************************************************************************
+     * @concept Constraint `T` to be printable
+     *
+     * @tparam T type to constrain
+     ******************************************************************************************************/
+    template <class T>
+    concept IsPrintable = requires(T type) {
+        {
+            std::cout << type
+        };
+    };
+
+    /*******************************************************************************************************
+     * @concept Constraints type `T` to be a vector
+     *
+     * @tparam T type to constrain
+     ******************************************************************************************************/
+    template <class T>
+    concept IsVector = is_vector_v<T>;
 
     // ================================================================================================== //
     // Reversing order of arguments in templates ======================================================== //
@@ -201,33 +202,33 @@ namespace util::traits
     // Necessary for the constraints below
     class Event;
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain `Derived` so that it *must* implement `this->emit(event)`
      *
      * Used by `Provider` and `Emitter` module
      *
      * @tparam Derived constrainted type
-     */
+     ******************************************************************************************************/
     template <typename Derived>
     concept Emittable = requires(Derived &derived, Event const &event) { derived.emit(event); };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain `Derived` so that it *must* implement `this->dispatch(event)`
      *
      * Used by `Provider` and `Dispatcher` module
      *
      * @tparam Derived constrainted type
-     */
+     ******************************************************************************************************/
     template <typename Derived>
     concept Dispatchable = requires(Derived &derived, Event const &event) { derived.dispatch(event); };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain `Derived` so that it *must* implement `this->listen(event)`
      *
      * Used by `Provider` and `Listener` module
      *
      * @tparam Derived constrainted type
-     */
+     ******************************************************************************************************/
     template <typename Derived>
     concept Listenable = requires(Derived &derived, Event const &event) { derived.listen(event); };
 
@@ -235,13 +236,13 @@ namespace util::traits
     // Arithmetic traits ================================================================================ //
     // ================================================================================================== //
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain a given type to support arithmetic addition
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
-     */
+     ******************************************************************************************************/
     template <typename T>
     concept AddableUnary = requires(T value) {
         // clang-format off
@@ -252,14 +253,14 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain 2 types to support arithmetic addition
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
      * @tparam U constrained type
-     */
+     ******************************************************************************************************/
     template <typename T, typename U>
     concept AddableBinary = requires(T lhs, U rhs) {
         // clang-format off
@@ -269,13 +270,13 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain a given type to support arithmetic subtraction
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
-     */
+     ******************************************************************************************************/
     template <typename T>
     concept SubtractableUnary = requires(T value) {
         // clang-format off
@@ -286,14 +287,14 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain 2 types to support arithmetic subtraction
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
      * @tparam U constrained type
-     */
+     ******************************************************************************************************/
     template <typename T, typename U>
     concept SubtractableBinary = requires(T lhs, U rhs) {
         // clang-format off
@@ -303,13 +304,13 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain a given type to support arithmetic multiplication
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
-     */
+     ******************************************************************************************************/
     template <typename T>
     concept MultiplicableUnary = requires(T value) {
         // clang-format off
@@ -318,14 +319,14 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain 2 types to support arithmetic multiplication
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
      * @tparam U constrained type
-     */
+     ******************************************************************************************************/
     template <typename T, typename U>
     concept MultiplicableBinary = requires(T lhs, U rhs) {
         // clang-format off
@@ -334,13 +335,13 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain a given type to support arithmetic division
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
-     */
+     ******************************************************************************************************/
     template <typename T>
     concept DivisibleUnary = requires(T value) {
         // clang-format off
@@ -349,14 +350,14 @@ namespace util::traits
         // clang-format on
     };
 
-    /**
+    /*******************************************************************************************************
      * @concept Constrain 2 types to support arithmetic division
      *
      * Used by `util::math` module
      *
      * @tparam T constrained type
      * @tparam U constrained type
-     */
+     ******************************************************************************************************/
     template <typename T, typename U>
     concept DivisibleBinary = requires(T lhs, U rhs) {
         // clang-format off
