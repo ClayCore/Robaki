@@ -73,11 +73,28 @@ namespace util::types
         return (std::make_shared<T>(std::forward<Args>(args)...));
     }
 
+    /** CRTP NonCopyable mixin used by various traits and types */
+    template <class T>
+    struct NonCopyable
+    {
+    protected:
+        NonCopyable()  = default;
+        ~NonCopyable() = default;
+
+    public:
+        NonCopyable(NonCopyable &&)                 = delete;
+        NonCopyable &operator=(const NonCopyable &) = delete;
+        NonCopyable &operator=(NonCopyable &&)      = delete;
+        NonCopyable(NonCopyable const &)            = delete;
+
+        auto operator=(T const &) -> T & = delete;
+    };
+
     /**
      * Used by various managers.
      */
-    template <typename Derived>
-    class Singleton
+    template <class Derived>
+    class Singleton : private NonCopyable<Derived>
     {
     private:
         /** Thin wrapper to invoke ctors defined in the `Derived` type */
@@ -91,20 +108,7 @@ namespace util::types
         /** Global, mutable and shared instance to any object that implements `Singleton` */
         static inline Derived *m_instance = nullptr;
 
-    protected:
-        /** Default ctor */
-        Singleton() = default;
-
     public:
-        // ================================================================================================ //
-        // Deleted ctors and dtors ======================================================================== //
-        // ================================================================================================ //
-
-        Singleton(const Singleton &)                     = delete;
-        Singleton(Singleton &&)                          = delete;
-        auto operator=(Singleton const &) -> Singleton & = delete;
-        auto operator=(Singleton &&) -> Singleton      & = delete;
-
         // ================================================================================================ //
         // Accessor methods =============================================================================== //
         // ================================================================================================ //
