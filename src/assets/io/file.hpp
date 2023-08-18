@@ -9,8 +9,10 @@
 // c++ includes
 #include <filesystem>
 #include <fstream>
+#include <map>
 #include <string>
 #include <utility>
+
 
 namespace assets::io::file
 {
@@ -34,7 +36,7 @@ namespace assets::io::file
         using namespace util::literals;
 
         // clang-format off
-        static const std::unordered_map<FileType, std::vector<u32>> FILETYPES_ASSOC = {
+        static const std::map<FileType, std::vector<u32>> FILETYPES_ASSOC = {
             { FileType::Audio,     {"wav"_sh, "mp3"_sh, "ogg"_sh  }},
             { FileType::BinCode,   {"bin"_sh, "dat"_sh            }},
             { FileType::Config,    {"cfg"_sh,                     }},
@@ -66,8 +68,8 @@ namespace assets::io::file
         File &operator=(const File &) = delete;
         File &operator=(File &&)      = delete;
 
-        explicit File(std::string const &path) noexcept(false);
-        explicit File(std::string_view path) noexcept(false);
+        explicit File(std::string const &path);
+        explicit File(std::string_view path);
 
         ~File();
 
@@ -82,6 +84,12 @@ namespace assets::io::file
         [[nodiscard]] auto type() const -> FileType;
 
         [[nodiscard]] auto type_from_ext() const -> FileType;
+
+        auto open() -> void;
+
+        auto read() -> void;
+
+        auto close() -> void;
 
         auto with_path(std::string_view path) -> File &;
     };
