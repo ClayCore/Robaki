@@ -77,6 +77,14 @@ namespace util::traits
     concept IsDuration = is_duration_v<T>;
 
     /*******************************************************************************************************
+     * @concept Constraints type `T` to be a vector
+     *
+     * @tparam T type to constrain
+     ******************************************************************************************************/
+    template <class T>
+    concept IsVector = is_vector_v<T>;
+
+    /*******************************************************************************************************
      * @concept Alias for `std::is_arithmetic_v` as a concept
      *
      * @tparam T type to constrain
@@ -95,14 +103,6 @@ namespace util::traits
             std::cout << type
         };
     };
-
-    /*******************************************************************************************************
-     * @concept Constraints type `T` to be a vector
-     *
-     * @tparam T type to constrain
-     ******************************************************************************************************/
-    template <class T>
-    concept IsVector = is_vector_v<T>;
 
     // ================================================================================================== //
     // Reversing order of arguments in templates ======================================================== //
