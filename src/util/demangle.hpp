@@ -19,7 +19,7 @@ namespace util::demangle
         std::string_view prefix;
         std::string_view suffix;
 
-// clang-format off
+        // clang-format off
         #if defined(__CLANG__)
         name   = __PRETTY_FUNCTION__;
         prefix = "std::string_view util::demangle::type_name() [T = ";
