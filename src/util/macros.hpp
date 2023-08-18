@@ -60,7 +60,7 @@
 /****************************************************************************************
  * Generates a lambda whenever a scope is left.
  ***************************************************************************************/
-#define SCOPE_EXIT auto ANON_VAR(SCOPE_EXIT_STATE) = ::util::macros::MakeScopeExit() + [&]()
+#define SCOPE_EXIT auto ANON_VAR(SCOPE_EXIT_STATE) = ::util::macros::MakeScopeExit() += [&]()
 #endif
 
 #if !defined(SCOPE_FAIL)
@@ -68,7 +68,7 @@
 /****************************************************************************************
  * Generates a scope in the case of failure i.e. exception has been thrown.
  ***************************************************************************************/
-#define SCOPE_FAIL auto ANON_VAR(SCOPE_FAIL_STATE) = ::util::macros::MakeScopeFail() + [&]() noexcept
+#define SCOPE_FAIL auto ANON_VAR(SCOPE_FAIL_STATE) = ::util::macros::MakeScopeFail() += [&]() noexcept
 #endif
 
 #if !defined(SCOPE_SUCCESS)
@@ -76,7 +76,7 @@
 /****************************************************************************************
  * Generates a scope in the case of success.
  ***************************************************************************************/
-#define SCOPE_SUCCESS auto ANON_VAR(SCOPE_SUCCESS_STATE) = ::util::macros::MakeScopeSuccess + [&]()
+#define SCOPE_SUCCESS auto ANON_VAR(SCOPE_SUCCESS_STATE) = ::util::macros::MakeScopeSuccess() += [&]()
 #endif
 
 namespace util::macros::details
@@ -119,6 +119,12 @@ namespace util::macros::details
 
 namespace util::macros
 {
+    /**
+     * Defines a scope guard used by `SCOPE_SUCCESS` and `SCOPE_FAIL` macros
+     *
+     * @tparam F function to call on success or failure
+     * @tparam IsFail whether we're in a failure or success state
+     */
     template <class F, bool IsFail>
     class ScopeGuard : private NonCopyable<ScopeGuard<F, IsFail>>
     {
@@ -143,6 +149,11 @@ namespace util::macros
         }
     };
 
+    /**
+     * Used by `SCOPE_EXIT` and allows invocation of a function at the end of any scope
+     *
+     * @tparam F function to call on the exit of a scope
+     */
     template <class F>
     class ScopeExit : private NonCopyable<ScopeExit<F>>
     {
@@ -166,6 +177,7 @@ namespace util::macros
         }
     };
 
+    /** Utility builder of `ScopeExit` */
     struct MakeScopeExit
     {
         template <class F>
@@ -175,6 +187,7 @@ namespace util::macros
         }
     };
 
+    /** Utility builder of failure state `ScopeGuard` */
     struct MakeScopeFail
     {
         template <class F>
@@ -184,6 +197,7 @@ namespace util::macros
         }
     };
 
+    /** Utility builder of success state `ScopeGuard` */
     struct MakeScopeSuccess
     {
         template <class F>
