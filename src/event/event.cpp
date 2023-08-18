@@ -46,7 +46,7 @@ namespace event
         // clang-format off
         switch (type) {
             case EventType::None:                { result = EventCategory::None;       }; break;
-            case EventType::WindowClose:            
+            case EventType::WindowClose:
             case EventType::WindowResize:
             case EventType::WindowFocus:
             case EventType::WindowLostFocus:
@@ -60,7 +60,7 @@ namespace event
             case EventType::KeyReleased:
             case EventType::MouseButtonPressed:
             case EventType::MouseButtonReleased:
-            case EventType::MouseMoved:             
+            case EventType::MouseMoved:
             case EventType::MouseScrolled:       { result = EventCategory::Input;      }; break;
             default:                             { result = EventCategory::Custom;     }; break;
         }
