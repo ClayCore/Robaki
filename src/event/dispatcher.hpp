@@ -14,12 +14,12 @@
 
 namespace event
 {
-    /**
+    /***************************************************************************************************
      * Used to forward events from an emitter to many subscribers
      *
      * @tparam Derived specific `Dispatcher` implementation
-     */
-    template <typename Derived>
+     **************************************************************************************************/
+    template <class Derived>
     class Dispatcher : public Provider<Derived>
     {
     private:
@@ -35,20 +35,20 @@ namespace event
         /** Type of the subscriber */
         using subscriber_type = Subscriber;
 
-        /**
+        /***********************************************************************************************
          * Constraints the `Derived` type
-         */
+         **********************************************************************************************/
         constexpr auto check_static() -> void
         {
             static_assert(Dispatchable<Derived>);
         }
 
     public:
-        /**
+        /***********************************************************************************************
          * Forwards the `dispatch` method to the concrete implementation
          *
          * @param event event to forward
-         */
+         **********************************************************************************************/
         auto dispatch(Event const &event) -> void
         {
             this->derived()->dispatch(event);

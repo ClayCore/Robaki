@@ -9,12 +9,12 @@
 
 namespace event
 {
-    /**
+    /***************************************************************************************************
      * Used to *emit* events to many dispatchers.
      *
      * @tparam Derived concrete `Emitter` implementation
-     */
-    template <typename Derived>
+     **************************************************************************************************/
+    template <class Derived>
     class Emitter : public Provider<Derived>
     {
     private:
@@ -27,20 +27,20 @@ namespace event
         /** Type that derives the instance */
         using derived_type = Derived;
 
-        /**
+        /***********************************************************************************************
          * Constraints the `Derived` type
-         */
+         **********************************************************************************************/
         constexpr auto check_static() -> void
         {
             static_assert(Emittable<Derived>);
         }
 
     public:
-        /**
+        /***********************************************************************************************
          * Forwards the `emit` method to the concrete implementation
          *
          * @param event event to fire
-         */
+         **********************************************************************************************/
         auto emit(Event const &event) -> void
         {
             this->derived()->emit(event);
