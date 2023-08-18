@@ -5,12 +5,12 @@
 
 namespace assets::io::file
 {
-    File::File(std::string const &path) noexcept(false)
+    File::File(std::string const &path)
     {
         this->with_path(path);
     }
 
-    File::File(std::string_view path) noexcept(false)
+    File::File(std::string_view path)
     {
         this->with_path(path);
     }
@@ -63,16 +63,14 @@ namespace assets::io::file
     auto File::with_path(std::string_view path) -> File &
     {
         std::filesystem::path fs_path = { path };
-        if (!std::filesystem::exists(fs_path)) {
-            throw std::runtime_error{ fmt::format("[IO/ERROR\n\t[{}] not found", path) };
-        }
 
-        if (fs_path.empty()) {
-            throw std::runtime_error{ fmt::format("[IO/ERROR]\n\t[{}] corrupt or empty", path) };
-        }
+        SCOPE_FAIL
+        {
+            fmt::print(stderr, "[IO/ERROR\n\t[{}] not found, empty or corrupt\n]", path);
+        };
 
         m_path   = path;
-        m_type   = File::type_from_ext();
+        m_type   = this->type_from_ext();
         m_handle = std::make_pair(std::fstream(path), path);
 
         return (*this);
