@@ -64,7 +64,7 @@ namespace platform
 
     auto Mouse::operator[](std::string const &name) -> std::optional<Button *>
     {
-        auto name_lowered = util::to_lower(name);
+        auto name_lowered = util::string::to_lower(name);
 
         if (name_lowered == "left") {
             return (std::make_optional(&this->buttons[Index::Left]));
