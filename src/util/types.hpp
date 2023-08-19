@@ -25,8 +25,11 @@ namespace util::types
     using i32 = std::int_fast32_t;
     using i64 = std::int_fast64_t;
 
-    using usize = std::uintptr_t;
+    using usize = std::size_t;
     using isize = std::ptrdiff_t;
+
+    using uintptr = std::uintptr_t;
+    using intptr  = std::intptr_t;
 
     using f32  = float;
     using f64  = double;
@@ -83,10 +86,11 @@ namespace util::types
         ~NonCopyable() = default;
 
     public:
-        NonCopyable(NonCopyable &&)                 = delete;
-        NonCopyable &operator=(const NonCopyable &) = delete;
-        NonCopyable &operator=(NonCopyable &&)      = delete;
-        NonCopyable(NonCopyable const &)            = delete;
+        NonCopyable(NonCopyable &&)      = delete;
+        NonCopyable(NonCopyable const &) = delete;
+
+        auto operator=(NonCopyable const &) -> NonCopyable & = delete;
+        auto operator=(NonCopyable &&) -> NonCopyable      & = delete;
 
         auto operator=(T const &) -> T & = delete;
     };
@@ -151,7 +155,7 @@ namespace util::types
             m_tail      = other.m_tail;
             m_overrun   = other.m_overrun;
 
-            // puts other in disabled but still valid state
+            // puts `other` in disabled but still valid state
             other.m_max_items = { 0 };
             other.m_head      = { 0 };
             other.m_tail      = { 0 };
@@ -161,8 +165,9 @@ namespace util::types
     public:
         using value_type = T;
 
-        CircularQueue()                                          = default;
-        CircularQueue(CircularQueue const &)                     = default;
+        CircularQueue()                      = default;
+        CircularQueue(CircularQueue const &) = default;
+
         auto operator=(CircularQueue const &) -> CircularQueue & = default;
 
         CircularQueue(CircularQueue &&other) noexcept
@@ -179,6 +184,16 @@ namespace util::types
 
         explicit CircularQueue(usize max_items) noexcept : m_max_items(max_items + 1), m_vector(m_max_items)
         {
+        }
+
+        ~CircularQueue()
+        {
+            m_max_items = { 0 };
+            m_head      = { 0 };
+            m_tail      = { 0 };
+            m_overrun   = { 0 };
+
+            m_vector.clear();
         }
 
         template <usize Index>
