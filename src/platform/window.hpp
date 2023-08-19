@@ -18,12 +18,12 @@
 
 namespace platform
 {
-    namespace details
+    namespace detail
     {
         /** Default window size */
         constexpr const Vec2<i32> DEFAULT_SIZE{ 800, 600 };
 
-    }  // namespace details
+    }  // namespace detail
 
     /**
      * Describes a window and all its properties

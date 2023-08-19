@@ -58,7 +58,7 @@ namespace platform
 
         Window::set_flags(flags);
 
-        m_handle = std::unique_ptr<GLFWwindow, details::WindowDeleter>(
+        m_handle = std::unique_ptr<GLFWwindow, detail::WindowDeleter>(
             glfwCreateWindow(m_size.x(), m_size.y(), m_title.c_str(), nullptr, nullptr));
 
         glfwMakeContextCurrent(m_handle.get());
