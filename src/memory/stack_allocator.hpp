@@ -8,8 +8,6 @@
 #include "util/util.hpp"
 #include "utils.hpp"
 
-// c++ includes
-#include <span>
 
 namespace memory
 {
@@ -17,7 +15,7 @@ namespace memory
     class StackAllocator : public AllocatorInterface
     {
     private:
-        std::span<u8, capacity> m_buf = { 0 };
+        u8 m_buf[capacity] = { 0 };
 
         u8 *m_ptr = { align_front<align>(m_buf) };
 
