@@ -10,7 +10,7 @@
 
 namespace platform::glfw
 {
-    namespace details
+    namespace detail
     {
         struct WindowDeleter
         {
@@ -20,7 +20,7 @@ namespace platform::glfw
                 glfwTerminate();
             }
         };
-    }  // namespace details
+    }  // namespace detail
 
     struct Keyboard;
     struct Mouse;
@@ -39,7 +39,7 @@ namespace platform::glfw
         std::string m_title = { "Worming v0.0.1" };
 
         /** Handle to internal window handle */
-        std::unique_ptr<GLFWwindow, details::WindowDeleter> m_handle;
+        std::unique_ptr<GLFWwindow, detail::WindowDeleter> m_handle;
 
         /** Handle to mouse */
         Scope<Mouse> m_mouse;

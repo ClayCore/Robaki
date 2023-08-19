@@ -42,7 +42,7 @@ namespace platform::glfw
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
-        m_handle = std::unique_ptr<GLFWwindow, details::WindowDeleter>(
+        m_handle = std::unique_ptr<GLFWwindow, detail::WindowDeleter>(
             glfwCreateWindow(size.x(), size.y(), "Worming v0.0.1", nullptr, nullptr));
 
         if (!m_handle) {
