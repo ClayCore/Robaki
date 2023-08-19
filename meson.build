@@ -21,10 +21,15 @@ shared_include_directories = [
 
 sources = [
     'vendor/glad/src/glad.c',
+    'src/memory/null_allocator.cpp',
+    'src/memory/fallback_allocator.cpp',
+    'src/memory/stack_allocator.cpp',
     'src/event/event.cpp',
     'src/platform/window.cpp',
     'src/platform/input.cpp',
     'src/platform/platform.cpp',
+    'src/platform/glfw/platform_glfw.cpp',
+    'src/assets/io/file.cpp',
     'src/main.cpp',
 ]
 
