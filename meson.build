@@ -9,9 +9,9 @@ project(
     ]
 )
 
-# --------------------------------------------------------------------------- #
-# Variables ----------------------------------------------------------------- #
-# --------------------------------------------------------------------------- #
+# ------------------------------------------------------------------------------- #
+# Variables --------------------------------------------------------------------- #
+# ------------------------------------------------------------------------------- #
 compiler = meson.get_compiler('cpp')
 os = host_machine.system()
 
@@ -21,28 +21,30 @@ shared_include_directories = [
 
 sources = [
     'vendor/glad/src/glad.c',
-    'src/memory/null_allocator.cpp',
-    'src/memory/fallback_allocator.cpp',
-    'src/memory/stack_allocator.cpp',
+    'src/assets/io/file.cpp',
     'src/event/event.cpp',
-    'src/platform/window.cpp',
+    'src/memory/fallback_allocator.cpp',
+    'src/memory/free_list.cpp',
+    'src/memory/null_allocator.cpp',
+    'src/memory/stack_allocator.cpp',
+    'src/platform/glfw/platform_glfw.cpp',
     'src/platform/input.cpp',
     'src/platform/platform.cpp',
-    'src/platform/glfw/platform_glfw.cpp',
-    'src/assets/io/file.cpp',
+    'src/platform/window.cpp',
     'src/main.cpp',
 ]
 
-# --------------------------------------------------------------------------- #
-# Dependencies -------------------------------------------------------------- #
-# --------------------------------------------------------------------------- #
+# ------------------------------------------------------------------------------- #
+# Dependencies ------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------- #
 
 # Global list of dependencies
 all_deps = []
 
 if os == 'windows'
 
-    # libfmt
+    # libfmt -------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[libfmt] Looking for dependency system-wide...')
     fmt_dep = dependency('libfmt', required: false)
 
@@ -57,7 +59,8 @@ if os == 'windows'
         all_deps += fmt_d
     endif
 
-    # glfw3
+    # glfw3 --------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[glfw3] Looking for dependency system-wide...')
     glfw3_dep = dependency('glfw3', required: false)
 
@@ -76,7 +79,8 @@ if os == 'windows'
         all_deps += glfw3_d
     endif
 
-    # glad
+    # glad ---------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[glad] Looking for dependency system-wide...')
     glad_dep = dependency('glad', required: false)
 
@@ -92,7 +96,8 @@ if os == 'windows'
         all_deps += glad_d
     endif
 
-    # bgfx
+    # bgfx ---------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[bgfx] Looking for dependency system-wide...')
     bgfx_dep = dependency('bgfx', required: false)
 
@@ -111,7 +116,8 @@ if os == 'windows'
         all_deps += bgfx_d
     endif
 
-    # bimg
+    # bimg ---------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[bimg] Looking for dependency system-wide...')
     bimg_dep = dependency('bimg', required: false)
 
@@ -130,7 +136,8 @@ if os == 'windows'
         all_deps += bimg_d
     endif
 
-    # bx
+    # bx ------------------------------------------------------------------------ #
+    # --------------------------------------------------------------------------- #
     message('[bx] Looking for dependency system-wide...')
     bx_dep = dependency('bx', required: false)
 
@@ -149,34 +156,46 @@ if os == 'windows'
         all_deps += bx_d
     endif
 else
+    # libfmt -------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[libfmt] Looking for dependency system-wide...')
     fmt_dep = dependency('libfmt', required: true)
     all_deps += fmt_dep
 
+    # glfw3 --------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[glfw3] Looking for dependency system-wide...')
     glfw3_dep = dependency('glfw3', required: true)
     all_deps += glfw3_dep
 
+    # glad ---------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[glad] Looking for dependency system-wide...')
     glad = dependency('glad', required: true)
     all_deps += glad_dep
 
+    # bgfx ---------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[bgfx] Looking for dependency system-wide...')
     bgfx_dep = dependency('bgfx', required: true)
     all_deps += bgfx_dep
 
+    # bimg ---------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
     message('[bimg] Looking for dependency system-wide...')
     bimg_dep = dependency('bimg', required: true)
     all_Deps += bimg_dep
 
+    # bx ------------------------------------------------------------------------ #
+    # --------------------------------------------------------------------------- #
     message('[bx] Looking for dependency system-wide...')
     bx_dep = dependency('bx', required: true)
     all_Deps += bx_dep
 endif
 
-# --------------------------------------------------------------------------- #
-# Linking into executable --------------------------------------------------- #
-# --------------------------------------------------------------------------- #
+# ------------------------------------------------------------------------------- #
+# Linking into executable ------------------------------------------------------- #
+# ------------------------------------------------------------------------------- #
 
 executable(
     'worming',
