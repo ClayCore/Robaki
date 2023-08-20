@@ -15,7 +15,7 @@ namespace event
      * @tparam Derived concrete `Emitter` implementation
      **************************************************************************************************/
     template <class Derived>
-    class Emitter : public Provider<Derived>
+    class Emitter: public Provider<Derived>
     {
     private:
         /** Concrete instance type */

@@ -21,7 +21,7 @@ namespace platform
 
     auto Input::get_buttons() -> util::Iterator<Button *>
     {
-        return (util::Iterator<Button *>{});
+        return (util::Iterator<Button *> {});
     }
 
     auto Mouse::get_buttons() -> util::Iterator<Button *>

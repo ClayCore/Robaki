@@ -29,9 +29,9 @@ namespace platform::glfw
             fmt::print(stderr, "[GLFW/ERROR]: Failed to initialize\n");
         }
 
-        i32 screen_count      = { 0U };
-        GLFWmonitor **screens = glfwGetMonitors(&screen_count);
-        GLFWmonitor *screen   = screens[0];
+        i32 screen_count { 0U };
+        GLFWmonitor **screens { glfwGetMonitors(&screen_count) };
+        GLFWmonitor *screen { screens[0] };
 
         // todo update state and platform settings
         GLFWvidmode const *video_mode = glfwGetVideoMode(screen);

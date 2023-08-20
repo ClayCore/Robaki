@@ -57,16 +57,17 @@ namespace assets::io::file
     private:
         using Handle = std::pair<std::fstream, std::string>;
 
-        std::string m_path = {};
-        Handle m_handle    = {};
-        FileType m_type    = { FileType::PlainText };
+        std::string m_path {};
+        Handle m_handle {};
+        FileType m_type { FileType::PlainText };
 
     public:
-        File()                        = default;
-        File(const File &)            = delete;
-        File(File &&)                 = delete;
-        File &operator=(const File &) = delete;
-        File &operator=(File &&)      = delete;
+        File()             = default;
+        File(File const &) = delete;
+        File(File &&)      = delete;
+
+        auto operator=(File const &) -> File & = delete;
+        auto operator=(File &&) -> File      & = delete;
 
         explicit File(std::string const &path);
         explicit File(std::string_view path);

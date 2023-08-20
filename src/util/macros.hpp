@@ -101,7 +101,7 @@ namespace util::macros::details
         }
 
     public:
-        UncaughtExceptionCounter() : m_count(std::uncaught_exceptions())
+        UncaughtExceptionCounter(): m_count { std::uncaught_exceptions() }
         {
         }
 
@@ -126,25 +126,23 @@ namespace util::macros
      * @tparam IsFail whether we're in a failure or success state
      */
     template <class F, bool IsFail>
-    class ScopeGuard : private NonCopyable<ScopeGuard<F, IsFail>>
+    class ScopeGuard: private NonCopyable
     {
     private:
-        F m_on_exit;
+        F m_func;
         details::UncaughtExceptionCounter m_counter;
 
     public:
-        ScopeGuard(const ScopeGuard &)            = delete;
-        ScopeGuard(ScopeGuard &&)                 = delete;
-        ScopeGuard &operator=(const ScopeGuard &) = delete;
-        ScopeGuard &operator=(ScopeGuard &&)      = delete;
-
-        explicit ScopeGuard(F &&on_exit) : m_on_exit(std::move(on_exit))
+        explicit ScopeGuard(F &&m_func): m_func { std::move(m_func) }
+        {
+        }
+        ScopeGuard(ScopeGuard &&other) noexcept: m_func { std::move(other.m_func) }
         {
         }
         ~ScopeGuard() noexcept(IsFail)
         {
             if (IsFail == m_counter.update()) {
-                m_on_exit();
+                m_func();
             }
         }
     };
@@ -155,25 +153,21 @@ namespace util::macros
      * @tparam F function to call on the exit of a scope
      */
     template <class F>
-    class ScopeExit : private NonCopyable<ScopeExit<F>>
+    class ScopeExit: private NonCopyable
     {
     private:
-        F m_on_exit;
+        F m_func;
 
     public:
-        ScopeExit(const ScopeExit &)            = delete;
-        ScopeExit &operator=(const ScopeExit &) = delete;
-        ScopeExit &operator=(ScopeExit &&)      = delete;
-
-        explicit ScopeExit(F &&on_exit) : m_on_exit(std::move(on_exit))
+        explicit ScopeExit(F &&m_func): m_func(std::move(m_func))
         {
         }
-        ScopeExit(ScopeExit &&other) noexcept : m_on_exit(std::move(other.m_on_exit))
+        ScopeExit(ScopeExit &&other) noexcept: m_func(std::move(other.m_func))
         {
         }
         ~ScopeExit()
         {
-            m_on_exit();
+            m_func();
         }
     };
 
@@ -183,7 +177,7 @@ namespace util::macros
         template <class F>
         auto operator+=(F &&on_exit) -> ScopeExit<F>
         {
-            return (ScopeExit<F>{ std::forward<F>(on_exit) });
+            return (ScopeExit<F> { std::forward<F>(on_exit) });
         }
     };
 
@@ -193,7 +187,7 @@ namespace util::macros
         template <class F>
         auto operator+=(F &&on_exit) -> ScopeGuard<F, true>
         {
-            return (ScopeGuard<F, true>{ std::forward<F>(on_exit) });
+            return (ScopeGuard<F, true> { std::forward<F>(on_exit) });
         }
     };
 
@@ -203,7 +197,7 @@ namespace util::macros
         template <class F>
         auto operator+=(F &&on_exit) -> ScopeGuard<F, false>
         {
-            return (ScopeGuard<F, false>{ std::forward<F>(on_exit) });
+            return (ScopeGuard<F, false> { std::forward<F>(on_exit) });
         }
     };
 }  // namespace util::macros

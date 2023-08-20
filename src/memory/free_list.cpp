@@ -8,7 +8,7 @@
 namespace memory::detail
 {
     template <class T>
-    FreeListHelper<T>::iterator::iterator(T::Node *current) : m_current(current)
+    FreeListHelper<T>::iterator::iterator(T::Node *current): m_current(current)
     {
     }
 
@@ -50,7 +50,7 @@ namespace memory::detail
     }
 
     template <class T>
-    FreeListHelper<T>::FreeListHelper(T &instance) : m_instance(instance)
+    FreeListHelper<T>::FreeListHelper(T &instance): m_instance(instance)
     {
     }
 
@@ -63,13 +63,13 @@ namespace memory::detail
     template <class T>
     auto FreeListHelper<T>::begin() -> iterator
     {
-        return (iterator{ m_instance.m_head });
+        return (iterator { m_instance.m_head });
     }
 
     template <class T>
     auto FreeListHelper<T>::end() -> iterator
     {
-        return (iterator{ nullptr });
+        return (iterator { nullptr });
     }
 }  // namespace memory::detail
 
@@ -89,7 +89,7 @@ namespace memory
 
                 return (block);
             } else {
-                Block first{ nullptr, 0U };
+                Block first { nullptr, 0U };
 
                 for (auto i = 0U; i < batch_size; ++i) {
                     if (m_allocs++ == capacity) {

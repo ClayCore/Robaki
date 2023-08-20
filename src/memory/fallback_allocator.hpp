@@ -12,7 +12,7 @@
 namespace memory
 {
     template <class Primary, class Secondary>
-    class FallbackAllocator final : public AllocatorInterface
+    class FallbackAllocator final: public AllocatorInterface
     {
     private:
         Primary m_primary;

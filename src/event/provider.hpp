@@ -71,12 +71,14 @@ namespace event
         // Constructors and destructors ============================================================= //
         // ========================================================================================== //
 
-        Provider()                            = default;
-        ~Provider()                           = default;
-        Provider(const Provider &)            = default;
-        Provider(Provider &&)                 = delete;
-        Provider &operator=(const Provider &) = default;
-        Provider &operator=(Provider &&)      = delete;
+        Provider()  = default;
+        ~Provider() = default;
+
+        Provider(Provider const &) = default;
+        Provider(Provider &&)      = delete;
+
+        auto operator=(Provider const &) -> Provider & = default;
+        auto operator=(Provider &&) -> Provider      & = delete;
 
         // ========================================================================================== //
         // Accessor methods ========================================================================= //

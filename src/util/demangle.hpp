@@ -12,14 +12,21 @@
 
 namespace util::demangle
 {
+    /**
+     * Prints the name of `T` as it is. Used for debugging
+     *
+     * @tparam T type to demangle
+     * @returns demangled type name
+     */
     template <typename T>
     constexpr auto type_name() -> std::string_view
     {
-        std::string_view name;
-        std::string_view prefix;
-        std::string_view suffix;
+        std::string_view name {};
+        std::string_view prefix {};
+        std::string_view suffix {};
 
         // clang-format off
+
         #if defined(__CLANG__)
         name   = __PRETTY_FUNCTION__;
         prefix = "std::string_view util::demangle::type_name() [T = ";
@@ -33,6 +40,7 @@ namespace util::demangle
         prefix = "std::string_view __cdecl util::demangle::type_name<";
         suffix = ">(void)";
         #endif
+
         // clang-format on
 
         name.remove_prefix(prefix.size());

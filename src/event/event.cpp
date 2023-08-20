@@ -113,12 +113,12 @@ namespace event
 
     auto EventHasher::operator()(Event const &event) const -> usize
     {
-        auto const *name            = event.get_name();
-        auto category               = event.get_category();
-        auto const *category_string = event.category_to_string(category);
+        auto const *name { event.get_name() };
+        auto category { event.get_category() };
+        auto const *category_string { event.category_to_string(category) };
 
-        auto name_hash     = std::hash<std::string>{}(name);
-        auto category_hash = std::hash<std::string>{}(category_string);
+        auto name_hash     = std::hash<std::string> {}(name);
+        auto category_hash = std::hash<std::string> {}(category_string);
 
         return (name_hash ^ (category_hash << 1U));
     }

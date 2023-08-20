@@ -19,6 +19,8 @@ namespace memory
         static constexpr const usize HALF_WORD_ALIGN = (WORD_ALIGN / 2U);
     #endif
 
+    // clang-format on
+
     inline constexpr auto is_power_of_two(usize num) noexcept -> bool
     {
         while (((num & 1U) == 0U) && (num > 1U)) {
@@ -88,5 +90,4 @@ namespace memory
         return (size);
     }
 
-    // clang-format on
 }  // namespace memory

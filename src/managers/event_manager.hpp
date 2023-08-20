@@ -13,7 +13,7 @@ namespace managers
     /**
      * Used by the engine to forward events from and to the `StateManager`
      */
-    class EventManager : public Singleton<EventManager>
+    class EventManager: public Singleton<EventManager>
     {
     private:
         /**
@@ -22,7 +22,7 @@ namespace managers
          * Provides a method to forward any received events and sends them
          * to all associated subscribers.
          */
-        class Dispatcher : public event::Dispatcher<EventManager::Dispatcher>
+        class Dispatcher: public event::Dispatcher<EventManager::Dispatcher>
         {
         public:
             /**

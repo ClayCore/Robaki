@@ -21,13 +21,13 @@ namespace platform
     namespace detail
     {
         /** Default window size */
-        constexpr const Vec2<i32> DEFAULT_SIZE{ 800, 600 };
+        constexpr const Vec2<i32> DEFAULT_SIZE { 800, 600 };
 
     }  // namespace detail
 
-    /**
+    /***************************************************************************************************
      * Describes a window and all its properties
-     */
+     **************************************************************************************************/
     class Window
     {
     protected:
@@ -35,9 +35,9 @@ namespace platform
         // Associated data structures =============================================================== //
         // ========================================================================================== //
 
-        /**
+        /***********************************************************************************************
          * Sets the properties and flags for `GLFW3`
-         */
+         **********************************************************************************************/
         struct WindowFlags
         {
             /** Is a window resizeable? */
@@ -57,7 +57,7 @@ namespace platform
         };
 
         /** Allows the window to emit events to the `StateManager` */
-        class Emitter : public event::Emitter<Window::Emitter>
+        class Emitter: public event::Emitter<Window::Emitter>
         {
         public:
             auto emit(event::Event const &event) -> void;

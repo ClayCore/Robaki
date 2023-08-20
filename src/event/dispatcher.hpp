@@ -20,7 +20,7 @@ namespace event
      * @tparam Derived specific `Dispatcher` implementation
      **************************************************************************************************/
     template <class Derived>
-    class Dispatcher : public Provider<Derived>
+    class Dispatcher: public Provider<Derived>
     {
     private:
         /** Concrete instance type */

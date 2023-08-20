@@ -11,7 +11,7 @@
 
 namespace memory
 {
-    class NullAllocator : public AllocatorInterface
+    class NullAllocator: public AllocatorInterface
     {
     public:
         auto alloc(usize size = 0) -> Block override;

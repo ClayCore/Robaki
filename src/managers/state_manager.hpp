@@ -11,7 +11,7 @@
 
 namespace managers
 {
-    class StateManager : public Singleton<StateManager>
+    class StateManager: public Singleton<StateManager>
     {
     public:
         state::State m_state;

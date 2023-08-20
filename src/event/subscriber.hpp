@@ -23,7 +23,7 @@ namespace event
          * Provides a method to call every function tied to any received
          * events.
          **********************************************************************************************/
-        class Listener : public event::Listener<Subscriber>
+        class Listener: public event::Listener<Subscriber>
         {
         public:
             /*******************************************************************************************
@@ -48,12 +48,14 @@ namespace event
         // Constructors and destructors ============================================================= //
         // ========================================================================================== //
 
-        Subscriber()                              = default;
-        ~Subscriber()                             = default;
-        Subscriber(const Subscriber &)            = default;
-        Subscriber(Subscriber &&)                 = delete;
-        Subscriber &operator=(const Subscriber &) = default;
-        Subscriber &operator=(Subscriber &&)      = delete;
+        Subscriber()  = default;
+        ~Subscriber() = default;
+
+        Subscriber(Subscriber const &) = default;
+        Subscriber(Subscriber &&)      = delete;
+
+        auto operator=(Subscriber const &) -> Subscriber & = default;
+        auto operator=(Subscriber &&) -> Subscriber      & = delete;
 
         // ========================================================================================== //
         // Accessor methods ========================================================================= //

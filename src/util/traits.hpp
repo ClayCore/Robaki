@@ -28,12 +28,12 @@ namespace util::traits
      * @tparam T type to validate
      ******************************************************************************************************/
     template <class T>
-    struct is_vector : public std::false_type
+    struct is_vector: public std::false_type
     {
     };
 
     template <class T>
-    struct is_vector<std::vector<T>> : public std::true_type
+    struct is_vector<std::vector<T>>: public std::true_type
     {
     };
 
@@ -43,12 +43,12 @@ namespace util::traits
      * @tparam T type fo validate
      ******************************************************************************************************/
     template <class T>
-    struct is_duration : public std::false_type
+    struct is_duration: public std::false_type
     {
     };
 
     template <class R, class P>
-    struct is_duration<std::chrono::duration<R, P>> : public std::true_type
+    struct is_duration<std::chrono::duration<R, P>>: public std::true_type
     {
     };
 
@@ -154,7 +154,7 @@ namespace util::traits
         };
 
         template <usize Min, usize Count, usize... Indices>
-        struct range_builder : public range_builder<Min, Count - 1, Count - 1, Indices...>
+        struct range_builder: public range_builder<Min, Count - 1, Count - 1, Indices...>
         {
         };
     };  // namespace detail

@@ -232,7 +232,7 @@ namespace util::math
          * @param args packed arguments delegated to `std::array`
          **********************************************************************************************/
         template <typename... Args>
-        constexpr explicit Vec(Args... args) : m_data{ { args... } }
+        constexpr explicit Vec(Args... args): m_data { { args... } }
         {
             constexpr usize dims = sizeof...(args);
             static_assert(dims == Count);
@@ -807,7 +807,7 @@ namespace util::math
 }  // namespace util::math
 
 template <Arithmetic T, usize Count>
-struct fmt::formatter<util::math::Vec<T, Count>> : formatter<std::string>
+struct fmt::formatter<util::math::Vec<T, Count>>: formatter<std::string>
 {
     auto format(util::math::Vec<T, Count> const &vec, format_context &ctx) const -> format_context::iterator
     {

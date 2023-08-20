@@ -10,15 +10,9 @@
 
 namespace memory
 {
-    class AllocatorInterface
+    class AllocatorInterface: private NonCopyable
     {
     public:
-        AllocatorInterface(AllocatorInterface const &) = default;
-        AllocatorInterface(AllocatorInterface &&)      = delete;
-
-        auto operator=(AllocatorInterface const &) -> AllocatorInterface & = default;
-        auto operator=(AllocatorInterface &&) -> AllocatorInterface      & = delete;
-
         virtual ~AllocatorInterface() = default;
 
         virtual auto alloc(usize size) -> Block = 0;

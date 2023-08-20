@@ -20,7 +20,7 @@ namespace platform
      * Describes a single button and provides an event listener
      * via the inherited `Subscriber` class
      **************************************************************************************************/
-    struct Button : public event::Subscriber
+    struct Button: public event::Subscriber
     {
         // ========================================================================================== //
         // Associated data ========================================================================== //
@@ -52,7 +52,7 @@ namespace platform
         // ========================================================================================== //
 
         Button() = default;
-        Button(usize p_id, std::string p_name) : id(p_id), name(std::move(p_name))
+        Button(usize p_id, std::string p_name): id(p_id), name(std::move(p_name))
         {
         }
 
@@ -93,12 +93,14 @@ namespace platform
         // ========================================================================================== //
         // Constructors and destructors ============================================================= //
         // ========================================================================================== //
-        Input()                         = default;
-        Input(const Input &)            = default;
-        Input(Input &&)                 = delete;
-        Input &operator=(const Input &) = default;
-        Input &operator=(Input &&)      = delete;
-        virtual ~Input()                = default;
+        Input()              = default;
+        Input(Input const &) = default;
+        Input(Input &&)      = delete;
+
+        auto operator=(Input const &) -> Input & = default;
+        auto operator=(Input &&) -> Input      & = delete;
+
+        virtual ~Input() = default;
 
         // ========================================================================================== //
         // Input implementation methods (for overriding) ============================================ //
@@ -123,26 +125,26 @@ namespace platform
     };
 
     /** Describes a basic keyboard input device */
-    struct Keyboard : Input
+    struct Keyboard: Input
     {
         virtual auto operator[](std::string const &name) -> std::optional<Button *> = 0;
     };
 
     /** Describes a basic mouse input device */
-    struct Mouse : Input
+    struct Mouse: Input
     {
     private:
         /** Last recorded position */
-        Vec2<f32> last;
+        Vec2<f32> last {};
 
         /** Last ticked position */
-        Vec2<f32> last_tick;
+        Vec2<f32> last_tick {};
 
         /** Last scrolled position */
-        f32 last_scroll = { 0 };
+        f32 last_scroll { 0.0F };
 
         /** Last ticked scroll position */
-        f32 last_scroll_tick = { 0 };
+        f32 last_scroll_tick { 0.0F };
 
     public:
         /** Describes the mode in which the mouse operates */
@@ -169,31 +171,31 @@ namespace platform
         };
 
         /** Current position */
-        Vec2<f32> pos = {};
+        Vec2<f32> pos {};
 
         /** Current delta position */
-        Vec2<f32> pos_delta = {};
+        Vec2<f32> pos_delta {};
 
         /** Normalized position */
-        Vec2<f32> pos_norm = {};
+        Vec2<f32> pos_norm {};
 
         /** Normalized delta position */
-        Vec2<f32> pos_delta_norm = {};
+        Vec2<f32> pos_delta_norm {};
 
         /** Delta position on last tick */
-        Vec2<f32> pos_delta_tick = {};
+        Vec2<f32> pos_delta_tick {};
 
         /** Normalized delta position on last tick */
-        Vec2<f32> pos_delta_norm_tick = {};
+        Vec2<f32> pos_delta_norm_tick {};
 
         /** Current scroll value */
-        f32 scroll = { 0 };
+        f32 scroll { 0.0F };
 
         /** Current scroll delta */
-        f32 scroll_delta = { 0 };
+        f32 scroll_delta { 0.0F };
 
         /** Scroll delta on last tick */
-        f32 scroll_delta_tick = { 0 };
+        f32 scroll_delta_tick { 0.0F };
 
         /** Whether the mouse is contained in a window */
         bool in_window;

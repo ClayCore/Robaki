@@ -77,35 +77,28 @@ namespace util::types
         return (std::make_shared<T>(std::forward<Args>(args)...));
     }
 
-    /** CRTP NonCopyable mixin used by various traits and types */
-    template <class T>
-    struct NonCopyable
+    /** NonCopyable mixin used by various traits and types */
+    class NonCopyable
     {
     protected:
-        NonCopyable()  = default;
-        ~NonCopyable() = default;
+        constexpr NonCopyable() = default;
+        ~NonCopyable()          = default;
 
-    public:
-        NonCopyable(NonCopyable &&)      = delete;
-        NonCopyable(NonCopyable const &) = delete;
-
+        NonCopyable(NonCopyable const &)                     = delete;
         auto operator=(NonCopyable const &) -> NonCopyable & = delete;
-        auto operator=(NonCopyable &&) -> NonCopyable      & = delete;
-
-        auto operator=(T const &) -> T & = delete;
     };
 
     /*********************************************************************************************************
      * Used by various managers.
      ********************************************************************************************************/
     template <class Derived>
-    class Singleton : private NonCopyable<Derived>
+    class Singleton: private NonCopyable
     {
     private:
         /** Thin wrapper to invoke ctors defined in the `Derived` type */
-        struct instance_t : public Derived
+        struct instance_t: public Derived
         {
-            instance_t() : Derived()
+            instance_t(): Derived()
             {
             }
         };
@@ -182,7 +175,8 @@ namespace util::types
             return (*this);
         }
 
-        explicit CircularQueue(usize max_items) noexcept : m_max_items(max_items + 1), m_vector(m_max_items)
+        explicit CircularQueue(usize max_items) noexcept
+          : m_max_items { max_items + 1 }, m_vector { m_max_items }
         {
         }
 

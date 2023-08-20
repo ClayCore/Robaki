@@ -62,24 +62,27 @@ namespace event
     {
     private:
         /** Defines the type of this event */
-        EventType m_type{ EventType::None };
+        EventType m_type { EventType::None };
 
         /** Defines the category this event belongs to */
-        EventCategory m_category{ EventCategory::None };
+        EventCategory m_category { EventCategory::None };
 
         /** Used for formatting, debugging and displaying */
-        std::string m_name{ this->get_name_from_type(EventType::None) };
+        std::string m_name { this->get_name_from_type(EventType::None) };
 
     public:
         // ========================================================================================== //
         // Constructors and destructors ============================================================= //
         // ========================================================================================== //
 
-        Event()                         = default;
-        Event(const Event &)            = default;
-        Event(Event &&)                 = delete;
-        Event &operator=(const Event &) = default;
-        Event &operator=(Event &&)      = delete;
+        Event() = default;
+
+        Event(Event const &) = default;
+        Event(Event &&)      = delete;
+
+        auto operator=(Event const &) -> Event & = default;
+        auto operator=(Event &&) -> Event      & = default;
+
         explicit Event(EventType const &);
         virtual ~Event() = default;
 
@@ -233,7 +236,7 @@ namespace event
 }  // namespace event
 
 template <>
-struct fmt::formatter<event::Event> : formatter<std::string>
+struct fmt::formatter<event::Event>: formatter<std::string>
 {
     auto format(event::Event const &event, format_context &ctx) const -> format_context::iterator
     {

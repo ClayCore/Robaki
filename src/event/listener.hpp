@@ -19,7 +19,7 @@ namespace event
      * @tparam Derived concrete `Listener` implementation
      **************************************************************************************************/
     template <class Derived>
-    class Listener : public Provider<Derived>
+    class Listener: public Provider<Derived>
     {
     private:
         /** Concrete instance type */

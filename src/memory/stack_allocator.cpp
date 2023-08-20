@@ -12,7 +12,7 @@ namespace memory
         auto next = align_front<align>(m_ptr + size);
 
         if (next <= end) {
-            Block block{ m_ptr, size };
+            Block block { m_ptr, size };
             m_ptr = next;
 
             return (block);

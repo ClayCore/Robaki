@@ -57,7 +57,7 @@ namespace memory::detail
 namespace memory
 {
     template <class Allocator, usize batch_size, usize min, usize max, usize capacity>
-    class FreeList : public AllocatorInterface
+    class FreeList: public AllocatorInterface
     {
     private:
         using self = FreeList<Allocator, batch_size, min, max, capacity>;

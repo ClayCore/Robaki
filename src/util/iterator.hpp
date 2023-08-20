@@ -28,11 +28,11 @@ namespace util
         struct Wrapper
         {
             Iterator<Type> m_iter;
-            typename Iterator<Type>::iterator m_first;
-            typename Iterator<Type>::iterator m_last;
+            Iterator<Type>::iterator m_first;
+            Iterator<Type>::iterator m_last;
 
             explicit Wrapper(Iterator<Type> iter)
-              : m_iter(iter), m_first(m_iter.begin()), m_last(m_iter.end()){};
+              : m_iter(iter), m_first(m_iter.begin()), m_last(m_iter.end()) {};
         };
 
         /** Transformer function to mutate the underlying index */
@@ -43,10 +43,10 @@ namespace util
         // Constructors ============================================================================= //
         // ========================================================================================== //
 
-        Iterator() : m_transformer([](bool) { return (nullptr); })
+        Iterator(): m_transformer { [](bool) { return (nullptr); } }
         {
         }
-        explicit Iterator(Transformer transformer) : m_transformer(transformer)
+        explicit Iterator(Transformer transformer): m_transformer { transformer }
         {
         }
 
@@ -56,10 +56,10 @@ namespace util
             // Utility type aliases ================================================================= //
             // ====================================================================================== //
 
-            using difference_type   = std::ptrdiff_t;
+            using difference_type   = isize;
             using value_type        = Type;
-            using pointer           = const Type *;
-            using reference         = const Type &;
+            using pointer           = Type const *;
+            using reference         = Type const &;
             using iterator_category = std::forward_iterator_tag;
 
             Transformer m_transformer;
@@ -69,13 +69,15 @@ namespace util
             // Constructors ========================================================================= //
             // ====================================================================================== //
 
-            iterator() : m_transformer([](bool) { return (nullptr); }), m_value(nullptr)
+            iterator(): m_transformer { [](bool) { return (nullptr); } }, m_value { nullptr }
             {
             }
-            explicit iterator(Value value) : m_transformer([](bool) { return (nullptr); }), m_value(value)
+            explicit iterator(Value value)
+              : m_transformer { [](bool) { return (nullptr); } }, m_value { value }
             {
             }
-            explicit iterator(Transformer provider) : m_transformer(provider), m_value(m_transformer(false))
+            explicit iterator(Transformer provider)
+              : m_transformer { provider }, m_value { m_transformer(false) }
             {
             }
 
@@ -126,23 +128,23 @@ namespace util
 
         auto begin()
         {
-            return (iterator(m_transformer));
+            return (iterator { m_transformer });
         }
         auto end()
         {
-            return (iterator(nullptr));
+            return (iterator { nullptr });
         }
 
         // ========================================================================================== //
         // Transformation and mutation methods ====================================================== //
         // ========================================================================================== //
 
-        template <typename U>
+        template <class U>
         inline auto map(std::function<U(Type *)> func)
         {
             // clang-format off
             return (
-                Iterator<U>([=, wrapper = Wrapper(*this), value = std::optional<U>()](bool advance) mutable {
+                Iterator<U>([=, wrapper {Wrapper(*this)}, value {std::optional<U>()}](bool advance) mutable {
                     if (advance) {
                         ++wrapper.m_first;
                     }
@@ -177,7 +179,7 @@ namespace util
             //clang-format on
         }
 
-        template <typename U = typename std::remove_pointer<Type>::type>
+        template <class U = std::remove_pointer_t<Type>>
         requires std::is_pointer<Type>::value
         inline auto deref()
         {
@@ -188,7 +190,7 @@ namespace util
             // clang-format on
         }
 
-        template <typename C, typename E = typename C::value_type>
+        template <class C, class E = C::value_type>
         static inline auto from_container(C &container)
         {
             // clang-format off
@@ -205,23 +207,21 @@ namespace util
         }
     };
 
-    template <typename Vector, typename Value = typename Vector::value_type>
+    template <class Vector, class Value = Vector::value_type>
     requires traits::is_vector_v<Vector>
     inline auto iter(Vector &vector)
     {
         return (Iterator<Value>::from_container(vector));
     }
 
-    template <typename Map, typename Key = typename Map::key_type, typename Value = typename Map::value_type>
+    template <class Map, class Key = Map::key_type, class Value = Map::value_type>
     inline auto iter_keys(Map &map)
     {
         return (Iterator<Value>::from_container(map).template map<Key *>(
             [](Value *map_object) -> Key * { return (&map_object->first); }));
     }
 
-    template <typename Map,
-              typename Mapped = typename Map::mapped_type,
-              typename Value  = typename Map::value_type>
+    template <typename Map, class Mapped = Map::mapped_type, class Value = Map::value_type>
     inline auto iter_values(Map &map)
     {
         return (Iterator<Value>::from_container(map).template map<Mapped *>(
