@@ -27,32 +27,32 @@ namespace platform
         // ========================================================================================== //
 
         /** ID of the button (used by GLFW3) */
-        usize id = { 0 };
+        usize id { 0 };
 
         /** Refer to any button via name (also thanks to GLFW3) */
-        std::string name = { "None" };
+        std::string name { "None" };
 
         /** Current button state */
-        bool down = { false };
+        bool down { false };
 
         /** Last button state */
-        bool last = { false };
+        bool last { false };
 
         /** State of button on last tick */
-        bool last_tick = { false };
+        bool last_tick { false };
 
         /** Is the button still pressed? */
-        bool pressed = { false };
+        bool pressed { false };
 
         /** Last tick when the button was still pressed */
-        bool pressed_tick = { false };
+        bool pressed_tick { false };
 
         // ========================================================================================== //
         // Constructors and destructors ============================================================= //
         // ========================================================================================== //
 
         Button() = default;
-        Button(usize p_id, std::string p_name): id(p_id), name(std::move(p_name))
+        Button(usize p_id, std::string p_name): id { p_id }, name { std::move(p_name) }
         {
         }
 
