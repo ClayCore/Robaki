@@ -31,6 +31,16 @@ namespace assets::io::file
         Tracker,
     };
 
+    enum class Mode
+    {
+        Read,
+        Write,
+        Append,
+        ReadBin,
+        WriteBin,
+        AppendBin
+    };
+
     namespace details
     {
         using namespace util::literals;
@@ -55,11 +65,11 @@ namespace assets::io::file
     class File
     {
     private:
-        using Handle = std::pair<std::fstream, std::string>;
-
         std::string m_path {};
-        Handle m_handle {};
+        std::fstream m_handle {};
+
         FileType m_type { FileType::PlainText };
+        Mode m_mode { Mode::Read };
 
     public:
         File()             = default;
@@ -72,23 +82,25 @@ namespace assets::io::file
         explicit File(std::string const &path);
         explicit File(std::string_view path);
 
-        ~File();
-
         [[nodiscard]] auto path() const -> std::string const &;
 
         [[nodiscard]] auto path() -> std::string;
 
-        [[nodiscard]] auto handle() -> Handle &;
+        [[nodiscard]] auto handle() -> std::fstream &;
 
-        [[nodiscard]] auto handle() const -> Handle const &;
+        [[nodiscard]] auto handle() const -> std::fstream const &;
 
         [[nodiscard]] auto type() const -> FileType;
 
+        [[nodiscard]] auto mode() const -> Mode;
+
         [[nodiscard]] auto type_from_ext() const -> FileType;
+
+        auto set_mode(Mode mode) -> void;
 
         auto open() -> void;
 
-        auto read() -> void;
+        auto read_lines() -> std::vector<std::string>;
 
         auto close() -> void;
 

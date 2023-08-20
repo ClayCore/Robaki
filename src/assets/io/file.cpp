@@ -15,11 +15,6 @@ namespace assets::io::file
         this->with_path(path);
     }
 
-    File::~File()
-    {
-        m_handle.first.close();
-    }
-
     auto File::path() const -> std::string const &
     {
         return (m_path);
@@ -30,12 +25,12 @@ namespace assets::io::file
         return (m_path);
     }
 
-    auto File::handle() -> Handle &
+    auto File::handle() -> std::fstream &
     {
         return (m_handle);
     }
 
-    auto File::handle() const -> Handle const &
+    auto File::handle() const -> std::fstream const &
     {
         return (m_handle);
     }
@@ -43,6 +38,11 @@ namespace assets::io::file
     auto File::type() const -> FileType
     {
         return (m_type);
+    }
+
+    auto File::mode() const -> Mode
+    {
+        return (m_mode);
     }
 
     auto File::type_from_ext() const -> FileType
@@ -60,18 +60,65 @@ namespace assets::io::file
         return (FileType::PlainText);
     }
 
+    auto File::set_mode(Mode mode) -> void
+    {
+        m_mode = mode;
+    }
+
+    auto File::open() -> void
+    {
+        SCOPE_FAIL
+        {
+            // TODO: logging
+            fmt::print(stderr, "[IO/ERROR]:\n\t\'{}\' could not be opened.", m_path);
+        };
+
+        switch (m_mode) {
+        case Mode::Read: {
+            m_handle.open(m_path, std::ios::in);
+        } break;
+        case Mode::Write: {
+            m_handle.open(m_path, std::ios::out);
+        } break;
+        case Mode::Append: {
+            m_handle.open(m_path, std::ios::app);
+        }
+        case Mode::ReadBin: {
+            m_handle.open(m_path, std::ios::in | std::ios::binary);
+        } break;
+        case Mode::WriteBin: {
+            m_handle.open(m_path, std::ios::out | std::ios::binary);
+        } break;
+        case Mode::AppendBin: {
+            m_handle.open(m_path, std::ios::app | std::ios::binary);
+        }
+        }
+    }
+
+    auto File::read_lines() -> std::vector<std::string>
+    {
+        std::vector<std::string> result {};
+
+        std::string line {};
+        while (std::getline(m_handle, line)) {
+            result.push_back(line);
+        }
+
+        return (result);
+    }
+
+    auto File::close() -> void
+    {
+        m_handle.close();
+    }
+
     auto File::with_path(std::string_view path) -> File &
     {
         std::filesystem::path fs_path = { path };
 
-        SCOPE_FAIL
-        {
-            fmt::print(stderr, "[IO/ERROR\n\t[{}] not found, empty or corrupt\n]", path);
-        };
-
         m_path   = path;
         m_type   = this->type_from_ext();
-        m_handle = std::make_pair(std::fstream(path), path);
+        m_handle = std::fstream { m_path };
 
         return (*this);
     }
