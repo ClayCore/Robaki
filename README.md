@@ -4,21 +4,42 @@
 
 Real-time Worms clone.
 
-<!-- TODO: Description -->
-
 ## Getting started
+
+### Documentation
+
+Documentation can be generated using [Doxygen](https://www.doxygen.nl/index.html).
+The repository also comes with [doxygen-awesome-css](https://github.com/jothepro/doxygen-awesome-css).
+
+Refer to [Doxyfile](Doxyfile) for configuration.
 
 ### Prerequisites
 
-The following libraries must be installed in the vendor directory.
-Please refer to the [meson.build](meson.build) configuration file for more information.
+The following libraries must be installed system-wide or in the vendor directory.
 
 -   [bgfx](https://github.com/bkaradzic/bgfx),
 -   [bimg](https://github.com/bkaradzic/bimg),
 -   [bx](https://github.com/bkaradzic/bx),
 -   [{fmt}](https://github.com/fmtlib/fmt),
 -   [glfw3](https://github.com/glfw/glfw),
--   [glad](https://glad.dav1d.de/)
+-   [glad](https://glad.dav1d.de/),
+-   [spdlog](https://github.com/gabime/spdlog)
+
+Meson will try its best to find them using whatever package manager thats available in your system,
+however if it fails, you can install those libraries locally.
+
+Dependencies also have to be installed using the following directory structure:
+
+```
+/vendor/
+├─<bimg>
+│  ├─include/
+│  │  ├─<headers>
+│  ├─lib/
+│  │  ├─<binaries>
+```
+
+Please refer to the [meson.build](meson.build) configuration file for more information.
 
 ### Building
 
