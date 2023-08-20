@@ -49,8 +49,8 @@ namespace memory::detail
 
         auto &get_allocator() noexcept;
 
-        auto begin() -> iterator;
-        auto end() -> iterator;
+        [[nodiscard]] auto begin() -> iterator;
+        [[nodiscard]] auto end() -> iterator;
     };
 }  // namespace memory::detail
 
