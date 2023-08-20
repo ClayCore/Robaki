@@ -3,6 +3,10 @@
 // module includes
 #include "file.hpp"
 
+// logging
+#include "spdlog/spdlog.h"
+
+
 namespace assets::io::file
 {
     File::File(std::string const &path)
@@ -69,8 +73,7 @@ namespace assets::io::file
     {
         SCOPE_FAIL
         {
-            // TODO: logging
-            fmt::print(stderr, "[IO/ERROR]:\n\t\'{}\' could not be opened.", m_path);
+            spdlog::error(fmt::format("IO/ERROR: \'{}\' could not be opened", m_path));
         };
 
         switch (m_mode) {
