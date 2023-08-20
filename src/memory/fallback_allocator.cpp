@@ -5,7 +5,7 @@
 
 namespace memory
 {
-    template <class Primary, class Secondary>
+    template <IsAllocator Primary, IsAllocator Secondary>
     auto FallbackAllocator<Primary, Secondary>::alloc(usize size) -> Block
     {
         auto block = m_primary.alloc(size);
@@ -16,13 +16,13 @@ namespace memory
         }
     }
 
-    template <class Primary, class Secondary>
+    template <IsAllocator Primary, IsAllocator Secondary>
     auto FallbackAllocator<Primary, Secondary>::owns(Block &block) const noexcept -> bool
     {
         return (m_primary.owns(block) || m_secondary.owns(block));
     }
 
-    template <class Primary, class Secondary>
+    template <IsAllocator Primary, IsAllocator Secondary>
     auto FallbackAllocator<Primary, Secondary>::free(Block &block) -> void
     {
         if (m_primary.owns(block)) {
@@ -31,13 +31,13 @@ namespace memory
             m_secondary.free(block);
         }
     }
-    template <class Primary, class Secondary>
+    template <IsAllocator Primary, IsAllocator Secondary>
     inline auto FallbackAllocator<Primary, Secondary>::get_primary() noexcept -> Primary &
     {
         return (m_primary);
     }
 
-    template <class Primary, class Secondary>
+    template <IsAllocator Primary, IsAllocator Secondary>
     inline auto FallbackAllocator<Primary, Secondary>::get_secondary() noexcept -> Secondary &
     {
         return (m_secondary);

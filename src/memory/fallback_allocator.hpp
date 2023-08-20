@@ -11,7 +11,7 @@
 
 namespace memory
 {
-    template <class Primary, class Secondary>
+    template <IsAllocator Primary, IsAllocator Secondary>
     class FallbackAllocator final: public AllocatorInterface
     {
     private:
