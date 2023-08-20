@@ -155,6 +155,26 @@ if os == 'windows'
 
         all_deps += bx_d
     endif
+
+    # spdlog -------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
+    message('[spdlog] Looking for dependency system-wide...')
+    spdlog_dep = dependency('spdlog', required: false)
+
+    if spdlog_dep.found()
+        all_deps += spdlog_dep
+    else
+        spdlog_d_include_dirs = ['vendor/spdlog/include']
+
+        spdlog_d_libs = ['-lspdlog']
+        spdlog_d_link_args = ['-L../vendor/spdlog/lib', spdlog_d_libs]
+
+        spdlog_d = declare_dependency(link_args: spdlog_d_link_args, include_directories: spdlog_d_include_dirs)
+
+        message('[spdlog] dependency found in \'vendor\' directory')
+
+        all_deps += spdlog_d
+    endif
 else
     # libfmt -------------------------------------------------------------------- #
     # --------------------------------------------------------------------------- #
@@ -184,13 +204,19 @@ else
     # --------------------------------------------------------------------------- #
     message('[bimg] Looking for dependency system-wide...')
     bimg_dep = dependency('bimg', required: true)
-    all_Deps += bimg_dep
+    all_deps += bimg_dep
 
     # bx ------------------------------------------------------------------------ #
     # --------------------------------------------------------------------------- #
     message('[bx] Looking for dependency system-wide...')
     bx_dep = dependency('bx', required: true)
-    all_Deps += bx_dep
+    all_deps += bx_dep
+
+    # spdlog -------------------------------------------------------------------- #
+    # --------------------------------------------------------------------------- #
+    message('[spdlog] Looking for dependency system-wide...')
+    spdlog_dep = dependency('spdlog', required: true)
+    all_deps += spdlog_dep
 endif
 
 # ------------------------------------------------------------------------------- #
