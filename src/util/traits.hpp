@@ -93,7 +93,7 @@ namespace util::traits
     concept Arithmetic = std::is_arithmetic_v<T>;
 
     /*******************************************************************************************************
-     * @concept Constraint `T` to be printable
+     * @concept Constrain `T` to be printable
      *
      * @tparam T type to constrain
      ******************************************************************************************************/
@@ -102,6 +102,27 @@ namespace util::traits
         {
             std::cout << type
         };
+    };
+
+    /*******************************************************************************************************
+     * @concept Constrain `T` to an STL container
+     *
+     * @tparam T type to constrain
+     ******************************************************************************************************/
+    template <class T>
+    concept IsContainer = requires(T type) {
+        // clang-format off
+        { std::begin(type)                   };
+        { std::begin(type)++                 };
+        { std::end(type)                     };
+        { *std::begin(type)                  };
+        { *std::begin(type)                  } -> std::same_as<void>;
+        { std::begin(type) != std::end(type) } -> std::same_as<bool>;
+        std::destructible<decltype(std::begin(type))> &&
+        std::destructible<decltype(std::end(type))> &&
+        std::copy_constructible<decltype(std::begin(type))> &&
+        std::copy_constructible<decltype(std::end(type))>;
+        // clang-format on
     };
 
     // ================================================================================================== //
