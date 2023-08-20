@@ -979,18 +979,24 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */docs/*
+EXCLUDE_PATTERNS       = */docs/private/*
 EXCLUDE_PATTERNS       = */build/*
 EXCLUDE_PATTERNS       = */.cache/*
 EXCLUDE_PATTERNS       = */vendor/*
-EXCLUDE_PATTERNS      += */vendor/cglm/* 
-EXCLUDE_PATTERNS      += */vendor/glm/* 
-EXCLUDE_PATTERNS      += */vendor/sfml/* 
-EXCLUDE_PATTERNS      += */vendor/sdl2/* 
-EXCLUDE_PATTERNS      += */vendor/structopt/* 
-EXCLUDE_PATTERNS      += */vendor/spdlog/* 
-EXCLUDE_PATTERNS      += */vendor/glfw3/* 
-EXCLUDE_PATTERNS      += */vendor/glew/* 
+EXCLUDE_PATTERNS      += */vendor/bgfx/*
+EXCLUDE_PATTERNS      += */vendor/bimg/*
+EXCLUDE_PATTERNS      += */vendor/bx/*
+EXCLUDE_PATTERNS      += */vendor/cglm/*
+EXCLUDE_PATTERNS      += */vendor/fmt/*
+EXCLUDE_PATTERNS      += */vendor/glad/*
+EXCLUDE_PATTERNS      += */vendor/glew/*
+EXCLUDE_PATTERNS      += */vendor/glfw3/*
+EXCLUDE_PATTERNS      += */vendor/glm/*
+EXCLUDE_PATTERNS      += */vendor/sdl2/*
+EXCLUDE_PATTERNS      += */vendor/sfml/*
+EXCLUDE_PATTERNS      += */vendor/spdlog/*
+EXCLUDE_PATTERNS      += */vendor/structopt/*
+EXCLUDE_PATTERNS      += */vendor/vulkan/*
 EXCLUDE_PATTERNS      += */vendor/yaml/*
 EXCLUDE_PATTERNS      += */tools/*
 
