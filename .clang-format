@@ -25,21 +25,21 @@ AlwaysBreakTemplateDeclarations: true
 BinPackArguments: true
 BinPackParameters: true
 BraceWrapping:
-  AfterCaseLabel: false
-  AfterClass: true
-  AfterControlStatement: false
-  AfterEnum: true
-  AfterFunction: true
-  AfterNamespace: true
-  AfterObjCDeclaration: false
-  AfterStruct: true
-  AfterUnion: true
-  BeforeCatch: false
-  BeforeElse: false
-  IndentBraces: false
-  SplitEmptyFunction: true
-  SplitEmptyNamespace: true
-  SplitEmptyRecord: true
+    AfterCaseLabel: false
+    AfterClass: true
+    AfterControlStatement: false
+    AfterEnum: true
+    AfterFunction: true
+    AfterNamespace: true
+    AfterObjCDeclaration: false
+    AfterStruct: true
+    AfterUnion: true
+    BeforeCatch: false
+    BeforeElse: false
+    IndentBraces: false
+    SplitEmptyFunction: true
+    SplitEmptyNamespace: true
+    SplitEmptyRecord: true
 BreakBeforeConceptDeclarations: Always
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
@@ -49,7 +49,7 @@ BreakConstructorInitializers: BeforeComma
 BreakConstructorInitializersBeforeComma: false
 BreakStringLiterals: true
 ColumnLimit: 110
-CommentPragmas: "^ IWYU pragma:"
+CommentPragmas: '^ IWYU pragma:'
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 2
@@ -60,21 +60,21 @@ DisableFormat: false
 ExperimentalAutoDetectBinPacking: true
 FixNamespaceComments: true
 ForEachMacros:
-  - foreach
-  - Q_FOREACH
-  - BOOST_FOREACH
+    - foreach
+    - Q_FOREACH
+    - BOOST_FOREACH
 IncludeCategories:
-  - Priority: 2
-    Regex: ^"(llvm|llvm-c|clang|clang-c)/
-  - Priority: 3
-    Regex: ^(<|"(gtest|gmock|isl|json)/)
-  - Priority: 1
-    Regex: .*
+    - Priority: 2
+      Regex: ^"(llvm|llvm-c|clang|clang-c)/
+    - Priority: 3
+      Regex: ^(<|"(gtest|gmock|isl|json)/)
+    - Priority: 1
+      Regex: .*
 IncludeIsMainRegex: (Test)?$
 
 KeepEmptyLinesAtTheStartOfBlocks: true
-MacroBlockBegin: ""
-MacroBlockEnd: ""
+MacroBlockBegin: ''
+MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 2
 
 PointerAlignment: Right
@@ -91,6 +91,9 @@ SortUsingDeclarations: false
 SpaceAfterCStyleCast: false
 SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
+SpaceBeforeCtorInitializerColon: false
+SpaceBeforeInheritanceColon: false
+SpaceBeforeCpp11BracedList: true
 SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 2
