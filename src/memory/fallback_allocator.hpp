@@ -19,6 +19,9 @@ namespace memory
         Secondary m_secondary;
 
     public:
+        using primary_allocator_type   = Primary;
+        using secondary_allocator_type = Secondary;
+
         auto alloc(usize size) -> Block override;
         auto owns(Block &block) const noexcept -> bool override;
         auto free(Block &block) -> void override;
