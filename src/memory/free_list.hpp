@@ -56,11 +56,11 @@ namespace memory::detail
 
 namespace memory
 {
-    template <class Allocator, usize batch_size, usize min, usize max, usize capacity>
+    template <class Allocator, usize BS, usize Min, usize Max, usize Cap>
     class FreeList: public AllocatorInterface
     {
     private:
-        using self = FreeList<Allocator, batch_size, min, max, capacity>;
+        using self = FreeList<Allocator, BS, Min, Max, Cap>;
         friend detail::FreeListHelper<self>;
 
         struct Node
@@ -74,6 +74,13 @@ namespace memory
         usize m_allocs { 0U };
 
     public:
+        using allocator_type = Allocator;
+
+        usize static constexpr const batch_size { BS };
+        usize static constexpr const min { Min };
+        usize static constexpr const max { Max };
+        usize static constexpr const capacity { Cap };
+
         auto alloc(usize size) -> Block override;
         auto owns(Block &block) const noexcept -> bool override;
         auto free(Block &block) -> void override;

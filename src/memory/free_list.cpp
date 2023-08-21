@@ -75,14 +75,10 @@ namespace memory::detail
 
 namespace memory
 {
-#ifndef TEMPLATE_FREE_LIST
-#define TEMPLATE_FREE_LIST template <class Allocator, usize batch_size, usize min, usize max, usize capacity>
-#endif
-
-    TEMPLATE_FREE_LIST
-    auto FreeList<Allocator, batch_size, min, max, capacity>::alloc(usize size) -> Block
+    template <class Allocator, usize BS, usize Min, usize Max, usize Cap>
+    auto FreeList<Allocator, BS, Min, Max, Cap>::alloc(usize size) -> Block
     {
-        if ((size >= min) && (size <= max)) {
+        if ((size >= Min) && (size <= Max)) {
             if (m_head != nullptr) {
                 auto block = m_head->block;
                 m_head     = m_head->next;
@@ -91,14 +87,14 @@ namespace memory
             } else {
                 Block first { nullptr, 0U };
 
-                for (auto i = 0U; i < batch_size; ++i) {
-                    if (m_allocs++ == capacity) {
+                for (auto i = 0U; i < BS; ++i) {
+                    if (m_allocs++ == Cap) {
                         break;
                     }
 
-                    auto node_block = m_allocator.alloc(sizeof(Node) + max);
+                    auto node_block = m_allocator.alloc(sizeof(Node) + Max);
                     auto current    = reinterpret_cast<Node *>(node_block.addr);
-                    current->block  = { node_block + sizeof(Node), max };
+                    current->block  = { node_block + sizeof(Node), Max };
 
                     if (i == 0U) {
                         first = current->block;
@@ -115,18 +111,18 @@ namespace memory
         return (null_block);
     }
 
-    TEMPLATE_FREE_LIST
-    auto FreeList<Allocator, batch_size, min, max, capacity>::owns(Block &block) const noexcept -> bool
+    template <class Allocator, usize BS, usize Min, usize Max, usize Cap>
+    auto FreeList<Allocator, BS, Min, Max, Cap>::owns(Block &block) const noexcept -> bool
     {
-        if ((block.size >= min) && (block.size <= max)) {
+        if ((block.size >= Min) && (block.size <= Max)) {
             return (m_allocator.owns(block));
         }
 
         return (false);
     }
 
-    TEMPLATE_FREE_LIST
-    auto FreeList<Allocator, batch_size, min, max, capacity>::free(Block &block) -> void
+    template <class Allocator, usize BS, usize Min, usize Max, usize Cap>
+    auto FreeList<Allocator, BS, Min, Max, Cap>::free(Block &block) -> void
     {
         if (this->owns(block)) {
             // clang-format off
@@ -141,6 +137,4 @@ namespace memory
             block = null_block;
         }
     }
-
-#undef TEMPLATE_FREE_LIST
 }  // namespace memory
