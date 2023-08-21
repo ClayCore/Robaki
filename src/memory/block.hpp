@@ -20,7 +20,7 @@ namespace memory
         usize size;
 
         /** Converts the block into the underlying address */
-        explicit inline operator u8 *() const
+        inline operator u8 *() const
         {
             return (reinterpret_cast<u8 *>(addr));
         }
