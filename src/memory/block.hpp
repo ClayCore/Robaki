@@ -14,8 +14,10 @@ namespace memory
      */
     struct Block
     {
-        void *addr; /** Block address */
-        usize size; /** Block size */
+        /** Block address */
+        void *addr;
+        /** Block size */
+        usize size;
 
         /** Converts the block into the underlying address */
         explicit inline operator u8 *() const

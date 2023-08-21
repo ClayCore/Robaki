@@ -74,7 +74,7 @@ namespace util::traits
     bool constexpr const is_vector_v = is_vector<T>::value;
 
     /*******************************************************************************************************
-     * @concept Alias for `is_duration_v` as a concept
+     * Alias for `is_duration_v` as a concept
      *
      * @tparam T type to validate
      ******************************************************************************************************/
@@ -82,7 +82,7 @@ namespace util::traits
     concept IsDuration = is_duration_v<T>;
 
     /*******************************************************************************************************
-     * @concept Constraints type `T` to be a vector
+     * Constraints type `T` to be a vector
      *
      * @tparam T type to constrain
      ******************************************************************************************************/
@@ -90,7 +90,7 @@ namespace util::traits
     concept IsVector = is_vector_v<T>;
 
     /*******************************************************************************************************
-     * @concept Alias for `std::is_arithmetic_v` as a concept
+     * Alias for `std::is_arithmetic_v` as a concept
      *
      * @tparam T type to constrain
      ******************************************************************************************************/
@@ -98,7 +98,7 @@ namespace util::traits
     concept Arithmetic = std::is_arithmetic_v<T>;
 
     /*******************************************************************************************************
-     * @concept Constrain `T` to be printable
+     * Constrain `T` to be printable
      *
      * @tparam T type to constrain
      ******************************************************************************************************/
@@ -110,7 +110,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain `T` to an allocator
+     * Constrain `T` to an allocator
      *
      * @tparam T type to constrain
      ******************************************************************************************************/
@@ -124,7 +124,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain `T` to an STL container
+     * Constrain `T` to an STL container
      *
      * @tparam T type to constrain
      ******************************************************************************************************/
@@ -243,8 +243,7 @@ namespace util::traits
     class Event;
 
     /*******************************************************************************************************
-     * @concept Constrain `Derived` so that it *must* implement `this->emit(event)`
-     *
+     * Constrain `Derived` so that it *must* implement `this->emit(event)`
      * Used by `Provider` and `Emitter` module
      *
      * @tparam Derived constrainted type
@@ -253,8 +252,7 @@ namespace util::traits
     concept Emittable = requires(Derived &derived, Event const &event) { derived.emit(event); };
 
     /*******************************************************************************************************
-     * @concept Constrain `Derived` so that it *must* implement `this->dispatch(event)`
-     *
+     * Constrain `Derived` so that it *must* implement `this->dispatch(event)`
      * Used by `Provider` and `Dispatcher` module
      *
      * @tparam Derived constrainted type
@@ -263,8 +261,7 @@ namespace util::traits
     concept Dispatchable = requires(Derived &derived, Event const &event) { derived.dispatch(event); };
 
     /*******************************************************************************************************
-     * @concept Constrain `Derived` so that it *must* implement `this->listen(event)`
-     *
+     * Constrain `Derived` so that it *must* implement `this->listen(event)`
      * Used by `Provider` and `Listener` module
      *
      * @tparam Derived constrainted type
@@ -277,8 +274,7 @@ namespace util::traits
     // ================================================================================================== //
 
     /*******************************************************************************************************
-     * @concept Constrain a given type to support arithmetic addition
-     *
+     * Constrain a given type to support arithmetic addition
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -294,8 +290,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain 2 types to support arithmetic addition
-     *
+     * Constrain 2 types to support arithmetic addition
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -311,8 +306,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain a given type to support arithmetic subtraction
-     *
+     * Constrain a given type to support arithmetic subtraction
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -328,8 +322,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain 2 types to support arithmetic subtraction
-     *
+     * Constrain 2 types to support arithmetic subtraction
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -345,8 +338,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain a given type to support arithmetic multiplication
-     *
+     * Constrain a given type to support arithmetic multiplication
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -360,8 +352,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain 2 types to support arithmetic multiplication
-     *
+     * Constrain 2 types to support arithmetic multiplication
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -376,8 +367,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain a given type to support arithmetic division
-     *
+     * Constrain a given type to support arithmetic division
      * Used by `util::math` module
      *
      * @tparam T constrained type
@@ -391,8 +381,7 @@ namespace util::traits
     };
 
     /*******************************************************************************************************
-     * @concept Constrain 2 types to support arithmetic division
-     *
+     * Constrain 2 types to support arithmetic division
      * Used by `util::math` module
      *
      * @tparam T constrained type

@@ -47,8 +47,10 @@ namespace util::types
     private:
         union
         {
-            T m_ok;  /** Stores the value of `Result` */
-            E m_err; /** Stores the error of `Result` */
+            /** Stores the value of `Result` */
+            T m_ok;
+            /** Stores the error of `Result` */
+            E m_err;
         };
 
         /** Optimistically initialized to true */

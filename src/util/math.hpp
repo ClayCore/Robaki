@@ -381,6 +381,7 @@ namespace util::math
             return (this->get_value<0>());
         }
 
+        /** @overload */
         auto constexpr x() const -> T const &
         {
             static_assert(1 <= Count, "Invalid number of arguments for vector type");
@@ -394,6 +395,7 @@ namespace util::math
             return (this->get_value<1>());
         }
 
+        /** @overload */
         auto constexpr y() const -> T const &
         {
             static_assert(2 <= Count, "Invalid number of arguments for vector type");
@@ -407,6 +409,7 @@ namespace util::math
             return (this->get_value<2>());
         }
 
+        /** @overload */
         auto constexpr z() const -> T const &
         {
             static_assert(3 <= Count, "Invalid number of arguments for vector type");
@@ -420,6 +423,7 @@ namespace util::math
             return (this->get_value<3>());
         }
 
+        /** @overload */
         auto constexpr w() const -> T const &
         {
             static_assert(4 <= Count, "Invalid number of arguments for vector type");
@@ -432,6 +436,7 @@ namespace util::math
             return (this->x());
         }
 
+        /** @overload */
         auto constexpr r() const -> T const &
         {
             return (this->x());
@@ -443,7 +448,7 @@ namespace util::math
             return (this->y());
         }
 
-
+        /** @overload */
         auto constexpr g() const -> T const &
         {
             return (this->y());
@@ -455,6 +460,7 @@ namespace util::math
             return (this->z());
         }
 
+        /** @overload */
         auto constexpr b() const -> T const &
         {
             return (this->z());
@@ -466,6 +472,7 @@ namespace util::math
             return (this->w());
         }
 
+        /** @overload */
         auto constexpr a() const -> T const &
         {
             return (this->w());

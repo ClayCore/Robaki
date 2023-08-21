@@ -131,11 +131,15 @@ namespace util::types
     class CircularQueue
     {
     private:
-        usize m_max_items = { 0U };            /** Maximum items from the vector we can store */
-        usize m_overrun   = { 0U };            /** How many items we've overrun */
+        /** Maximum items from the vector we can store */
+        usize m_max_items { 0U };
+        /** How many items we've overrun */
+        usize m_overrun { 0U };
 
-        std::vector<T>::size_type m_head = {}; /** Keeps track of the head of the vector */
-        std::vector<T>::size_type m_tail = {}; /** Keeps track of the tail of the vector */
+        /** Keeps track of the head of the vector */
+        std::vector<T>::size_type m_head {};
+        /** Keeps track of the tail of the vector */
+        std::vector<T>::size_type m_tail {};
 
         /** Internal vector we're viewing */
         std::vector<T> m_vector;

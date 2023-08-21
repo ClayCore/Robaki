@@ -60,11 +60,16 @@ namespace util
             // Utility type aliases ================================================================= //
             // ====================================================================================== //
 
-            using difference_type   = isize;                     /** Used with `std::distance` */
-            using value_type        = Type;                      /** Internal value type */
-            using pointer           = Type const *;              /** Internal value pointer type */
-            using reference         = Type const &;              /** Internal value reference type */
-            using iterator_category = std::forward_iterator_tag; /** Iterator classification */
+            /** Used with `std::distance` */
+            using difference_type = isize;
+            /** Internal value type */
+            using value_type = Type;
+            /** Internal value pointer type */
+            using pointer = Type const *;
+            /** Internal value reference type */
+            using reference = Type const &;
+            /** Iterator classification */
+            using iterator_category = std::forward_iterator_tag;
 
             /** Transformation method */
             Transformer m_transformer;
