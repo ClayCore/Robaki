@@ -3,13 +3,14 @@
 #pragma once
 
 // module includes
-#include "block.hpp"
 #include "util/util.hpp"
 #include "utils.hpp"
 
-
 namespace memory
 {
+    // forward reference
+    class Block;
+
     /** Describes an abstract allocator interface */
     class AllocatorInterface: private NonCopyable
     {
