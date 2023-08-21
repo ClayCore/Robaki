@@ -51,7 +51,7 @@ namespace util::types
      * @param args unpacked arguments
      ********************************************************************************************************/
     template <typename T, typename... Args>
-    constexpr auto CreateScope(Args &&...args) -> Scope<T>
+    auto constexpr CreateScope(Args &&...args) -> Scope<T>
     {
         return (std::make_unique<T>(std::forward<Args>(args)...));
     }
@@ -72,7 +72,7 @@ namespace util::types
      * @param args unpacked arguments
      ********************************************************************************************************/
     template <typename T, typename... Args>
-    constexpr auto CreateRef(Args &&...args) -> Ref<T>
+    auto constexpr CreateRef(Args &&...args) -> Ref<T>
     {
         return (std::make_shared<T>(std::forward<Args>(args)...));
     }
@@ -191,19 +191,19 @@ namespace util::types
         }
 
         template <usize Index>
-        [[nodiscard]] constexpr auto at() const -> T const &
+        [[nodiscard]] auto constexpr at() const -> T const &
         {
             static_assert(Index < this->size());
 
             return (m_vector[(m_head + Index) % m_max_items]);
         }
 
-        [[nodiscard]] constexpr auto empty() const noexcept -> bool
+        [[nodiscard]] auto constexpr empty() const noexcept -> bool
         {
             return (m_tail == m_head);
         }
 
-        [[nodiscard]] constexpr auto full() const noexcept -> bool
+        [[nodiscard]] auto constexpr full() const noexcept -> bool
         {
             if constexpr (m_max_items > 0) {
                 return (((m_tail + 1) % m_max_items) == m_head);
@@ -222,7 +222,7 @@ namespace util::types
             return (m_vector[m_head]);
         }
 
-        [[nodiscard]] constexpr auto size() const noexcept -> usize
+        [[nodiscard]] auto constexpr size() const noexcept -> usize
         {
             if constexpr (m_tail >= m_head) {
                 return (m_tail - m_head);
@@ -231,7 +231,7 @@ namespace util::types
             }
         }
 
-        [[nodiscard]] constexpr auto overrun() const noexcept -> usize
+        [[nodiscard]] auto constexpr overrun() const noexcept -> usize
         {
             return (m_overrun);
         }

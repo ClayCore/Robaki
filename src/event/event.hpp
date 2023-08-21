@@ -96,7 +96,7 @@ namespace event
          *
          * @return event name
          **********************************************************************************************/
-        [[nodiscard]] constexpr auto get_name() const -> char const *
+        [[nodiscard]] auto constexpr get_name() const -> char const *
         {
             if (std::empty(m_name)) {
                 return (this->get_name_from_type(m_type));
@@ -110,7 +110,7 @@ namespace event
          *
          * @return event type
          **********************************************************************************************/
-        [[nodiscard]] constexpr auto get_type() const -> EventType
+        [[nodiscard]] auto constexpr get_type() const -> EventType
         {
             return (m_type);
         }
@@ -120,7 +120,7 @@ namespace event
          *
          * @return event category
          */
-        [[nodiscard]] constexpr auto get_category() const -> EventCategory
+        [[nodiscard]] auto constexpr get_category() const -> EventCategory
         {
             return (m_category);
         }
@@ -134,21 +134,21 @@ namespace event
          *
          * @return event type as string
          **********************************************************************************************/
-        [[nodiscard]] virtual auto get_name_from_type(EventType const &) const -> char const *;
+        [[nodiscard]] auto virtual get_name_from_type(EventType const &) const -> char const *;
 
         /***********************************************************************************************
          * Transforms the event type into a category
          *
          * @return event type as category
          **********************************************************************************************/
-        [[nodiscard]] virtual auto get_category_from_type(EventType const &) const -> EventCategory;
+        [[nodiscard]] auto virtual get_category_from_type(EventType const &) const -> EventCategory;
 
         /***********************************************************************************************
          * Transforms the category into a string
          *
          * @return event category as string
          **********************************************************************************************/
-        [[nodiscard]] virtual auto category_to_string(EventCategory const &) const -> char const *;
+        [[nodiscard]] auto virtual category_to_string(EventCategory const &) const -> char const *;
 
         // ========================================================================================== //
         // Mutator methods ========================================================================== //
@@ -159,37 +159,37 @@ namespace event
          *
          * @param type type to set
          **********************************************************************************************/
-        virtual auto set_type(EventType const &type) -> void;
+        auto virtual set_type(EventType const &type) -> void;
 
         /***********************************************************************************************
          * Sets the name of the event
          *
          * @param name name to set
          **********************************************************************************************/
-        virtual auto set_name(std::string const &name) -> void;
+        auto virtual set_name(std::string const &name) -> void;
 
         /***********************************************************************************************
          * Sets the category of the event
          *
          * @param name category to set
          **********************************************************************************************/
-        virtual auto set_category(EventCategory const &category) -> void;
+        auto virtual set_category(EventCategory const &category) -> void;
 
         // ========================================================================================== //
         // Operator overloads ======================================================================= //
         // ========================================================================================== //
 
-        constexpr auto operator==(Event const &rhs) const -> bool
+        auto constexpr operator==(Event const &rhs) const -> bool
         {
             return (this->get_name() == rhs.get_name());
         }
 
-        constexpr auto operator!=(Event const &rhs) const -> bool
+        auto constexpr operator!=(Event const &rhs) const -> bool
         {
             return (!(*this == rhs));
         }
 
-        constexpr auto operator<=>(Event const &rhs) const -> std::strong_ordering
+        auto constexpr operator<=>(Event const &rhs) const -> std::strong_ordering
         {
             return (this->get_type() <=> rhs.get_type());
         }

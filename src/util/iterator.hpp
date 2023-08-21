@@ -140,7 +140,7 @@ namespace util
         // ========================================================================================== //
 
         template <class U>
-        inline auto map(std::function<U(Type *)> func)
+        auto inline map(std::function<U(Type *)> func)
         {
             // clang-format off
             return (
@@ -159,7 +159,7 @@ namespace util
             // clang-format on
         }
 
-        inline auto ptr()
+        auto inline ptr()
         {
             // clang-format off
             return (
@@ -168,7 +168,7 @@ namespace util
             // clang-format on
         }
 
-        inline auto ref()
+        auto inline ref()
         {
             // clang-format off
             return (
@@ -181,7 +181,7 @@ namespace util
 
         template <class U = std::remove_pointer_t<Type>>
         requires std::is_pointer<Type>::value
-        inline auto deref()
+        auto inline deref()
         {
             // clang-format off
             return (this->map<U>([](U **value) -> U {
@@ -191,7 +191,7 @@ namespace util
         }
 
         template <class C, class E = C::value_type>
-        static inline auto from_container(C &container)
+        auto static inline from_container(C &container)
         {
             // clang-format off
             return (
@@ -209,20 +209,20 @@ namespace util
 
     template <class Vector, class Value = Vector::value_type>
     requires traits::is_vector_v<Vector>
-    inline auto iter(Vector &vector)
+    auto inline iter(Vector &vector)
     {
         return (Iterator<Value>::from_container(vector));
     }
 
     template <class Map, class Key = Map::key_type, class Value = Map::value_type>
-    inline auto iter_keys(Map &map)
+    auto inline iter_keys(Map &map)
     {
         return (Iterator<Value>::from_container(map).template map<Key *>(
             [](Value *map_object) -> Key * { return (&map_object->first); }));
     }
 
     template <typename Map, class Mapped = Map::mapped_type, class Value = Map::value_type>
-    inline auto iter_values(Map &map)
+    auto inline iter_values(Map &map)
     {
         return (Iterator<Value>::from_container(map).template map<Mapped *>(
             [](Value *map_object) -> Mapped * { return (&map_object->second); }));

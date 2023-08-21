@@ -36,7 +36,7 @@ namespace memory
 
     template <class Ref>
     requires std::is_reference_v<Ref>
-    inline auto BufferRef::as_ref() noexcept -> Ref
+    auto inline BufferRef::as_ref() noexcept -> Ref
     {
         using base_type    = std::remove_reference_t<Ref>;
         using pointer_type = std::add_pointer_t<base_type>;
@@ -46,17 +46,17 @@ namespace memory
 
     template <class Ptr>
     requires std::is_pointer_v<Ptr>
-    inline auto BufferRef::as_ptr() noexcept -> Ptr
+    auto inline BufferRef::as_ptr() noexcept -> Ptr
     {
         return (reinterpret_cast<Ptr>(m_data));
     }
 
-    inline auto BufferRef::length() const noexcept -> usize
+    auto inline BufferRef::length() const noexcept -> usize
     {
         return (m_length);
     }
 
-    inline auto BufferRef::slice(usize length) const -> BufferRef
+    auto inline BufferRef::slice(usize length) const -> BufferRef
     {
         return (BufferRef { m_data, length });
     }

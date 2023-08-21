@@ -8,7 +8,7 @@
 
 namespace platform::glfw
 {
-    static auto callback_error(i32 err, char const *msg)
+    auto static callback_error(i32 err, char const *msg)
     {
         // todo logging
         fmt::print(stderr, "[GLFW/ERROR]: code: {}, msg: {}\n", err, msg);

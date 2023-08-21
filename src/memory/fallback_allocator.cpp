@@ -32,13 +32,13 @@ namespace memory
         }
     }
     template <IsAllocator Primary, IsAllocator Secondary>
-    inline auto FallbackAllocator<Primary, Secondary>::get_primary() noexcept -> Primary &
+    auto inline FallbackAllocator<Primary, Secondary>::get_primary() noexcept -> Primary &
     {
         return (m_primary);
     }
 
     template <IsAllocator Primary, IsAllocator Secondary>
-    inline auto FallbackAllocator<Primary, Secondary>::get_secondary() noexcept -> Secondary &
+    auto inline FallbackAllocator<Primary, Secondary>::get_secondary() noexcept -> Secondary &
     {
         return (m_secondary);
     }

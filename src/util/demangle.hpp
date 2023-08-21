@@ -18,8 +18,8 @@ namespace util::demangle
      * @tparam T type to demangle
      * @returns demangled type name
      */
-    template <typename T>
-    constexpr auto type_name() -> std::string_view
+    template <class T>
+    auto constexpr type_name() -> std::string_view
     {
         std::string_view name {};
         std::string_view prefix {};

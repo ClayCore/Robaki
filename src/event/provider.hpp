@@ -28,7 +28,7 @@ namespace event
         /***********************************************************************************************
          * Constraints the `Derived` type
          **********************************************************************************************/
-        constexpr auto check_static() -> void
+        auto constexpr check_static() -> void
         {
             static_assert(Emittable<Derived> || Dispatchable<Derived> || Listenable<Derived>);
         }
@@ -51,7 +51,7 @@ namespace event
          *
          * @return reference to concrete derived type
          **********************************************************************************************/
-        inline auto derived() -> Derived &
+        auto inline derived() -> Derived &
         {
             return (static_cast<Derived &>(*this));
         }
@@ -61,7 +61,7 @@ namespace event
          *
          * @return const reference to concrete derived type
          **********************************************************************************************/
-        inline auto derived() const -> Derived const &
+        auto inline derived() const -> Derived const &
         {
             return (static_cast<Derived const &>(*this));
         }

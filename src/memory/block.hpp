@@ -19,11 +19,11 @@ namespace memory
             return (reinterpret_cast<u8 *>(addr));
         }
 
-        inline auto operator==(Block const &other) const -> bool
+        auto inline operator==(Block const &other) const -> bool
         {
             return (addr == other.addr) && (size == other.size);
         }
     };
 
-    static const Block null_block = { nullptr, 0U };
+    Block static const null_block = { nullptr, 0U };
 }  // namespace memory

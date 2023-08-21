@@ -63,7 +63,7 @@ namespace util::traits
      * @tparam T type to validate
      ******************************************************************************************************/
     template <class T>
-    constexpr const bool is_duration_v = is_duration<T>::value;
+    bool constexpr const is_duration_v = is_duration<T>::value;
 
     /*******************************************************************************************************
      * Constexpr alias for whether a type's an `std::vector`
@@ -71,7 +71,7 @@ namespace util::traits
      * @tparam T type to validate
      ******************************************************************************************************/
     template <class T>
-    constexpr const bool is_vector_v = is_vector<T>::value;
+    bool constexpr const is_vector_v = is_vector<T>::value;
 
     /*******************************************************************************************************
      * @concept Alias for `is_duration_v` as a concept
@@ -203,7 +203,7 @@ namespace util::traits
     using index_range_t = typename detail::range_builder<Min, Max>::type;
 
     template <typename... Args, usize... Indices>
-    constexpr auto reverse_tuple(std::tuple<Args...> tuple, index_list<Indices...> /* unused */)
+    auto constexpr reverse_tuple(std::tuple<Args...> tuple, index_list<Indices...> /* unused */)
         -> reverse_type_seq<Args...>::type
     {
         using reversed_tuple = typename reverse_type_seq<Args...>::type;

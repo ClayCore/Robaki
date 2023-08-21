@@ -7,7 +7,7 @@
 
 namespace memory
 {
-    static constexpr const usize NO_ALIGN = { 1U };
+    usize static constexpr const NO_ALIGN = { 1U };
 
     // clang-format off
 
@@ -21,7 +21,7 @@ namespace memory
 
     // clang-format on
 
-    inline constexpr auto is_power_of_two(usize num) noexcept -> bool
+    auto inline constexpr is_power_of_two(usize num) noexcept -> bool
     {
         while (((num & 1U) == 0U) && (num > 1U)) {
             num >>= 1U;
@@ -31,7 +31,7 @@ namespace memory
     }
 
     template <usize align>
-    inline constexpr auto align_front(u8 *addr) noexcept -> u8 *
+    auto inline constexpr align_front(u8 *addr) noexcept -> u8 *
     {
         static_assert(is_power_of_two(align), "alignment must be power of two");
 
@@ -46,13 +46,13 @@ namespace memory
     }
 
     template <>
-    inline constexpr auto align_front<1U>(u8 *addr) noexcept -> u8 *
+    auto inline constexpr align_front<1U>(u8 *addr) noexcept -> u8 *
     {
         return (addr);
     }
 
     template <usize align>
-    inline constexpr auto align_back(u8 *addr) noexcept -> u8 *
+    auto inline constexpr align_back(u8 *addr) noexcept -> u8 *
     {
         static_assert(is_power_of_two(align), "alignment must be power of two");
 
@@ -67,13 +67,13 @@ namespace memory
     }
 
     template <>
-    inline constexpr auto align_back<1U>(u8 *addr) noexcept -> u8 *
+    auto inline constexpr align_back<1U>(u8 *addr) noexcept -> u8 *
     {
         return (addr);
     }
 
     template <usize align>
-    inline constexpr auto align_size(usize size) noexcept -> usize
+    auto inline constexpr align_size(usize size) noexcept -> usize
     {
         static_assert(is_power_of_two(align), "alignment must be power of two");
 
@@ -85,7 +85,7 @@ namespace memory
     }
 
     template <>
-    inline constexpr auto align_size<1U>(usize size) noexcept -> usize
+    auto inline constexpr align_size<1U>(usize size) noexcept -> usize
     {
         return (size);
     }
