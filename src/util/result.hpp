@@ -1,4 +1,4 @@
-/** @file expected.hpp */
+/** @file result.hpp */
 
 #pragma once
 
@@ -7,7 +7,7 @@
 #include "types.hpp"
 
 
-namespace util
+namespace util::types
 {
     template <class E>
     struct Unexpected
@@ -158,4 +158,4 @@ namespace util
             return T { std::forward<U>(value) };
         }
     };
-}  // namespace util
+}  // namespace util::types
