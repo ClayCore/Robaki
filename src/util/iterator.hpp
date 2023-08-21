@@ -27,8 +27,12 @@ namespace util
         /** Wrapper for the internal iterator */
         struct Wrapper
         {
+            /** Internal iterator object */
             Iterator<Type> m_iter;
+
+            /** Reference iterator to the beginning of the iterator */
             Iterator<Type>::iterator m_first;
+            /** Reference iterator to the end of the iterator */
             Iterator<Type>::iterator m_last;
 
             explicit Wrapper(Iterator<Type> iter)
@@ -56,13 +60,16 @@ namespace util
             // Utility type aliases ================================================================= //
             // ====================================================================================== //
 
-            using difference_type   = isize;
-            using value_type        = Type;
-            using pointer           = Type const *;
-            using reference         = Type const &;
-            using iterator_category = std::forward_iterator_tag;
+            using difference_type   = isize;                     /** Used with `std::distance` */
+            using value_type        = Type;                      /** Internal value type */
+            using pointer           = Type const *;              /** Internal value pointer type */
+            using reference         = Type const &;              /** Internal value reference type */
+            using iterator_category = std::forward_iterator_tag; /** Iterator classification */
 
+            /** Transformation method */
             Transformer m_transformer;
+
+            /** Internal value */
             Value m_value;
 
             // ====================================================================================== //
@@ -85,6 +92,7 @@ namespace util
             // Operator overloads =================================================================== //
             // ====================================================================================== //
 
+            /** Postincrement operator */
             auto operator++(i32) -> iterator
             {
                 auto iter = *this;
@@ -92,6 +100,7 @@ namespace util
 
                 return (iter);
             }
+            /** Preincrement operator */
             auto operator++() -> iterator &
             {
                 m_value = m_transformer(true);
@@ -99,23 +108,25 @@ namespace util
                 return (*this);
             }
 
+            /** Equality comparison */
             auto operator==(iterator other) const -> bool
             {
                 return (m_value == other.m_value);
             }
+
+            /** Inequality comparison */
             auto operator!=(iterator other) const -> bool
             {
                 return (!(*this == other));
             }
 
-            // ====================================================================================== //
-            // Utility ref and deref methods ======================================================== //
-            // ====================================================================================== //
-
+            /** Provides utility access to internal value */
             auto operator*() -> Type &
             {
                 return (*m_value);
             }
+
+            /** Acquire raw access to internal value */
             auto raw() -> Type *&
             {
                 return (m_value);
@@ -126,10 +137,13 @@ namespace util
         // Accessor methods ========================================================================= //
         // ========================================================================================== //
 
+        /** Iterator `std::begin` overload */
         auto begin()
         {
             return (iterator { m_transformer });
         }
+
+        /** Iterator `std::end` overload */
         auto end()
         {
             return (iterator { nullptr });
@@ -139,6 +153,12 @@ namespace util
         // Transformation and mutation methods ====================================================== //
         // ========================================================================================== //
 
+        /***********************************************************************************************
+         * Mutates the internal value of the iterator using the provided map function
+         *
+         * @param func transformation function
+         * @returns value when succesful, `nullptr` otherwise
+         **********************************************************************************************/
         template <class U>
         auto inline map(std::function<U(Type *)> func)
         {
@@ -159,6 +179,11 @@ namespace util
             // clang-format on
         }
 
+        /***********************************************************************************************
+         * Acquire pointer to value
+         *
+         * @return pointer to value
+         **********************************************************************************************/
         auto inline ptr()
         {
             // clang-format off
@@ -168,6 +193,11 @@ namespace util
             // clang-format on
         }
 
+        /***********************************************************************************************
+         * Acquire reference to value
+         *
+         * @return reference to value
+         **********************************************************************************************/
         auto inline ref()
         {
             // clang-format off
@@ -179,8 +209,14 @@ namespace util
             //clang-format on
         }
 
+        /***********************************************************************************************
+         * Dereference inner value. Only valid when `T` is a pointer.
+         *
+         * @tparam U `T` with removed pointer qualifier
+         * @returns dereferenced value when valid, `nullptr` otherwise
+         **********************************************************************************************/
         template <class U = std::remove_pointer_t<Type>>
-        requires std::is_pointer<Type>::value
+        requires std::is_pointer_v<Type>
         auto inline deref()
         {
             // clang-format off
@@ -190,7 +226,14 @@ namespace util
             // clang-format on
         }
 
-        template <class C, class E = C::value_type>
+        /***********************************************************************************************
+         * Constructs `Iterator` from an STL container
+         *
+         * @tparam C container type
+         * @param container container to construct iterator from
+         * @returns iterator when valid, `nullptr` otherwise
+         **********************************************************************************************/
+        template <IsContainer C, class E = C::value_type>
         auto static inline from_container(C &container)
         {
             // clang-format off
@@ -207,13 +250,29 @@ namespace util
         }
     };
 
-    template <class Vector, class Value = Vector::value_type>
-    requires traits::is_vector_v<Vector>
+    /***************************************************************************************************
+     * Constructs an Iterator from an `std::vector`
+     *
+     * @tparam Vector vector type
+     * @tparam Value vector value type
+     * @param vector vector to construct iterator from
+     * @return iterator when valid, `nullptr` otherwise
+     **************************************************************************************************/
+    template <IsVector Vector, class Value = Vector::value_type>
     auto inline iter(Vector &vector)
     {
         return (Iterator<Value>::from_container(vector));
     }
 
+    /***************************************************************************************************
+     * Constructs an Iterator from keys in a map
+     *
+     * @tparam Map map container type
+     * @tparam Key map key type
+     * @tparam Value map value type
+     * @param map map
+     * @returns iterator from keys when valid, `nullptr` otherwise
+     **************************************************************************************************/
     template <class Map, class Key = Map::key_type, class Value = Map::value_type>
     auto inline iter_keys(Map &map)
     {
@@ -221,6 +280,15 @@ namespace util
             [](Value *map_object) -> Key * { return (&map_object->first); }));
     }
 
+    /***************************************************************************************************
+     * Constructs an Iterator from value in a map
+     *
+     * @tparam Map map container type
+     * @tparam Mapped map mapped type
+     * @tparam Value map value type
+     * @param map map
+     * @returns iterator from value when valid, `nullptr` otherwise
+     **************************************************************************************************/
     template <typename Map, class Mapped = Map::mapped_type, class Value = Map::value_type>
     auto inline iter_values(Map &map)
     {

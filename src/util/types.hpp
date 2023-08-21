@@ -131,14 +131,16 @@ namespace util::types
     class CircularQueue
     {
     private:
-        usize m_max_items = { 0U };
-        usize m_overrun   = { 0U };
+        usize m_max_items = { 0U };            /** Maximum items from the vector we can store */
+        usize m_overrun   = { 0U };            /** How many items we've overrun */
 
-        std::vector<T>::size_type m_head = {};
-        std::vector<T>::size_type m_tail = {};
+        std::vector<T>::size_type m_head = {}; /** Keeps track of the head of the vector */
+        std::vector<T>::size_type m_tail = {}; /** Keeps track of the tail of the vector */
 
+        /** Internal vector we're viewing */
         std::vector<T> m_vector;
 
+        /** Utility function for copy-move ctors and operators */
         auto copy_moveable(CircularQueue &&other) noexcept
         {
             m_vector = std::move(other.m_vector);
@@ -156,7 +158,12 @@ namespace util::types
         }
 
     public:
+        /** Internal value type */
         using value_type = T;
+
+        // ========================================================================================== //
+        // Ctors and Dtors ========================================================================== //
+        // ========================================================================================== //
 
         CircularQueue()                      = default;
         CircularQueue(CircularQueue const &) = default;
@@ -190,6 +197,16 @@ namespace util::types
             m_vector.clear();
         }
 
+        // ========================================================================================== //
+        // Accessor methods ========================================================================= //
+        // ========================================================================================== //
+
+        /***********************************************************************************************
+         * Returns element in queue at `Index`. Valid when `Index < size()`
+         *
+         * @tparam Index index
+         * @return element at `Index` if valid
+         **********************************************************************************************/
         template <usize Index>
         [[nodiscard]] auto constexpr at() const -> T const &
         {
@@ -198,11 +215,21 @@ namespace util::types
             return (m_vector[(m_head + Index) % m_max_items]);
         }
 
+        /***********************************************************************************************
+         * Checks if queue is empty
+         *
+         * @returns `true` if empty, `false` otherwise
+         **********************************************************************************************/
         [[nodiscard]] auto constexpr empty() const noexcept -> bool
         {
             return (m_tail == m_head);
         }
 
+        /***********************************************************************************************
+         * Checks if queue is full
+         *
+         * @returns `true` if full, `false` otherwise
+         **********************************************************************************************/
         [[nodiscard]] auto constexpr full() const noexcept -> bool
         {
             if constexpr (m_max_items > 0) {
@@ -212,16 +239,31 @@ namespace util::types
             }
         }
 
+        /***********************************************************************************************
+         * Acquires reference to the beginning of a queue
+         *
+         * @return reference to start of queue
+         **********************************************************************************************/
         [[nodiscard]] auto front() const noexcept -> T const &
         {
             return (m_vector[m_head]);
         }
 
+        /***********************************************************************************************
+         * Acquires reference to the end of a queue
+         *
+         * @return reference to end of queue
+         **********************************************************************************************/
         [[nodiscard]] auto front() noexcept -> T &
         {
             return (m_vector[m_head]);
         }
 
+        /***********************************************************************************************
+         * Acquires size of the queue
+         *
+         * @return size of queue
+         **********************************************************************************************/
         [[nodiscard]] auto constexpr size() const noexcept -> usize
         {
             if constexpr (m_tail >= m_head) {
@@ -231,16 +273,27 @@ namespace util::types
             }
         }
 
+        /***********************************************************************************************
+         * Acquires number of items we've overrun in the queue
+         *
+         * @return overrun item count
+         **********************************************************************************************/
         [[nodiscard]] auto constexpr overrun() const noexcept -> usize
         {
             return (m_overrun);
         }
 
+        // ========================================================================================== //
+        // Transformation and mutation methods ====================================================== //
+        // ========================================================================================== //
+
+        /** Pops element in the internal vector */
         auto pop_front() -> void
         {
             m_head = (m_head + 1) % m_max_items;
         }
 
+        /** Pushes an element into the internal vector */
         auto push_back(T &&item) -> void
         {
             if (m_max_items > 0) {
@@ -254,6 +307,7 @@ namespace util::types
             }
         }
 
+        /** Resets the number of current overrun items */
         auto reset_overrun() -> void
         {
             m_overrun = 0;
