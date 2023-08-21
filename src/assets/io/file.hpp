@@ -45,7 +45,7 @@ namespace assets::io::file
         using namespace util::literals;
 
         // clang-format off
-        static const std::map<FileType, std::vector<u32>> FILETYPES_ASSOC = {
+        std::map<FileType, std::vector<u32>> static const FILETYPES_ASSOC = {
             { FileType::Audio,     {"wav"_sh, "mp3"_sh, "ogg"_sh  }},
             { FileType::BinCode,   {"bin"_sh, "dat"_sh            }},
             { FileType::Config,    {"cfg"_sh,                     }},

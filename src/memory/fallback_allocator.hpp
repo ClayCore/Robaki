@@ -23,7 +23,7 @@ namespace memory
         auto owns(Block &block) const noexcept -> bool override;
         auto free(Block &block) -> void override;
 
-        inline auto get_primary() noexcept -> Primary &;
-        inline auto get_secondary() noexcept -> Secondary &;
+        auto inline get_primary() noexcept -> Primary &;
+        auto inline get_secondary() noexcept -> Secondary &;
     };
 }  // namespace memory

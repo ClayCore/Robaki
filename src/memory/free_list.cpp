@@ -13,19 +13,19 @@ namespace memory::detail
     }
 
     template <class T>
-    inline auto FreeListHelper<T>::iterator::operator==(iterator const &other) const noexcept -> bool
+    auto inline FreeListHelper<T>::iterator::operator==(iterator const &other) const noexcept -> bool
     {
         return (m_current == other.m_current);
     }
 
     template <class T>
-    inline auto FreeListHelper<T>::iterator::operator!=(iterator const &other) const noexcept -> bool
+    auto inline FreeListHelper<T>::iterator::operator!=(iterator const &other) const noexcept -> bool
     {
         return !(*this == other);
     }
 
     template <class T>
-    inline auto FreeListHelper<T>::iterator::operator++() noexcept -> iterator &
+    auto inline FreeListHelper<T>::iterator::operator++() noexcept -> iterator &
     {
         m_current = (m_current != nullptr) ? (m_current->next) : (nullptr);
 
@@ -33,7 +33,7 @@ namespace memory::detail
     }
 
     template <class T>
-    inline auto FreeListHelper<T>::iterator::operator++(i32 step) const noexcept -> iterator
+    auto inline FreeListHelper<T>::iterator::operator++(i32 step) const noexcept -> iterator
     {
         iterator advanced = { m_current };
         for (auto i = 0U; (i < step) && (advanced.m_current != nullptr); ++i) {
@@ -44,7 +44,7 @@ namespace memory::detail
     }
 
     template <class T>
-    inline auto FreeListHelper<T>::iterator::operator*() const noexcept -> value_type
+    auto inline FreeListHelper<T>::iterator::operator*() const noexcept -> value_type
     {
         return (m_current->block);
     }

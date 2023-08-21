@@ -21,7 +21,7 @@ namespace memory::detail
         T &m_instance;
 
     public:
-        static constexpr auto node_size = sizeof(T::Node);
+        auto static constexpr const node_size = sizeof(T::Node);
 
         class iterator
         {
@@ -37,12 +37,12 @@ namespace memory::detail
 
             explicit iterator(T::Node *current);
 
-            inline auto operator==(iterator const &other) const noexcept -> bool;
-            inline auto operator!=(iterator const &other) const noexcept -> bool;
+            auto inline operator==(iterator const &other) const noexcept -> bool;
+            auto inline operator!=(iterator const &other) const noexcept -> bool;
 
-            inline auto operator++() noexcept -> iterator &;
-            inline auto operator++(i32) const noexcept -> iterator;
-            inline auto operator*() const noexcept -> value_type;
+            auto inline operator++() noexcept -> iterator &;
+            auto inline operator++(i32) const noexcept -> iterator;
+            auto inline operator*() const noexcept -> value_type;
         };
 
         explicit FreeListHelper(T &instance);
@@ -69,9 +69,9 @@ namespace memory
             Node *next;
         };
 
-        Allocator m_allocator = {};
-        Node *m_head          = { nullptr };
-        usize m_allocs        = { 0U };
+        Allocator m_allocator {};
+        Node *m_head { nullptr };
+        usize m_allocs { 0U };
 
     public:
         auto alloc(usize size) -> Block override;

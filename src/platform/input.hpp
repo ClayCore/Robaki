@@ -65,7 +65,7 @@ namespace platform
          *
          * Called on each update
          **********************************************************************************************/
-        constexpr auto update() -> void
+        auto constexpr update() -> void
         {
             pressed = down && !last;
             last    = down;
@@ -76,7 +76,7 @@ namespace platform
          *
          * Called on each tick
          **********************************************************************************************/
-        constexpr auto tick() -> void
+        auto constexpr tick() -> void
         {
             pressed_tick = down && !last_tick;
             last_tick    = down;
@@ -109,25 +109,25 @@ namespace platform
         /***********************************************************************************************
          * Update all the buttons for the device, called on each update
          **********************************************************************************************/
-        virtual auto update() -> void;
+        auto virtual update() -> void;
 
         /***********************************************************************************************
          * Tick all the buttons for the device, called on each tick
          **********************************************************************************************/
-        virtual auto tick() -> void;
+        auto virtual tick() -> void;
 
         /***********************************************************************************************
          * Acquire an iterator to all `Button` derivatives.
          *
          * @return iterator
          **********************************************************************************************/
-        virtual auto get_buttons() -> util::Iterator<Button *>;
+        auto virtual get_buttons() -> util::Iterator<Button *>;
     };
 
     /** Describes a basic keyboard input device */
     struct Keyboard: Input
     {
-        virtual auto operator[](std::string const &name) -> std::optional<Button *> = 0;
+        auto virtual operator[](std::string const &name) -> std::optional<Button *> = 0;
     };
 
     /** Describes a basic mouse input device */
@@ -200,14 +200,13 @@ namespace platform
         /** Whether the mouse is contained in a window */
         bool in_window;
 
-        virtual auto set_mode(Mode mode) -> void = 0;
-
         Mouse() = default;
 
         auto get_buttons() -> util::Iterator<Button *> override;
         auto update() -> void override;
         auto tick() -> void override;
 
-        virtual auto operator[](std::string const &name) -> std::optional<Button *>;
+        auto virtual set_mode(Mode mode) -> void = 0;
+        auto virtual operator[](std::string const &name) -> std::optional<Button *>;
     };
 }  // namespace platform

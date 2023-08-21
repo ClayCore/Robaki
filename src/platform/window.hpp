@@ -21,7 +21,7 @@ namespace platform
     namespace detail
     {
         /** Default window size */
-        constexpr const Vec2<i32> DEFAULT_SIZE { 800, 600 };
+        Vec2<i32> constexpr const DEFAULT_SIZE { 800, 600 };
 
     }  // namespace detail
 
@@ -68,13 +68,13 @@ namespace platform
         // ========================================================================================== //
 
         /** Called each tick */
-        virtual auto tick() -> void = 0;
+        auto virtual tick() -> void = 0;
 
         /** Called each update */
-        virtual auto update() -> void = 0;
+        auto virtual update() -> void = 0;
 
         /** Called on each frame */
-        virtual auto render() -> void = 0;
+        auto virtual render() -> void = 0;
 
     public:
         // ========================================================================================== //
@@ -89,16 +89,16 @@ namespace platform
         // Accessor methods ========================================================================= //
         // ========================================================================================== //
 
-        [[nodiscard]] virtual auto get_size() const -> Vec2<i32> = 0;
+        [[nodiscard]] auto virtual get_size() const -> Vec2<i32> = 0;
 
         // ========================================================================================== //
         // Utility methods ========================================================================== //
         // ========================================================================================== //
 
-        virtual auto set_platform_data(bgfx::PlatformData &platform_data) -> void = 0;
-        virtual auto prepare_frame() -> void                                      = 0;
-        virtual auto end_frame() -> void                                          = 0;
-        virtual auto is_close_requested() -> bool                                 = 0;
-        virtual auto close() -> void                                              = 0;
+        auto virtual set_platform_data(bgfx::PlatformData &platform_data) -> void = 0;
+        auto virtual prepare_frame() -> void                                      = 0;
+        auto virtual end_frame() -> void                                          = 0;
+        auto virtual is_close_requested() -> bool                                 = 0;
+        auto virtual close() -> void                                              = 0;
     };
 }  // namespace platform

@@ -23,9 +23,9 @@ namespace platform
         auto tick() -> void;
 
         template <typename InputType>
-        inline auto get_input(std::string const &name = "__USE_TYPENAME") -> InputType &
+        auto inline get_input(std::string const &name = "__USE_TYPENAME") -> InputType &
         {
-            std::string raw = { name };
+            std::string raw { name };
 
             if (name == "__USE_TYPENAME") {
                 raw = util::demangle::type_name<InputType>();

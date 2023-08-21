@@ -31,14 +31,13 @@ namespace memory
 
         template <class Ref>
         requires std::is_reference_v<Ref>
-        inline auto as_ref() noexcept -> Ref;
+        auto inline as_ref() noexcept -> Ref;
 
         template <class Ptr>
         requires std::is_pointer_v<Ptr>
-        inline auto as_ptr() noexcept -> Ptr;
+        auto inline as_ptr() noexcept -> Ptr;
 
-        [[nodiscard]] inline auto length() const noexcept -> usize;
-
-        [[nodiscard]] inline auto slice(usize length) const -> BufferRef;
+        [[nodiscard]] auto inline length() const noexcept -> usize;
+        [[nodiscard]] auto inline slice(usize length) const -> BufferRef;
     };
 }  // namespace memory

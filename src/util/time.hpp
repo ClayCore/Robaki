@@ -18,13 +18,13 @@ namespace util::time
     using timepoint = std::chrono::system_clock::time_point;
 
     /** How many nanoseconds in a second. */
-    constexpr u64 const NS_PER_SEC = 1000000000;
+    u64 constexpr const NS_PER_SEC = 1000000000;
 
     /** How many nanoseconds in a millisecond. */
-    constexpr u64 const NS_PER_MS = 1000000;
+    u64 constexpr const NS_PER_MS = 1000000;
 
     /** How many milliseconds in a second. */
-    constexpr u64 const MS_PER_SEC = 1000;
+    u64 constexpr const MS_PER_SEC = 1000;
 
     /***************************************************************************************************
      * Acquires timestamp using `std::chrono`

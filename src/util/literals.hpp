@@ -19,8 +19,8 @@ namespace util::literals
      * @param len string length
      * @return hash of string
      **************************************************************************************************/
-    constexpr auto operator"" _sh(char const *str, usize len) -> u32
+    auto constexpr operator"" _sh(char const *str, usize len) -> u32
     {
-        return (util::string::hash_str(std::string_view{ str, len }));
+        return (util::string::hash_str(std::string_view { str, len }));
     }
 }  // namespace util::literals

@@ -95,7 +95,7 @@ namespace util::macros::details
          *
          * @return amount of exceptions thrown
          *******************************************************************************/
-        [[nodiscard]] inline auto get_count() const noexcept -> i32
+        [[nodiscard]] auto inline get_count() const noexcept -> i32
         {
             return (m_count);
         }

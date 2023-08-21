@@ -15,10 +15,10 @@ namespace memory
     public:
         virtual ~AllocatorInterface() = default;
 
-        virtual auto alloc(usize size) -> Block = 0;
+        auto virtual alloc(usize size) -> Block = 0;
 
-        virtual auto owns(Block &block) const noexcept -> bool = 0;
+        auto virtual owns(Block &block) const noexcept -> bool = 0;
 
-        virtual auto free(Block &block) -> void = 0;
+        auto virtual free(Block &block) -> void = 0;
     };
 }  // namespace memory

@@ -15,12 +15,12 @@
 
 namespace util::uuid
 {
-    static std::random_device rd;
-    static std::mt19937 gen { rd() };
-    static std::uniform_int_distribution<> dis { 0, 15 };
-    static std::uniform_int_distribution<> dis2 { 8, 11 };
+    std::random_device static rd;
+    std::mt19937 static gen { rd() };
+    std::uniform_int_distribution<> static dis { 0, 15 };
+    std::uniform_int_distribution<> static dis2 { 8, 11 };
 
-    inline auto generate_uuid() -> std::string
+    auto inline generate_uuid() -> std::string
     {
         std::stringstream strstream {};
         u32 iter {};

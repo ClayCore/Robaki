@@ -30,7 +30,7 @@ namespace event
         /***********************************************************************************************
          * Constraints the `Derived` type
          **********************************************************************************************/
-        constexpr auto check_static() -> void
+        auto constexpr check_static() -> void
         {
             static_assert(Emittable<Derived>);
         }

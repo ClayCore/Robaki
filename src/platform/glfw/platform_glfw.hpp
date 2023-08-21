@@ -14,7 +14,7 @@ namespace platform::glfw
     {
         struct WindowDeleter
         {
-            inline auto operator()(GLFWwindow *handle) -> void
+            auto inline operator()(GLFWwindow *handle) -> void
             {
                 glfwDestroyWindow(handle);
                 glfwTerminate();
@@ -73,7 +73,7 @@ namespace platform::glfw
          *
          * @param flags flags to set
          */
-        static auto set_flags(WindowFlags flags) -> void;
+        auto static set_flags(WindowFlags flags) -> void;
 
         /** Called on each tick */
         auto tick() -> void override;
@@ -142,7 +142,7 @@ namespace platform::glfw
         auto callback(GLFWwindow *window, i32 key, i32 scancode, i32 action, i32 mods) -> void;
 
     public:
-        static const constexpr usize MAX_KEYS { 1024 };
+        usize static constexpr const MAX_KEYS { 1024 };
         std::unordered_map<std::string, Button> m_keys;
 
         explicit Keyboard(platform::glfw::Window &window);
