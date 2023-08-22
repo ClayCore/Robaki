@@ -21,7 +21,7 @@ namespace util::traits
     // ================================================================================================== //
     // Forward declarations in use for traits and concepts ============================================== //
     // ================================================================================================== //
-    struct Block;
+    class AllocatorInterface;
 
     // ================================================================================================== //
     // Type related traits ============================================================================== //
@@ -115,13 +115,7 @@ namespace util::traits
      * @tparam T type to constrain
      ******************************************************************************************************/
     template <class T>
-    concept IsAllocator = requires(T type) {
-        // clang-format off
-        { type.alloc(0) };
-        { type.owns(std::declval<Block>) };
-        { type.free(std::declval<Block>) };
-        // clang-format on
-    };
+    concept IsAllocator = std::derived_from<T, AllocatorInterface>;
 
     /*******************************************************************************************************
      * Constrain `T` to an STL container
