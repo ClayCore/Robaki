@@ -119,8 +119,8 @@ namespace memory
     // AffixAllocator implementation ================================================================ //
     // ============================================================================================== //
 
-    template <class Allocator, class P, class s, bool V>
-    auto AffixAllocator<Allocator, P, s, V>::alloc(usize size) -> Block
+    template <class Allocator, class P, class S, bool V>
+    auto AffixAllocator<Allocator, P, S, V>::alloc(usize size) -> Block
     {
         auto block = m_allocator.alloc(self::size_of_alloc(size));
         if (block == null_block) {
@@ -133,16 +133,16 @@ namespace memory
         return (self::offset_block(block, size));
     }
 
-    template <class Allocator, class P, class s, bool V>
-    auto AffixAllocator<Allocator, P, s, V>::owns(Block &block) const noexcept -> bool
+    template <class Allocator, class P, class S, bool V>
+    auto AffixAllocator<Allocator, P, S, V>::owns(Block &block) const noexcept -> bool
     {
         auto original = self::original_block(block);
 
         return (m_allocator.owns(original));
     }
 
-    template <class Allocator, class P, class s, bool V>
-    auto AffixAllocator<Allocator, P, s, V>::free(Block &block) -> void
+    template <class Allocator, class P, class S, bool V>
+    auto AffixAllocator<Allocator, P, S, V>::free(Block &block) -> void
     {
         auto original = self::original_block(block);
 
