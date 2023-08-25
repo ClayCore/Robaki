@@ -1,0 +1,24 @@
+[[package]]
+name = "classopt"
+version = "0.2.1"
+description = "Arguments parser with class for Python, inspired by StructOpt"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[[package]]
+name = "colorama"
+version = "0.4.6"
+description = "Cross-platform colored terminal text."
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.10"
+content-hash = "57dfbdd4b1383fae7b21e92f23c3d8ca8eb9bce949d68104daf8d9fdb17c84ba"
+
+[metadata.files]
+classopt = []
+colorama = []
