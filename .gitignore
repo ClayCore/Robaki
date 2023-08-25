@@ -1,8 +1,22 @@
-/vendor
-
+# VSCode settings
 /.vscode
+
+# Extensions caches
 /.cache
+
+# Intermediate build directory for dependencies
 /build
+
+# Compiled project executable/library
+/target
+
+# Compiled dependencies
+/deps
+
+# Generated Documentation
 /docs/private/*
 /docs/html
-/tools/doxygen-awesome-css
+
+# Python tooling
+/tools/builder/__pycache__/
+*.pyc
