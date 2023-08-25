@@ -32,10 +32,10 @@ class Dependency(object):
 
     @staticmethod
     def create(name: str, root_path: Path):
-        build_dir: Path = root_path / 'vendor' / name / 'build'
+        build_dir: Path = root_path / 'vendor' / name / 'bin'
         include_dir: Path = root_path / 'vendor' / name / 'include'
 
-        target_build_dir: Path = root_path / 'deps' / name / 'build'
+        target_build_dir: Path = root_path / 'deps' / name / 'bin'
         target_include_dir: Path = root_path / 'deps' / name / 'include'
 
         return Dependency(

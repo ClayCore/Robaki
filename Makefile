@@ -1,6 +1,6 @@
 .PHONY: build check clean docs format
 
-BUILDDIR := build
+BUILDDIR := target
 
 $(BUILDDIR):
 	mkdir -p $@

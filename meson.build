@@ -6,6 +6,7 @@ project(
         'cpp_std=c++20',
         'warning_level=3',
         'optimization=3',
+        'b_pch=true'
     ]
 )
 
@@ -20,7 +21,7 @@ shared_include_directories = [
 ]
 
 sources = [
-    'vendor/glad/src/glad.c',
+    'deps/glad/src/glad.c',
     'src/assets/io/file.cpp',
     'src/event/event.cpp',
     'src/memory/fallback_allocator.cpp',
@@ -51,10 +52,12 @@ if os == 'windows'
     if fmt_dep.found()
         all_deps += fmt_dep
     else
-        fmt_d_include_dirs = ['vendor/fmt/include']
-        fmt_d = declare_dependency(include_directories: fmt_d_include_dirs)
+        include_dirs = ['deps/fmt/include']
+        libs = ['-lfmt']
+        link_args = ['-L../deps/fmt/bin', libs]
 
-        message('[fmt] dependency found in \'vendor\' directory')
+        fmt_d = declare_dependency(link_args: link_args, include_directories: include_dirs)
+        message('[fmt] dependency found in \'deps\' directory')
 
         all_deps += fmt_d
     endif
@@ -67,14 +70,12 @@ if os == 'windows'
     if glfw3_dep.found()
         all_deps += glfw3_dep
     else
-        glfw3_d_include_dirs = ['vendor/glfw3/include']
+        include_dirs = ['deps/glfw3/include']
+        libs = ['-lopengl32', '-lgdi32', '-lglfw3']
+        link_args = ['-L../deps/glfw3/bin', libs]
 
-        glfw3_d_libs = ['-lopengl32', '-lgdi32', '-lglfw3']
-        glfw3_d_link_args = ['-L../vendor/glfw3/lib', glfw3_d_libs]
-
-        glfw3_d = declare_dependency(link_args: glfw3_d_link_args, include_directories: glfw3_d_include_dirs)
-
-        message('[glfw3] dependency found in \'vendor\' directory')
+        glfw3_d = declare_dependency(link_args: link_args, include_directories: include_dirs)
+        message('[glfw3] dependency found in \'deps\' directory')
 
         all_deps += glfw3_d
     endif
@@ -87,11 +88,10 @@ if os == 'windows'
     if glad_dep.found()
         all_deps += glad_dep
     else
-        glad_d_include_dirs = ['vendor/glad/include']
+        include_dirs = ['deps/glad/include']
 
-        glad_d = declare_dependency(include_directories: glad_d_include_dirs)
-
-        message('[glad] dependency found in \'vendor\' directory')
+        glad_d = declare_dependency(include_directories: include_dirs)
+        message('[glad] dependency found in \'deps\' directory')
 
         all_deps += glad_d
     endif
@@ -104,14 +104,12 @@ if os == 'windows'
     if bgfx_dep.found()
         all_deps += bgfx_dep
     else
-        bgfx_d_include_dirs = ['vendor/bgfx/include']
+        include_dirs = ['deps/bgfx/include']
+        libs = ['-lbgfxRelease']
+        link_args = ['-L../deps/bgfx/bin', libs]
 
-        bgfx_d_libs = ['-lbgfxRelease']
-        bgfx_d_link_args = ['-L../vendor/bgfx/.build/win64_vs2019/bin', bgfx_d_libs]
-
-        bgfx_d = declare_dependency(link_args: bgfx_d_link_args, include_directories: bgfx_d_include_dirs)
-
-        message('[bgfx] dependency found in \'vendor\' directory')
+        bgfx_d = declare_dependency(link_args: link_args, include_directories: include_dirs)
+        message('[bgfx] dependency found in \'deps\' directory')
 
         all_deps += bgfx_d
     endif
@@ -124,14 +122,12 @@ if os == 'windows'
     if bimg_dep.found()
         all_deps += bimg_dep
     else
-        bimg_d_include_dirs = ['vendor/bimg/include']
+        include_dirs = ['deps/bimg/include']
+        libs = ['-lbimgRelease']
+        link_args = ['-L../deps/bimg/bin', libs]
 
-        bimg_d_libs = ['-lbimgRelease']
-        bimg_d_link_args = ['-L../vendor/bimg/.build/win64_vs2019/bin', bimg_d_libs]
-
-        bimg_d = declare_dependency(link_args: bimg_d_link_args, include_directories: bimg_d_include_dirs)
-
-        message('[bimg] dependency found in \'vendor\' directory')
+        bimg_d = declare_dependency(link_args: link_args, include_directories: include_dirs)
+        message('[bimg] dependency found in \'deps\' directory')
 
         all_deps += bimg_d
     endif
@@ -144,14 +140,12 @@ if os == 'windows'
     if bx_dep.found()
         all_deps += bx_dep
     else
-        bx_d_include_dirs = ['vendor/bx/include']
+        include_dirs = ['deps/bx/include']
+        libs = ['-lbxRelease']
+        link_args = ['-L../deps/bx/bin', libs]
 
-        bx_d_libs = ['-lbxRelease']
-        bx_d_link_args = ['-L../vendor/bx/.build/win64_vs2019/bin', bx_d_libs]
-
-        bx_d = declare_dependency(link_args: bx_d_link_args, include_directories: bx_d_include_dirs)
-
-        message('[bx] dependency found in \'vendor\' directory')
+        bx_d = declare_dependency(link_args: link_args, include_directories: include_dirs)
+        message('[bx] dependency found in \'deps\' directory')
 
         all_deps += bx_d
     endif
@@ -164,14 +158,10 @@ if os == 'windows'
     if spdlog_dep.found()
         all_deps += spdlog_dep
     else
-        spdlog_d_include_dirs = ['vendor/spdlog/include']
+        include_dirs = ['deps/spdlog/include']
 
-        spdlog_d_libs = ['-lspdlog']
-        spdlog_d_link_args = ['-L../vendor/spdlog/lib', spdlog_d_libs]
-
-        spdlog_d = declare_dependency(link_args: spdlog_d_link_args, include_directories: spdlog_d_include_dirs)
-
-        message('[spdlog] dependency found in \'vendor\' directory')
+        spdlog_d = declare_dependency(include_directories: include_dirs)
+        message('[spdlog] dependency found in \'deps\' directory')
 
         all_deps += spdlog_d
     endif
@@ -228,5 +218,6 @@ executable(
     sources,
     include_directories: shared_include_directories,
     dependencies: all_deps,
-    win_subsystem: 'console'
+    win_subsystem: 'console',
+    cpp_pch: 'include/pch/common_pch.hpp'
 )
