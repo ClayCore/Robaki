@@ -11,7 +11,8 @@
 /target
 
 # Compiled dependencies
-/deps
+/deps/*
+!/deps/glad
 
 # Generated Documentation
 /docs/private/*
