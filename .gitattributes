@@ -165,27 +165,3 @@ Procfile            text
 *.*rc               text
 
 *.*ignore           text
-
-# Project specific:
-
-# Disable any vendor libraries from being detected by linguist
-**/vendor/**                 text linguist-vendored
-
-**/vendor/*/lib/*            binary linguist-vendored
-**/vendor/*.lib              binary linguist-vendored
-**/vendor/*.dll              binary linguist-vendored
-**/vendor/*.la               binary linguist-vendored
-**/vendor/*.a                binary linguist-vendored
-
-**/vendor/*.hpp              text linguist-vendored
-**/vendor/*.cpp              text linguist-vendored
-**/vendor/*.h                text linguist-vendored
-**/vendor/*.c                text linguist-vendored
-
-# We're building with glad
-# and this causes it to be detected by linguist
-**/src/opengl/**             text linguist-vendored
-
-**/src/opengl/glad/glad.h    text linguist-vendored
-**/src/opengl/glad/glad.c    text linguist-vendored
-**/src/opengl/KHR/*.h        text lignuist-vendored
