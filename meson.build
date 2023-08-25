@@ -45,8 +45,8 @@ if os == 'windows'
 
     # libfmt -------------------------------------------------------------------- #
     # --------------------------------------------------------------------------- #
-    message('[libfmt] Looking for dependency system-wide...')
-    fmt_dep = dependency('libfmt', required: false)
+    message('[fmt] Looking for dependency system-wide...')
+    fmt_dep = dependency('fmt', required: false)
 
     if fmt_dep.found()
         all_deps += fmt_dep
@@ -54,7 +54,7 @@ if os == 'windows'
         fmt_d_include_dirs = ['vendor/fmt/include']
         fmt_d = declare_dependency(include_directories: fmt_d_include_dirs)
 
-        message('[libfmt] dependency found in \'vendor\' directory')
+        message('[fmt] dependency found in \'vendor\' directory')
 
         all_deps += fmt_d
     endif
@@ -178,8 +178,8 @@ if os == 'windows'
 else
     # libfmt -------------------------------------------------------------------- #
     # --------------------------------------------------------------------------- #
-    message('[libfmt] Looking for dependency system-wide...')
-    fmt_dep = dependency('libfmt', required: true)
+    message('[fmt] Looking for dependency system-wide...')
+    fmt_dep = dependency('fmt', required: true)
     all_deps += fmt_dep
 
     # glfw3 --------------------------------------------------------------------- #
