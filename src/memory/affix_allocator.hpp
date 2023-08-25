@@ -49,7 +49,7 @@ namespace memory
     {
     private:
         using self = AffixAllocator<Allocator, P, S, V>;
-        friend detail::FreeListHelper<self>;
+        friend detail::AffixAllocatorHelper<self>;
 
         Allocator m_allocator;
 
