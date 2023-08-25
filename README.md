@@ -15,7 +15,7 @@ Refer to [Doxyfile](Doxyfile) for configuration.
 
 ### Prerequisites
 
-The following libraries must be installed system-wide or in the vendor directory.
+The following libraries are pulled into the repository using submodules.
 
 -   [bgfx](https://github.com/bkaradzic/bgfx),
 -   [bimg](https://github.com/bkaradzic/bimg),
@@ -25,17 +25,15 @@ The following libraries must be installed system-wide or in the vendor directory
 -   [glad](https://glad.dav1d.de/),
 -   [spdlog](https://github.com/gabime/spdlog)
 
-Meson will try its best to find them using whatever package manager thats available in your system,
-however if it fails, you can install those libraries locally.
-
-Dependencies also have to be installed using the following directory structure:
+A tool called [builder](tools/builder) is present for building the above libraries (excluding `glad`) from source.
+After building, the libraries will be laid out in the following way:
 
 ```
-/vendor/
-├─<bimg>
+/deps/
+├─<name of library>
 │  ├─include/
 │  │  ├─<headers>
-│  ├─lib/
+│  ├─bin/
 │  │  ├─<binaries>
 ```
 
