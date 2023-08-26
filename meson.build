@@ -36,12 +36,6 @@ sources = [
 ]
 
 # ------------------------------------------------------------------------------- #
-# Custom target for running `py-cppbuild` --------------------------------------- #
-# ------------------------------------------------------------------------------- #
-
-poetry = find_program('poetry', required: true)
-
-# ------------------------------------------------------------------------------- #
 # Dependencies ------------------------------------------------------------------ #
 # ------------------------------------------------------------------------------- #
 
@@ -51,144 +45,144 @@ all_deps = []
 # fmt ----------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
 message('[fmt] Looking for dependency system-wide...')
-fmt_dep = dependency('fmt', version: '10.1.0')
+fmt_dep = dependency('fmt', version: '10.1.0', required: false)
 if fmt_dep.found()
     all_deps += fmt_dep
 else
-    if poetry.found()
-        message('[fmt] generating build using \'py-cppbuild\'')
-        deps = ['fmt']
-        args = ['--action', 'build', '--root_path', '.', '--deps', deps]
-        cmd = ['run', 'python', 'tools/py-cppbuild', args]
-        run_command(poetry, cmd)
-
-        include_directories = ['deps/fmt/include']
-        libs = ['-lfmt']
-        link_args = ['-L../deps/fmt/bin', libs]
-
-        fmt_d = declare_dependency(link_args, include_directories)
-        message('[fmt] dependency found in \'deps\' directory')
-
-        all_deps += fmt_d
+    message('[fmt] generating build using \'py-cppbuild\'')
+    if os == 'windows'
+        cmd_result = run_command(['generate_deps.bat', 'fmt'], capture: true, check: true)
+        message(cmd_result.stdout())
+    else
+        cmd_result = run_command(['generate_deps.sh', 'fmt'], capture: true, check: true)
+        message(cmd_result.stdout())
     endif
+
+    include_directories = ['deps/fmt/include']
+    libs = ['-lfmt']
+    link_args = ['-L../deps/fmt/bin', libs]
+
+    fmt_d = declare_dependency(link_args: link_args, include_directories: include_directories)
+    message('[fmt] dependency found in \'deps\' directory')
+
+    all_deps += fmt_d
 endif
 
 # glfw3 --------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
 message('[glfw3] Looking for dependency system-wide...')
-glfw3_dep = dependency('glfw', version: '3.3.8')
+glfw3_dep = dependency('glfw', version: '3.3.8', required: false)
 if glfw3_dep.found()
     all_deps += glfw3_dep
 else
-    if poetry.found()
-        message('[glfw3] generating build using \'py-cppbuild\'')
-        deps = ['glfw3']
-        args = ['--action', 'build', '--root_path', '.', '--deps', deps]
-        cmd = ['run', 'python', 'tools/py-cppbuild', args]
-        run_command(poetry, cmd)
-
-        include_directories = ['deps/glfw3/include']
-        libs = ['-lglfw3']
-        link_args = ['-L../deps/glfw3/bin', libs]
-
-        glfw3_d = declare_dependency(link_args, include_directories)
-        message('[glfw3] dependency found in \'deps\' directory')
-
-        all_deps += glfw3_d
+    message('[glfw3] generating build using \'py-cppbuild\'')
+    if os == 'windows'
+        cmd_result = run_command(['generate_deps.bat', 'glfw3'], capture: true, check: true)
+        message(cmd_result.stdout())
+    else
+        cmd_result = run_command(['generate_deps.sh', 'glfw3'], capture: true, check: true)
+        message(cmd_result.stdout())
     endif
+
+    include_directories = ['deps/glfw3/include']
+    libs = ['-lglfw3']
+    link_args = ['-L../deps/glfw3/bin', libs]
+
+    glfw3_d = declare_dependency(link_args: link_args, include_directories: include_directories)
+    message('[glfw3] dependency found in \'deps\' directory')
+
+    all_deps += glfw3_d
 endif
 
 # bgfx ---------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
 message('[bgfx] Looking for dependency system-wide...')
-bgfx_dep = dependency('bgfx')
+bgfx_dep = dependency('bgfx', required: false)
 if bgfx_dep.found()
     all_deps += bgfx_dep
 else
-    if poetry.found()
-        message('[bgfx] generating build using \'py-cppbuild\'')
-        deps = ['bgfx']
-        args = ['--action', 'build', '--root_path', '.', '--deps', deps]
-        cmd = ['run', 'python', 'tools/py-cppbuild', args]
-        run_command(poetry, cmd)
-
-        include_directories = ['deps/bgfx/include']
-        libs = ['-lbgfxRelease']
-        link_args = ['-L../deps/bgfx/bin', libs]
-
-        bgfx_d = declare_dependency(link_args, include_directories)
-        message('[bgfx] dependency found in \'deps\' directory')
-
-        all_deps += bgfx_d
+    message('[bgfx] generating build using \'py-cppbuild\'')
+    if os == 'windows'
+        cmd_result = run_command(['generate_deps.bat', 'bgfx'], capture: true, check: true)
+        message(cmd_result.stdout())
+    else
+        cmd_result = run_command(['generate_deps.sh', 'bgfx'], capture: true, check: true)
+        message(cmd_result.stdout())
     endif
+
+    include_directories = ['deps/bgfx/include']
+    libs = ['-lbgfxRelease']
+    link_args = ['-L../deps/bgfx/bin', libs]
+
+    bgfx_d = declare_dependency(link_args: link_args, include_directories: include_directories)
+    message('[bgfx] dependency found in \'deps\' directory')
+
+    all_deps += bgfx_d
 endif
 
 # bimg ---------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
 message('[bimg] Looking for dependency system-wide...')
-bimg_dep = dependency('bimg')
+bimg_dep = dependency('bimg', required: false)
 if bimg_dep.found()
     all_deps += bimg_dep
 else
-    if poetry.found()
-        include_directories = ['deps/bimg/include']
-        libs = ['-lbimgRelease']
-        link_args = ['-L../deps/bimg/bin', libs]
+    include_directories = ['deps/bimg/include']
+    libs = ['-lbimgRelease']
+    link_args = ['-L../deps/bgfx/bin', libs]
 
-        bimg_d = declare_dependency(link_args, include_directories)
-        message('[bimg] dependency found in \'deps\' directory')
+    bimg_d = declare_dependency(link_args: link_args, include_directories: include_directories)
+    message('[bimg] dependency found in \'deps\' directory')
 
-        all_deps += bimg_d
-    endif
+    all_deps += bimg_d
 endif
 
 # bx ------------------------------------------------------------------------ #
 # --------------------------------------------------------------------------- #
 message('[bx] Looking for dependency system-wide...')
-bx_dep = dependency('bx')
+bx_dep = dependency('bx', required: false)
 if bx_dep.found()
     all_deps += bx_dep
 else
-    if poetry.found()
-        include_directories = ['deps/bx/include']
-        libs = ['-lbxRelease']
-        link_args = ['-L../deps/bx/bin', libs]
+    include_directories = ['deps/bx/include']
+    libs = ['-lbxRelease']
+    link_args = ['-L../deps/bgfx/bin', libs]
 
-        bx_d = declare_dependency(link_args, include_directories)
-        message('[bx] dependency found in \'deps\' directory')
+    bx_d = declare_dependency(link_args: link_args, include_directories: include_directories)
+    message('[bx] dependency found in \'deps\' directory')
 
-        all_deps += bx_d
-    endif
+    all_deps += bx_d
 endif
 
 # spdlog -------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
 message('[spdlog] Looking for dependency system-wide...')
-spdlog_dep = dependency('spdlog', version: '1.12.0')
+spdlog_dep = dependency('spdlog', version: '1.12.0', required: false)
 if spdlog_dep.found()
     all_deps += spdlog_dep
 else
-    if poetry.found()
-        message('[spdlog] generating build using \'py-cppbuild\'')
-        deps = ['spdlog']
-        args = ['--action', 'build', '--root_path', '.', '--deps', deps]
-        cmd = ['run', 'python', 'tools/py-cppbuild', args]
-        run_command(poetry, cmd)
-
-        include_directories = ['deps/spdlog/include']
-
-        spdlog_d = declare_dependency(include_directories)
-        message('[spdlog] dependency found in \'deps\' directory')
-
-        all_deps += spdlog_d
+    message('[spdlog] generating build using \'py-cppbuild\'')
+    if os == 'windows'
+        cmd_result = run_command(['generate_deps.bat', 'spdlog'], capture: true, check: true)
+        message(cmd_result.stdout())
+    else
+        cmd_result = run_command(['generate_deps.sh', 'spdlog'], capture: true, check: true)
+        message(cmd_result.stdout())
     endif
+
+    include_directories = ['deps/spdlog/include']
+
+    spdlog_d = declare_dependency(include_directories: include_directories)
+    message('[spdlog] dependency found in \'deps\' directory')
+
+    all_deps += spdlog_d
 endif
 
 # glad ---------------------------------------------------------------------- #
 # --------------------------------------------------------------------------- #
 include_directories = ['deps/glad/include']
 
-glad_dep = declare_dependency(include_directories)
+glad_dep = declare_dependency(include_directories: include_directories)
 message('[glad] dependency found in \'deps\' directory')
 
 all_deps += glad_dep
