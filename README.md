@@ -25,7 +25,9 @@ The following libraries are pulled into the repository using submodules.
 -   [glad](https://glad.dav1d.de/),
 -   [spdlog](https://github.com/gabime/spdlog)
 
-A tool called [builder](tools/builder) is present for building the above libraries (excluding `glad`) from source.
+A tool called [py-cppbuild](tools/py-cppbuild) is present for building the above libraries (excluding `glad`) from source.
+There's also small batch and shell scripts present for generating dependencies. It's used internally in meson, so don't worry about it too much.
+
 After building, the libraries will be laid out in the following way:
 
 ```
@@ -44,7 +46,10 @@ Please refer to the [meson.build](meson.build) configuration file for more infor
 This project makes use of the [meson](https://mesonbuild.com/index.html) build system and a Makefile is supplied which invokes meson and its targets
 
 Invoke the `build` target from command line.
-`$ make build`
+
+```sh
+$ make build
+```
 
 Other targets are also defined by the [Makefile](Makefile). Refer to it for more information.
 
